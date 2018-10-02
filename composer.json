@@ -1,0 +1,29 @@
+{
+    "name": "daydreamlab/media",
+    "description": "DaydreamLab Media",
+    "authors": [
+        {
+            "name": "Jordan Tsai",
+            "email": "jordan@daydream-lab.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "src/database/seeds"
+        ],
+        "psr-4": {
+            "DaydreamLab\\Media\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "daydreamlab/user": "dev-master"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DaydreamLab\\Media\\MediaServiceProvider"
+            ]
+        }
+    }
+}
