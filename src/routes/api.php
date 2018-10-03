@@ -18,6 +18,9 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function () {
 
     Route::group(['middleware' => ['auth:api', 'expired', 'admin'], 'prefix' => 'admin'], function (){
 
+        Route::group(['prefix' => 'media'], function (){
+            Route::post('upload', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@upload');
 
+        });
     });
 });
