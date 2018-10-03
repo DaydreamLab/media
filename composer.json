@@ -9,7 +9,6 @@
     ],
     "autoload": {
         "classmap": [
-            "src/database/seeds"
         ],
         "psr-4": {
             "DaydreamLab\\Media\\": "src/"

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\Media;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\User\Middlewares\Admin;
 use DaydreamLab\User\Middlewares\Expired;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -21,8 +22,9 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->publishes([__DIR__. '/constants' => config_path('constants')], 'user-configs');
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+//        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         include __DIR__. '/routes/api.php';
     }
 
