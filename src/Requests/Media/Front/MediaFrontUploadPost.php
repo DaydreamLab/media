@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Front;
 
-use DaydreamLab\Media\Requests\Media\MediaStorePost;
+use DaydreamLab\Media\Requests\Media\MediaUploadPost;
 
-class MediaFrontStorePost extends MediaStorePost
+class MediaFrontUploadPost extends MediaUploadPost
 {
     /**
      * Determine if the user is authorized to make this request.

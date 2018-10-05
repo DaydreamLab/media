@@ -1,10 +1,11 @@
 <?php
 
-namespace DaydreamLab\Media\Requests\Media\Admin;
+namespace DaydreamLab\Media\Requests\Media\Front;
 
-use DaydreamLab\Media\Requests\Media\MediaStorePost;
+use DaydreamLab\Media\Requests\Media\MediaGetFolderItemsPost;
 
-class MediaAdminStorePost extends MediaStorePost
+
+class MediaFrontGetFolderItemsPost extends MediaGetFolderItemsPost
 {
     /**
      * Determine if the user is authorized to make this request.

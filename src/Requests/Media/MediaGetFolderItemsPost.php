@@ -5,7 +5,8 @@ namespace DaydreamLab\Media\Requests\Media;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;
 
-class MediaStorePost extends AdminRequest
+
+class MediaGetFolderItemsPost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +26,15 @@ class MediaStorePost extends AdminRequest
     public function rules()
     {
         return [
-            'id'            => 'nullable|integer',
-            'title'         => 'required|string',
-            'state'         => [
+            'dir'       => 'required|string',
+            'order_by'  => [
                 'nullable',
-                'integer',
-                Rule::in([0,1,-2])
+                Rule::in(['name', 'modified'])
+            ],
+            'order'     => [
+                'nullable',
+                Rule::in(['asc', 'desc'])
             ]
-            'description'   => 'nullable|string',
         ];
     }
 }

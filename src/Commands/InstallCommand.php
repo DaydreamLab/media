@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\Media\Commands;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -26,7 +27,7 @@ class InstallCommand extends Command
 
 
     protected $constants = [
-
+        'media'
     ];
 
 
@@ -60,11 +61,11 @@ class InstallCommand extends Command
 //            ]);
 //        }
 //
-//        $this->deleteConstants();
-//
-//        $this->call('vendor:publish', [
-//            '--tag' => 'media-configs'
-//        ]);
+        $this->deleteConstants();
+
+        $this->call('vendor:publish', [
+            '--tag' => 'media-configs'
+        ]);
     }
 
 
@@ -73,6 +74,7 @@ class InstallCommand extends Command
         $constants_path     = 'config/constants/';
         foreach ($this->constants as $constant) {
             File::delete($constants_path . $constant . '.php');
+            File::delete(config_path() . '/'. $constant . '.php');
         }
     }
 }

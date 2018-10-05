@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Front;
 
-use DaydreamLab\Media\Requests\Media\MediaSearchPost;
+use DaydreamLab\Media\Requests\Media\MediaCreateFolderPost;
 
-class MediaFrontSearchPost extends MediaSearchPost
+class MediaFrontCreateFolderPost extends MediaCreateFolderPost
 {
     /**
      * Determine if the user is authorized to make this request.

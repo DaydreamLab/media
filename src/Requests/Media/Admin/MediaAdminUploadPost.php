@@ -1,10 +1,10 @@
 <?php
 
-namespace DaydreamLab\Media\Requests\Media;
+namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Requests\Media\MediaUploadPost;
 
-class MediaOrderingPost extends AdminRequest
+class MediaAdminUploadPost extends MediaUploadPost
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,9 @@ class MediaOrderingPost extends AdminRequest
      */
     public function rules()
     {
-        return [
-            'id'            => 'required|integer',
-            'index_diff'    => 'required|integer',
+        $rules = [
+            //
         ];
+        return array_merge($rules, parent::rules());
     }
 }

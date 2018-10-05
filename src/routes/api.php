@@ -18,6 +18,11 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function () {
 
         Route::group(['prefix' => 'media'], function (){
             Route::post('upload', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@upload');
+            Route::post('move', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@move');
+            Route::post('folder/items', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getFolderItems');
+            Route::post('folder/create', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@createFolder');
+            Route::get('folder/all', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getAllFolders');
+            Route::post('remove', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@remove');
 
         });
     });

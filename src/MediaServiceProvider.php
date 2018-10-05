@@ -2,11 +2,12 @@
 
 namespace DaydreamLab\Media;
 
+
+use DaydreamLab\JJAJ\Exceptions\BaseExceptionHandler;
 use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\User\Middlewares\Admin;
-use DaydreamLab\User\Middlewares\Expired;
-use Illuminate\Contracts\Debug\ExceptionHandler;
+use DaydreamLab\Media\Helpers\MediaHelper;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Debug\ExceptionHandler;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -22,10 +23,28 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishes([__DIR__. '/constants' => config_path('constants')], 'media-configs');
+        $this->publishes([__DIR__. '/Configs/' => config_path()], 'media-configs');
 
-        $this->publishes([__DIR__. '/constants' => config_path('constants')], 'user-configs');
 //        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         include __DIR__. '/routes/api.php';
+
+        // set media disks to filesystems disks
+        $filesystems = $this->app['config']->get('filesystems', []);
+        $media = require config_path('media.php');
+        foreach ($media['disks'] as $key => $disk)
+        {
+            $filesystems['disks'][$key] = $disk;
+        }
+        $this->app['config']->set('filesystems',$filesystems);
+
+        $media_public_path = MediaHelper::getDiskPath('media-public');
+        $this->publishes([__DIR__.'/resources' => $media_public_path], 'media-configs');
+
+        $this->app->bind(
+            ExceptionHandler::class,
+            BaseExceptionHandler::class
+        );
     }
 
     /**
@@ -35,9 +54,6 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->app['router']->aliasMiddleware('admin', Admin::class);
-        //$this->app['router']->aliasMiddleware('expired', Expired::class);
-
         $this->commands($this->commands);
     }
 }

@@ -4,7 +4,7 @@ namespace DaydreamLab\Media\Requests\Media;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class MediaRemovePost extends AdminRequest
+class MediaDeletePost extends AdminRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class MediaRemovePost extends AdminRequest
     public function rules()
     {
         return [
-            'ids'       => 'required|array',
-            'ids.*'     => 'required|integer'
+            'path'  => 'required|string',
+            'type'  => 'required|string',
         ];
     }
 }

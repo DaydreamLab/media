@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaSearchPost;
+use DaydreamLab\Media\Requests\Media\MediaGetFolderItemsPost;
 
-class MediaAdminSearchPost extends MediaSearchPost
+class MediaAdminGetFolderItemsPost extends MediaGetFolderItemsPost
 {
     /**
      * Determine if the user is authorized to make this request.

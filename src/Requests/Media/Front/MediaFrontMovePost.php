@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Front;
 
-use DaydreamLab\Media\Requests\Media\MediaRemovePost;
+use DaydreamLab\Media\Requests\Media\MediaMovePost;
 
-class MediaFrontRemovePost extends MediaRemovePost
+class MediaFrontMovePost extends MediaMovePost
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -24,8 +24,9 @@ class MediaUploadPost extends AdminRequest
     public function rules()
     {
         return [
-            'id'            => 'required|integer',
-            'index_diff'    => 'required|integer',
+            'files'     => 'required|array',
+            'files.*'   => 'nullable|max:65536',
+            'dir'       => 'required|string',
         ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaOrderingPost;
+use DaydreamLab\Media\Requests\Media\MediaDeletePost;
 
-class MediaAdminOrderingPost extends MediaOrderingPost
+class MediaAdminDeletePost extends MediaDeletePost
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaStatePost;
+use DaydreamLab\Media\Requests\Media\MediaCreateFolderPost;
 
-class MediaAdminStatePost extends MediaStatePost
+class MediaAdminCreateFolderPost extends MediaCreateFolderPost
 {
     /**
      * Determine if the user is authorized to make this request.
