@@ -31,7 +31,7 @@ class MediaServiceProvider extends ServiceProvider
 
         // set media disks to filesystems disks
         $filesystems = $this->app['config']->get('filesystems', []);
-        $media = require config_path('media.php');
+        $media = require config_path('filesystems.php');
         foreach ($media['disks'] as $key => $disk)
         {
             $filesystems['disks'][$key] = $disk;
