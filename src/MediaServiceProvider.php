@@ -30,7 +30,7 @@ class MediaServiceProvider extends ServiceProvider
         include __DIR__. '/routes/api.php';
 
         // set media disks to filesystems disks
-        $filesystems = $this->app['config']->get('media', []);
+        $filesystems = $this->app['config']->get('filesystems', []);
         $media = require config_path('media.php');
         foreach ($media['disks'] as $key => $disk)
         {
