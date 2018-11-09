@@ -61,6 +61,12 @@ class MediaAdminController extends BaseController
     }
 
 
+    public function rename()
+    {
+
+    }
+
+
     public function upload(MediaAdminUploadPost $request)
     {
         $this->service->upload($request->rulesInput());
