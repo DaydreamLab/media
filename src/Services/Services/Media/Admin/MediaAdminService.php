@@ -30,7 +30,8 @@ class MediaAdminService extends MediaService
     public function createFolder(Collection $input)
     {
         $path = $input->dir . '/' . $input->name;
-        if ($this->media_storage->exists($input->dir . '/' . $input->name))
+        if ($this->media_storage->exists($input->dir . '/' . $input->name) ||
+            $this->thumb_storage->exists($input->dir . '/' . $input->name) )
         {
             $this->status =  Str::upper(Str::snake($this->type.'FolderAlreadyExist'));;
             $this->response = null;
@@ -38,8 +39,9 @@ class MediaAdminService extends MediaService
         }
         else
         {
-            $result = $this->media_storage->makeDirectory($path);
-            if ($result)
+            $result_media   = $this->media_storage->makeDirectory(Str::lower($path));
+            $result_thumb   = $this->thumb_storage->makeDirectory(Str::lower($path));
+            if ($result_media && $result_thumb)
             {
                 $this->status =  Str::upper(Str::snake($this->type.'CreateFolderSuccess'));;
                 $this->response = null;
@@ -164,10 +166,11 @@ class MediaAdminService extends MediaService
                 $extension      = $file->guessExtension();
                 $full_name      = $file->getClientOriginalName(); // a.jpg
                 $actual_name    = $final_name = Str::substr($full_name, 0, strrpos($full_name,'.'));
+                $input->dir =  strlen($input->dir) == 1 ? '' :  $input->dir;
 
                 $path           = $input->dir. '/'. $full_name;
                 $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type);
-                $thumb_name     = substr($thumb_path, 0, -1) . $input->dir . $final_name . '.' . $extension;
+                $thumb_name     = substr($thumb_path, 0, -1) . $input->dir . '/'.$final_name . '.' . $extension;
 
                 $counter = 0;
                 while ($this->media_storage->exists($path))
