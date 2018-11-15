@@ -40,6 +40,7 @@ class MediaServiceProvider extends ServiceProvider
         $this->app['config']->set('filesystems',$filesystems);
 
         $media_public_path = MediaHelper::getDiskPath('media-public');
+
         $this->publishes([__DIR__.'/resources' => $media_public_path], 'media-configs');
 
         $this->app->bind(

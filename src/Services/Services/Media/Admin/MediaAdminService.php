@@ -39,8 +39,8 @@ class MediaAdminService extends MediaService
         }
         else
         {
-            $result_media   = $this->media_storage->makeDirectory(Str::lower($path));
-            $result_thumb   = $this->thumb_storage->makeDirectory(Str::lower($path));
+            $result_media   = $this->media_storage->makeDirectory($path);
+            $result_thumb   = $this->thumb_storage->makeDirectory($path);
             if ($result_media && $result_thumb)
             {
                 $this->status =  Str::upper(Str::snake($this->type.'CreateFolderSuccess'));;
@@ -56,11 +56,52 @@ class MediaAdminService extends MediaService
     }
 
 
+    public function makeTreeDirectories($all)
+    {
+        $data = [['name'=> '', 'path'=> '/', 'children' => []]];
+        foreach ($all as $directory)
+        {
+            $data = self::buildTree($data, $directory, '');
+        }
+
+        return $data;
+    }
+
+    public function buildTree($tree, $node, $delete)
+    {
+        $copy = [];
+        $copy['name'] = $node['name'];
+        $copy['path'] = $node['path'];
+        $copy['children'] = $node['children'];
+        $node = $copy;
+
+        foreach ($tree as $index => $parent)
+        {
+            $temp_parent_path   = preg_replace('/'.preg_quote($delete, '/'). '/', '', $parent['path'], 1);
+            $temp_node_path     = preg_replace('/'.preg_quote($delete, '/'). '/', '', $node['path'],1);
+            $temp_parent        = explode('/', $temp_parent_path);
+            $temp_node          = explode('/', $temp_node_path);
+
+            if($temp_parent[0] == $temp_node[0])
+            {
+                $delete = $delete . $parent['name'] .'/';
+                $tree[$index]['children'] = self::buildTree($parent['children'], $node, $delete);
+                return $tree;
+            }
+        }
+        $tree[] = $node;
+
+        return $tree;
+    }
+
+
+
     public function getAllFolders()
     {
-        $all = $this->media_storage->allDirectories();
-
-        $data = MediaHelper::appendMeta($all, 'folder', '/', $this->media_storage);
+        $all    = $this->media_storage->allDirectories();
+        $all    = MediaHelper::filterDirectories($all);
+        $all   = MediaHelper::appendMeta($all, 'folder', '/', $this->media_storage);
+        $data   = $this->makeTreeDirectories($all);
 
         $this->status =  Str::upper(Str::snake($this->type.'GetAllFoldersSuccess'));;
         $this->response = $data;
@@ -133,16 +174,32 @@ class MediaAdminService extends MediaService
 
     public function remove(Collection $input)
     {
-        if ($input->type == 'Folder')
+        $dir = MediaHelper::getDirPath($input->dir);
+
+        foreach ($input->names as $name)
         {
-            $result = $this->media_storage->deleteDirectory($input->path);
-        }
-        else
-        {
-            $result = $this->media_storage->delete($input->path);
+            $path = $dir . $name;
+            if ($name == '')    //folder
+            {
+                $delete_media = $this->media_storage->deleteDirectory($dir);
+                $delete_thumb = $this->thumb_storage->deleteDirectory($dir);
+            }
+            else                //file
+            {
+                if ( MediaHelper::isImage($name))
+                {
+                    $delete_thumb = $this->thumb_storage->delete($path);
+                }
+                else
+                {
+                    $delete_thumb = true;
+                }
+
+                $delete_media = $this->media_storage->delete($path);
+            }
         }
 
-        if ($result)
+        if ($delete_thumb && $delete_media)
         {
             $this->status   = Str::upper(Str::snake($this->type.'DeleteSuccess'));
             $this->response = null;
@@ -155,6 +212,43 @@ class MediaAdminService extends MediaService
     }
 
 
+    public function rename(Collection $input)
+    {
+        if($this->exist($input))
+        {
+            if ($input->type == 'folder')
+            {
+                $old = $input->dir . '/' . $input->name;
+                $new = $input->dir . '/' . $input->rename;
+            }
+            else
+            {
+                $old = $input->dir . $input->name;
+                $new = $input->dir . $input->rename;
+            }
+
+            if ($this->moveStorage($old, $new))
+            {
+                $this->status = Str::upper(Str::snake($this->type.'RenameSuccess'));
+                $this->response = null;
+                return true;
+            }
+            else
+            {
+                $this->status = Str::upper(Str::snake($this->type.'RenameFail'));
+                $this->response = null;
+                return false;
+            }
+        }
+        else
+        {
+            $this->status = Str::upper(Str::snake('FileNotFound'));
+            $this->response = null;
+            return false;
+        }
+    }
+
+
     public function upload(Collection $input)
     {
         $complete = true;
@@ -163,24 +257,29 @@ class MediaAdminService extends MediaService
         {
             if (!$file->getError())
             {
-                $extension      = $file->guessExtension();
+                $extension      = $file->extension();
                 $full_name      = $file->getClientOriginalName(); // a.jpg
-                $actual_name    = $final_name = Str::substr($full_name, 0, strrpos($full_name,'.'));
-                $input->dir =  strlen($input->dir) == 1 ? '' :  $input->dir;
 
-                $path           = $input->dir. '/'. $full_name;
-                $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type);
-                $thumb_name     = substr($thumb_path, 0, -1) . $input->dir . '/'.$final_name . '.' . $extension;
+                $dir            = MediaHelper::getDirPath($input->dir);
+                $name           = MediaHelper::getFileName($full_name);
+                $file_type      = MediaHelper::getFileExtension($full_name);
+                $path           = $dir . $name . '.' . $file_type;
 
                 $counter = 0;
+                $final_name = $name;
                 while ($this->media_storage->exists($path))
                 {
-                    $final_name = $actual_name . '(' . ++$counter . ')';
-                    $path = $input->dir. '/'. $final_name  . '.' . $extension;
+                    $final_name = $name . '(' . ++$counter . ')';
+                    $path       = $dir . $final_name . '.' . $file_type;
                 }
 
-                $result = Image::make($file)->fit(200)->save($thumb_name);
-                if ( $result && !$file->storeAs($input->dir, $final_name . '.' . $extension, 'media-public'))
+                $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type).$path;
+                if (in_array($extension, config('media.extension.image')))
+                {
+                    $result = Image::make($file)->fit(200)->save($thumb_path);
+                }
+
+                if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, 'media-public'))
                 {
                     $complete = false;
                     break;

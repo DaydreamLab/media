@@ -9,6 +9,7 @@ use DaydreamLab\Media\Requests\Media\Admin\MediaAdminCreateFolderPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminDeletePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFolderItemsPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminMovePost;
+use DaydreamLab\Media\Requests\Media\Admin\MediaAdminRenamePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminUploadPost;
 use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
 
@@ -61,9 +62,11 @@ class MediaAdminController extends BaseController
     }
 
 
-    public function rename()
+    public function rename(MediaAdminRenamePost $request)
     {
+        $this->service->rename($request->rulesInput());
 
+        return ResponseHelper::response($this->service->status, $this->service->response);
     }
 
 

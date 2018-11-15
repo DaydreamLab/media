@@ -135,5 +135,32 @@ return [
         'code'      => 200,
         'message'   => 'Media front get all folders success'
     ],
+
+
+    // Rename
+    'MEDIA_RENAME_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Media rename success'
+    ],
+    'MEDIA_ADMIN_RENAME_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Media admin rename success'
+    ],
+    'MEDIA_FRONT_RENAME_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Media front rename success'
+    ],
+    'MEDIA_RENAME_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Media rename fail'
+    ],
+    'MEDIA_ADMIN_RENAME_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Media admin rename fail'
+    ],
+    'MEDIA_FRONT_RENAME_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Media front rename fail'
+    ],
     
 ];

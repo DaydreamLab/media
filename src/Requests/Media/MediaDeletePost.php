@@ -24,8 +24,9 @@ class MediaDeletePost extends AdminRequest
     public function rules()
     {
         return [
-            'path'  => 'required|string',
-            'type'  => 'required|string',
+            'dir'       => 'required|string',
+            'names'     => 'required|array',
+            'names.*'   => 'nullable|string'
         ];
     }
 }

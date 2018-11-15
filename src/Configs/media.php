@@ -2,8 +2,6 @@
 
 return [
 
-    'folder_thumb' => 'folder.jpg',
-
     'disks' => [
 
         'media-public'  => [
@@ -27,5 +25,31 @@ return [
             'visibility'=> 'private',
         ],
     ],
+
+
+    'mime'  => [
+        'image' => [
+            'image/png',
+            'image/jpeg'
+        ],
+        'application'   => [
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/pdf'
+        ],
+        'text'  => [
+            'text/plain'
+        ]
+    ],
+
+    'extension' => [
+        'image'         => ['png', 'jpg', 'jpeg'],
+        'application'   => ['doc', 'docx', 'csv', 'xls', 'xlsx'],
+        'text'          => ['txt', 'json', 'csv']
+    ]
 
 ];

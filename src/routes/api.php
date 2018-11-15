@@ -23,6 +23,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'api'], function () {
             Route::post('folder/create', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@createFolder');
             Route::get('folder/all', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getAllFolders');
             Route::post('remove', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@remove');
+            Route::post('rename', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@rename');
 
         });
     });

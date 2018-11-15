@@ -4,7 +4,9 @@ namespace DaydreamLab\Media\Services\Media;
 
 use DaydreamLab\Media\Repositories\Media\MediaRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+
 
 class MediaService extends BaseService
 {
@@ -26,5 +28,25 @@ class MediaService extends BaseService
     }
 
 
+    public function exist(Collection $input)
+    {
+        return $this->media_storage->exists($input->dir . '/' . $input->name) &&
+            $this->thumb_storage->exists($input->dir . '/' . $input->name) ?: false;
+    }
+
+
+    public function deleteStorage($old, $new)
+    {
+        return $this->media_storage->move($old, $new) &&
+        $this->thumb_storage->move($old, $new) ?: false;
+    }
+
+
+
+    public function moveStorage($old, $new)
+    {
+        return $this->media_storage->move($old, $new) &&
+                $this->thumb_storage->move($old, $new) ?: false;
+    }
 
 }
