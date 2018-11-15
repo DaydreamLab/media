@@ -39,8 +39,8 @@ class MediaAdminService extends MediaService
         }
         else
         {
-            $result_media   = $this->media_storage->makeDirectory($path);
-            $result_thumb   = $this->thumb_storage->makeDirectory($path);
+            $result_media   = $this->media_storage->makeDirectory($path, intval( '0755', 8 ));
+            $result_thumb   = $this->thumb_storage->makeDirectory($path, intval( '0755', 8 ));
             if ($result_media && $result_thumb)
             {
                 $this->status =  Str::upper(Str::snake($this->type.'CreateFolderSuccess'));;
@@ -179,12 +179,12 @@ class MediaAdminService extends MediaService
         foreach ($input->names as $name)
         {
             $path = $dir . $name;
-            if ($name == '')    //folder
+            if (is_dir($this->media_path.$path))
             {
-                $delete_media = $this->media_storage->deleteDirectory($dir);
-                $delete_thumb = $this->thumb_storage->deleteDirectory($dir);
+                $delete_media = $this->media_storage->deleteDirectory($path);
+                $delete_thumb = $this->thumb_storage->deleteDirectory($path);
             }
-            else                //file
+            else
             {
                 if ( MediaHelper::isImage($name))
                 {
@@ -274,6 +274,7 @@ class MediaAdminService extends MediaService
                 }
 
                 $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type).$path;
+
                 if (in_array($extension, config('media.extension.image')))
                 {
                     $result = Image::make($file)->fit(200)->save($thumb_path);

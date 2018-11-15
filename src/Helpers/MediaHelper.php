@@ -68,10 +68,7 @@ class MediaHelper
     public static function getDirPath($path)
     {
         $dir = substr($path, 1);
-        if (strlen($dir) > 1)
-        {
-            $dir = $dir . '/';
-        }
+        $dir = $dir . '/';
 
         return $dir;
     }

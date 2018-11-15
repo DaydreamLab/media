@@ -20,10 +20,16 @@ class MediaService extends BaseService
 
     protected $thumb_storage_type = 'media-thumb';
 
+    protected $media_path = null;
+
+    protected $thumb_path = null;
+
     public function __construct(MediaRepository $repo)
     {
         $this->media_storage = Storage::disk($this->media_storage_type);
         $this->thumb_storage = Storage::disk($this->thumb_storage_type);
+        $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix();
+        $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix();
         parent::__construct($repo);
     }
 
