@@ -123,45 +123,4 @@ class MediaHelper
         return in_array( self::getFileExtension($name), config('media.extension.image')) ? true : false;
     }
 
-
-    public static function makeTreeDirectories($all)
-    {
-        $data = [['name'=> '/', 'path'=> '/', 'children' => []]];
-        foreach ($all as $directory)
-        {
-            $data = self::buildTree($data, $directory, '');
-
-        }
-        Helper::show($data);
-        exit();
-    }
-
-
-    public static function buildTree($tree, $node, $delete)
-    {
-
-        Helper::show($tree, $node, $delete);
-        foreach ($tree as $index => $parent)
-        {
-
-            $temp_item = explode('/', $parent['path']);
-            $temp_node = explode('/', $node['path']);
-
-            Helper::show($temp_item, $temp_node);
-
-            if($temp_item[0] == $temp_node[0])
-            {
-                $delete = $delete.'/'.$temp_item[1];
-                //Helper::show($delete);
-                $tree[$index]['children'] = self::buildTree($parent['children'], $node, $delete);
-                return $tree;
-            }
-        }
-        $tree[0] = $node;
-
-
-        return $tree;
-    }
-
-
 }

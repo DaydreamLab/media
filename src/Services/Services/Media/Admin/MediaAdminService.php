@@ -58,7 +58,7 @@ class MediaAdminService extends MediaService
 
     public function makeTreeDirectories($all)
     {
-        $data = [['name'=> '', 'path'=> '/', 'children' => []]];
+        $data = [['name'=> '/', 'path'=> '/', 'children' => []]];
         foreach ($all as $directory)
         {
             $data = self::buildTree($data, $directory, '');
@@ -100,7 +100,7 @@ class MediaAdminService extends MediaService
     {
         $all    = $this->media_storage->allDirectories();
         $all    = MediaHelper::filterDirectories($all);
-        $all   = MediaHelper::appendMeta($all, 'folder', '/', $this->media_storage);
+        $all    = MediaHelper::appendMeta($all, 'folder', '/', $this->media_storage);
         $data   = $this->makeTreeDirectories($all);
 
         $this->status =  Str::upper(Str::snake($this->type.'GetAllFoldersSuccess'));;
@@ -174,11 +174,10 @@ class MediaAdminService extends MediaService
 
     public function remove(Collection $input)
     {
-        $dir = MediaHelper::getDirPath($input->dir);
 
-        foreach ($input->names as $name)
+        foreach ($input->dirs as $path)
         {
-            $path = $dir . $name;
+            $path = substr($path, 1);
             if (is_dir($this->media_path.$path))
             {
                 $delete_media = $this->media_storage->deleteDirectory($path);
@@ -186,7 +185,8 @@ class MediaAdminService extends MediaService
             }
             else
             {
-                if ( MediaHelper::isImage($name))
+                $temp = explode('/', $path);
+                if ( MediaHelper::isImage(end($temp)))
                 {
                     $delete_thumb = $this->thumb_storage->delete($path);
                 }
