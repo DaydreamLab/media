@@ -174,8 +174,7 @@ class MediaAdminService extends MediaService
 
     public function remove(Collection $input)
     {
-
-        foreach ($input->dirs as $path)
+        foreach ($input->paths as $path)
         {
             $path = substr($path, 1);
             if (is_dir($this->media_path.$path))
