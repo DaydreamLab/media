@@ -59,11 +59,17 @@ class MediaAdminService extends MediaService
     public function makeTreeDirectories($all)
     {
         $data = [['name'=> '/', 'path'=> '/', 'children' => []]];
+        $format_data = [['name'=> '/', 'path'=> '/', 'children' => []]];
         foreach ($all as $directory)
         {
             $data = self::buildTree($data, $directory, '');
         }
-        return $data;
+
+        unset($data[0]);
+        foreach( $data as $item ){
+            $format_data[0]['children'][] = $item;
+        }
+        return $format_data;
     }
 
     public function buildTree($tree, $node, $delete)
