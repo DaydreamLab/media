@@ -63,7 +63,6 @@ class MediaAdminService extends MediaService
         {
             $data = self::buildTree($data, $directory, '');
         }
-
         return $data;
     }
 
@@ -82,13 +81,14 @@ class MediaAdminService extends MediaService
             $temp_parent        = explode('/', $temp_parent_path);
             $temp_node          = explode('/', $temp_node_path);
 
-            if($temp_parent[0] == $temp_node[0])
+            if($temp_parent[1] == $temp_node[1])
             {
                 $delete = $delete . $parent['name'] .'/';
                 $tree[$index]['children'] = self::buildTree($parent['children'], $node, $delete);
                 return $tree;
             }
         }
+
         $tree[] = $node;
 
         return $tree;
