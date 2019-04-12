@@ -257,6 +257,7 @@ class MediaAdminService extends MediaService
 
     public function upload(Collection $input)
     {
+        Helper::show($input);
         $complete = true;
 
         foreach ($input->files as $file)
