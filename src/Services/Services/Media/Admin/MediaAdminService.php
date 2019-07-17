@@ -179,7 +179,7 @@ class MediaAdminService extends MediaService
     }
 
 
-    public function remove(Collection $input)
+    public function remove(Collection $input, $diff = false)
     {
         foreach ($input->paths as $path)
         {
