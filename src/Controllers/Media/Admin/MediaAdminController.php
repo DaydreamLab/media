@@ -19,6 +19,7 @@ class MediaAdminController extends BaseController
     public function __construct(MediaAdminService $service)
     {
         parent::__construct($service);
+        $this->service = $service;
     }
 
 
