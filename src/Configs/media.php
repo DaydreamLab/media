@@ -11,10 +11,24 @@ return [
             'visibility'=> 'public',
         ],
 
+        'media-public-merchant'  => [
+            'driver'    => 'local',
+            'root'      => storage_path('app/public/media/merchant'),
+            'url'       => env('APP_URL').'/storage/media/merchant',
+            'visibility'=> 'public',
+        ],
+
         'media-thumb'   => [
             'driver'    => 'local',
             'root'      => storage_path('app/public/media/thumbs'),
             'url'       => env('APP_URL').'/storage/media/thumbs',
+            'visibility'=> 'public',
+        ],
+
+        'media-thumb-merchant'   => [
+            'driver'    => 'local',
+            'root'      => storage_path('app/public/media/thumbs/merchant'),
+            'url'       => env('APP_URL').'/storage/media/thumbs/merchant',
             'visibility'=> 'public',
         ],
 
@@ -50,6 +64,8 @@ return [
         'image'         => ['png', 'jpg', 'jpeg'],
         'application'   => ['doc', 'docx', 'csv', 'xls', 'xlsx'],
         'text'          => ['txt', 'json', 'csv']
-    ]
+    ],
+
+    'dddream-merchant-mode' => 1
 
 ];

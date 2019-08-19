@@ -10,7 +10,8 @@ use DaydreamLab\Media\Services\Media\MediaService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
 
 class MediaAdminService extends MediaService
 {
@@ -20,16 +21,23 @@ class MediaAdminService extends MediaService
 
     protected $order_by = 'name';
 
+    protected $userMerchantID = null;
+
 
     public function __construct(MediaAdminRepository $repo)
     {
         parent::__construct($repo);
+        if( config('media.dddream-merchant-mode') ){
+            $this->userMerchantID = Auth::guard('api')->user()->merchants->first()->id;
+        }
     }
 
 
     public function createFolder(Collection $input)
     {
+        $input->dir = $this->userMerchantID.'/'.$input->dir;
         $path = $input->dir . '/' . $input->name;
+
         if ($this->media_storage->exists($input->dir . '/' . $input->name) ||
             $this->thumb_storage->exists($input->dir . '/' . $input->name) )
         {
@@ -104,7 +112,7 @@ class MediaAdminService extends MediaService
 
     public function getAllFolders()
     {
-        $all    = $this->media_storage->allDirectories();
+        $all    = $this->media_storage->allDirectories($this->userMerchantID);
         $all    = MediaHelper::filterDirectories($all);
         $all    = MediaHelper::appendMeta($all, 'folder', '/', $this->media_storage);
         $data   = $this->makeTreeDirectories($all);
