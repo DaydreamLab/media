@@ -21,21 +21,14 @@ class MediaAdminService extends MediaService
 
     protected $order_by = 'name';
 
-    protected $userMerchantID = null;
-
-
     public function __construct(MediaAdminRepository $repo)
     {
         parent::__construct($repo);
-        if( config('media.dddream-merchant-mode') ){
-            $this->userMerchantID = Auth::guard('api')->user()->merchants->first()->id;
-        }
     }
-
 
     public function createFolder(Collection $input)
     {
-        $input->dir = $this->userMerchantID.'/'.$input->dir;
+        $input->dir = $this->userMerchantID.$input->dir;
         $path = $input->dir . '/' . $input->name;
 
         if ($this->media_storage->exists($input->dir . '/' . $input->name) ||
@@ -68,6 +61,7 @@ class MediaAdminService extends MediaService
     {
         $data = [['name'=> '/', 'path'=> '/', 'children' => []]];
         $format_data = [['name'=> '/', 'path'=> '/', 'children' => []]];
+
         foreach ($all as $directory)
         {
             $data = self::buildTree($data, $directory, '');
@@ -112,12 +106,17 @@ class MediaAdminService extends MediaService
 
     public function getAllFolders()
     {
+        $dir = '/'.$this->userMerchantID;
         $all    = $this->media_storage->allDirectories($this->userMerchantID);
         $all    = MediaHelper::filterDirectories($all);
-        $all    = MediaHelper::appendMeta($all, 'folder', '/', $this->media_storage);
-        $data   = $this->makeTreeDirectories($all);
+        $all    = MediaHelper::appendMeta($all, 'folder', $dir, $this->media_storage);
 
-        $this->status =  Str::upper(Str::snake($this->type.'GetAllFoldersSuccess'));;
+        //Helper::show($all);
+
+        $data   = $this->makeTreeDirectories($all);
+        //exit();
+
+        $this->status =  Str::upper(Str::snake($this->type.'GetAllFoldersSuccess'));
         $this->response = $data;
 
         return $data;
@@ -143,6 +142,7 @@ class MediaAdminService extends MediaService
 
     public function getFiles(Collection $input)
     {
+        $input->dir = $this->userMerchantID.$input->dir;
         $files = $this->media_storage->files($input->dir);
 
         $data = MediaHelper::appendMeta($files, 'files', $input->dir, $this->media_storage);
@@ -162,7 +162,7 @@ class MediaAdminService extends MediaService
         $files   = $this->getFiles($input);
         $all     = $folders->merge($files);
 
-        $this->status =  Str::upper(Str::snake($this->type.'GetFolderItemsSuccess'));;
+        $this->status =  Str::upper(Str::snake($this->type.'GetFolderItemsSuccess'));
         $this->response = $all;
 
         return $all;
@@ -171,8 +171,21 @@ class MediaAdminService extends MediaService
 
     public function move(Collection $input)
     {
-        $result = $this->media_storage->move($input->dir . $input->name, $input->target . '/'. $input->name);
-        if ($result)
+        $input->dir = $this->userMerchantID.$input->dir;
+        $input->target = $this->userMerchantID.$input->target;
+
+        $result = $this->media_storage->move($input->dir . '/' . $input->name, $input->target . '/' . $input->name);
+
+        if ( MediaHelper::isImage($input->name))
+        {
+            $thumb_result = $this->thumb_storage->move($input->dir . '/' . $input->name, $input->target . '/' . $input->name);
+        }
+        else
+        {
+            $thumb_result = true;
+        }
+
+        if ($result && $thumb_result)
         {
             $this->status   = Str::upper(Str::snake($this->type.'MoveSuccess'));
             $this->response = null;
@@ -192,25 +205,38 @@ class MediaAdminService extends MediaService
         foreach ($input->paths as $path)
         {
             $path = substr($path, 1);
+            $comebinePath = $path;
+
+            if( $this->userMerchantID != null ){
+                $comebinePath = $this->userMerchantID.'/'.$path;
+            }
+
+
             if (is_dir($this->media_path.$path))
             {
-                $delete_media = $this->media_storage->deleteDirectory($path);
-                $delete_thumb = $this->thumb_storage->deleteDirectory($path);
+                try{
+                    $delete_media = $this->media_storage->deleteDirectory($comebinePath);
+                    $delete_thumb = $this->thumb_storage->deleteDirectory($comebinePath);
+                }catch (\Exception $e) {
+                    Helper::show($e->getMessage());
+                }
+
             }
             else
             {
                 $temp = explode('/', $path);
                 if ( MediaHelper::isImage(end($temp)))
                 {
-                    $delete_thumb = $this->thumb_storage->delete($path);
+                    $delete_thumb = $this->thumb_storage->delete($comebinePath);
                 }
                 else
                 {
                     $delete_thumb = true;
                 }
 
-                $delete_media = $this->media_storage->delete($path);
+                $delete_media = $this->media_storage->delete($comebinePath);
             }
+
         }
 
         if ($delete_thumb && $delete_media)
@@ -228,17 +254,33 @@ class MediaAdminService extends MediaService
 
     public function rename(Collection $input)
     {
-        if($this->exist($input))
-        {
+        $input->dir = $this->userMerchantID.$input->dir;
+//        Helper::show($input->dir);
+//        exit();
+
             if ($input->type == 'folder')
             {
-                $old = $input->dir . '/' . $input->name;
-                $new = $input->dir . '/' . $input->rename;
+                $old = $input->dir;
+                $newPath = explode('/', $input->dir);
+                unset($newPath[count($newPath) - 1]);
+                $new = '';
+                foreach ( $newPath as $path ){
+                    $new.= $path;
+                }
+                $new = $new . '/' . $input->rename;
             }
             else
             {
-                $old = $input->dir . $input->name;
-                $new = $input->dir . $input->rename;
+                if($this->exist($input))
+                {
+                    $old = $input->dir . '/' . $input->name;
+                    $new = $input->dir . '/' . $input->rename;
+                }else
+                {
+                    $this->status = Str::upper(Str::snake('FileNotFound'));
+                    $this->response = null;
+                    return false;
+                }
             }
 
             if ($this->moveStorage($old, $new))
@@ -253,18 +295,13 @@ class MediaAdminService extends MediaService
                 $this->response = null;
                 return false;
             }
-        }
-        else
-        {
-            $this->status = Str::upper(Str::snake('FileNotFound'));
-            $this->response = null;
-            return false;
-        }
-    }
 
+
+    }
 
     public function upload(Collection $input)
     {
+        $input->dir = $this->userMerchantID.$input->dir;
         $complete = true;
 
         foreach ($input->files as $file)
@@ -273,7 +310,6 @@ class MediaAdminService extends MediaService
             {
                 $extension      = $file->extension();
                 $full_name      = $file->getClientOriginalName(); // a.jpg
-
                 $dir            = MediaHelper::getDirPath($input->dir);
                 $name           = MediaHelper::getFileName($full_name);
                 $file_type      = MediaHelper::getFileExtension($full_name);
@@ -294,7 +330,7 @@ class MediaAdminService extends MediaService
                     $result = Image::make($file)->fit(200)->save($thumb_path);
                 }
 
-                if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, 'media-public'))
+                if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, $this->media_storage_type))
                 {
                     $complete = false;
                     break;

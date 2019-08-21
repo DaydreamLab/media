@@ -162,5 +162,31 @@ return [
         'code'      => 500,
         'message'   => 'Media front rename fail'
     ],
+
+    //MOVE
+    'MEDIA_MOVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Media move success'
+    ],
+    'MEDIA_ADMIN_MOVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Media admin move success'
+    ],
+    'MEDIA_FRONT_MOVE_SUCCESS' => [
+        'code'      => 200,
+        'message'   => 'Media front move success'
+    ],
+    'MEDIA_MOVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Media move fail'
+    ],
+    'MEDIA_ADMIN_MOVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Media admin move fail'
+    ],
+    'MEDIA_FRONT_MOVE_FAIL' => [
+        'code'      => 500,
+        'message'   => 'Media front move fail'
+    ],
     
 ];

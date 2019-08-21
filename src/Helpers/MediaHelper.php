@@ -19,16 +19,30 @@ class MediaHelper
         {
             $folders = explode('/',$item);
             $temp['name'] = $folders[count($folders)-1];
-            $temp['path'] = '/'.$item;
+
             if ($type == 'folder')
             {
+                $temp['path'] = '';
+                //if config merchant mode = 1
+                if( mb_strlen( $folders[0], "utf-8") == 20 ){
+                    unset($folders[0]);
+                    foreach ($folders as $itemPath){
+                        $temp['path'].= '/'.$itemPath;
+                    }
+                }else{
+                    //if config merchant mode = 0
+                    $temp['path'] = '/'.$item;
+                }
+
                 $temp['type']   = 'Folder';
                 $temp['size']   = null;
                 $temp['url']    = null;
                 $temp['thumb']  = env('APP_URL') . Storage::url('media/thumbs/') . 'icons/folder.png';
+
             }
             else
             {
+                $temp['path'] = '/'.$item;
                 $temp['type']       = $storage->mimeType($item);
                 $temp['size']       = round($storage->size($item)/1024) . ' KB';
                 $dot_pos            = strrpos($temp['name'],'.');
@@ -67,7 +81,11 @@ class MediaHelper
 
     public static function getDirPath($path)
     {
-        $dir = substr($path, 1);
+        if(mb_strpos($path, '/', 0, 'UTF8') == 0){
+            $dir = substr($path, 1);
+        }else{
+            $dir = substr($path, 0);
+        }
         $dir = $dir . '/';
 
         return $dir;
@@ -76,15 +94,17 @@ class MediaHelper
 
     public static function getFileExtension($name)
     {
-        $dot_pos = strrpos($name,'.');
+        //$dot_pos = strpos($name,'.');
+        $dot_pos = mb_strrpos($name, '.', 'UTF8');
 
-        return Str::substr($name,  $dot_pos + 1);
+        return Str::substr($name,  $dot_pos+1);
     }
 
 
     public static function getFileName($name)
     {
-        $dot_pos = strrpos($name,'.');
+        //$dot_pos = strrpos($name,'.');
+        $dot_pos = mb_strrpos($name, '.', 'UTF8');
 
         return Str::substr($name, 0, $dot_pos);
     }
@@ -96,7 +116,13 @@ class MediaHelper
 
         if (in_array($mime, config('media.mime.image')))
         {
-            return $thumb_path . substr($dir, 1) . '/' . $name;
+            if(mb_strpos($dir, '/', 0, 'UTF8') == 0){
+                $dir = substr($dir, 1);
+            }else{
+                $dir = substr($dir, 0);
+            }
+
+            return $thumb_path . $dir . '/' . $name;
         }
         elseif (in_array($mime, config('media.mime.application')))
         {

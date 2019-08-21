@@ -25,12 +25,14 @@ class MediaService extends BaseService
 
     protected $thumb_path = null;
 
+    protected $userMerchantID = null;
+
     public function __construct(MediaRepository $repo)
     {
         if( config('media.dddream-merchant-mode') ){
             $this->media_storage_type = 'media-public-merchant';
             $this->thumb_storage_type = 'media-thumb-merchant';
-            $userMerchantID = Auth::guard('api')->user()->merchants->first()->id;
+            $this->userMerchantID = Auth::guard('api')->user()->merchants->first()->id;
         }
 
         $this->media_storage = Storage::disk($this->media_storage_type);
@@ -40,14 +42,14 @@ class MediaService extends BaseService
 
         if( config('media.dddream-merchant-mode') ){
             //Helper::show(Auth::guard('api')->user()->merchants->first()->id);
-            if( !$this->media_storage->exists($userMerchantID) &&
-                !$this->thumb_storage->exists($userMerchantID) ){
+            if( !$this->media_storage->exists($this->userMerchantID) &&
+                !$this->thumb_storage->exists($this->userMerchantID) ){
                 //利用merchantID建構Dir
-                $result_media   = $this->media_storage->makeDirectory($userMerchantID, intval( '0755', 8 ));
-                $result_thumb   = $this->thumb_storage->makeDirectory($userMerchantID, intval( '0755', 8 ));
+                $result_media   = $this->media_storage->makeDirectory($this->userMerchantID, intval( '0755', 8 ));
+                $result_thumb   = $this->thumb_storage->makeDirectory($this->userMerchantID, intval( '0755', 8 ));
             }
-            $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix().'/'.$userMerchantID;
-            $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix().'/'.$userMerchantID;
+            $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix().$this->userMerchantID.'/';
+            $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix().$this->userMerchantID.'/';
         }
         parent::__construct($repo);
     }
