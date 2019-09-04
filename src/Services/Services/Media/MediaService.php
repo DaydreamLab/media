@@ -8,6 +8,9 @@ use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Str;
+use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 
 class MediaService extends BaseService
 {
@@ -32,7 +35,16 @@ class MediaService extends BaseService
         if( config('media.dddream-merchant-mode') ){
             $this->media_storage_type = 'media-public-merchant';
             $this->thumb_storage_type = 'media-thumb-merchant';
-            $this->userMerchantID = Auth::guard('api')->user()->merchants->first()->id;
+            $userMerchant = Auth::guard('api')->user()->merchants->first();
+            if( $userMerchant ){
+                $this->userMerchantID = $userMerchant->id;
+            }else{
+                throw new HttpResponseException(
+                    ResponseHelper::genResponse(
+                        Str::upper(Str::snake('MediaThisAdminUserNotHaveMerchant'))
+                    )
+                );
+            }
         }
 
         $this->media_storage = Storage::disk($this->media_storage_type);

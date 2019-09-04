@@ -2,6 +2,11 @@
 
 return [
 
+    //
+    'THIS_ADMIN_USER_NOT_HAVE_MERCHANT' => [
+        'code'      => 500,
+        'message'   => 'THIS_ADMIN_USER_NOT_HAVE_MERCHANT'
+    ],
     // Upload
     'MEDIA_UPLOAD_SUCCESS' => [
         'code'      => 200,
