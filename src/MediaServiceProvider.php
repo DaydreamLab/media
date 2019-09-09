@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\Media;
 
-
 use DaydreamLab\JJAJ\Exceptions\BaseExceptionHandler;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Helpers\MediaHelper;

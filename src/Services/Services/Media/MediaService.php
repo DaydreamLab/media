@@ -26,6 +26,8 @@ class MediaService extends BaseService
 
     protected $media_path = null;
 
+    protected $media_link_base = '/storage/media';
+
     protected $thumb_path = null;
 
     protected $userMerchantID = null;
@@ -35,6 +37,8 @@ class MediaService extends BaseService
         if( config('media.dddream-merchant-mode') ){
             $this->media_storage_type = 'media-public-merchant';
             $this->thumb_storage_type = 'media-thumb-merchant';
+            $this->media_link_base .= '/merchant';
+
             $userMerchant = Auth::guard('api')->user()->merchants->first();
             if( $userMerchant ){
                 $this->userMerchantID = $userMerchant->id;

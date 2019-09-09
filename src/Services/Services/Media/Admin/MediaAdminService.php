@@ -111,10 +111,7 @@ class MediaAdminService extends MediaService
         $all    = MediaHelper::filterDirectories($all);
         $all    = MediaHelper::appendMeta($all, 'folder', $dir, $this->media_storage);
 
-        //Helper::show($all);
-
         $data   = $this->makeTreeDirectories($all);
-        //exit();
 
         $this->status =  Str::upper(Str::snake($this->type.'GetAllFoldersSuccess'));
         $this->response = $data;
@@ -125,7 +122,7 @@ class MediaAdminService extends MediaService
 
     public function getFolders(Collection $input)
     {
-        $directories = $this->media_storage->directories($input->dir);
+        $directories = $this->media_storage->directories($this->media_path);
         $directories = MediaHelper::filterDirectories($directories);
 
         $data = MediaHelper::appendMeta($directories, 'folder', $input->dir, $this->media_storage);
@@ -301,9 +298,10 @@ class MediaAdminService extends MediaService
 
     public function upload(Collection $input)
     {
-        $input->dir = $this->userMerchantID.$input->dir;
+        $input->dir = $this->userMerchantID ? '/' . $this->userMerchantID.$input->dir : $input->dir ;
         $complete = true;
 
+        $link_path = $this->media_link_base . $input->dir;
         foreach ($input->files as $file)
         {
             if (!$file->getError())
@@ -330,6 +328,7 @@ class MediaAdminService extends MediaService
                     $result = Image::make($file)->fit(200)->save($thumb_path);
                 }
 
+                $link_path .= $final_name . '.' . $file_type;
                 if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, $this->media_storage_type))
                 {
                     $complete = false;
@@ -340,12 +339,12 @@ class MediaAdminService extends MediaService
 
         if ($complete)
         {
-            $this->status   =  Str::upper(Str::snake($this->type.'UploadSuccess'));
-            $this->response = null;
+            $this->status   = Str::upper(Str::snake($this->type.'UploadSuccess'));
+            $this->response = $link_path;
         }
         else
         {
-            $this->status   =  Str::upper(Str::snake($this->type.'UploadFail'));
+            $this->status   = Str::upper(Str::snake($this->type.'UploadFail'));
             $this->response = null;
         }
 
