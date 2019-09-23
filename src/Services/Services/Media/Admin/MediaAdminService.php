@@ -29,6 +29,7 @@ class MediaAdminService extends MediaService
     public function createFolder(Collection $input)
     {
         $input->dir = $this->userMerchantID.$input->dir;
+        $input->name = str_replace(' ', '', $input->name);
         $path = $input->dir . '/' . $input->name;
 
         if ($this->media_storage->exists($input->dir . '/' . $input->name) ||
@@ -309,7 +310,7 @@ class MediaAdminService extends MediaService
                 $extension      = $file->extension();
                 $full_name      = $file->getClientOriginalName(); // a.jpg
                 $dir            = MediaHelper::getDirPath($input->dir);
-                $name           = MediaHelper::getFileName($full_name);
+                $name           = str_replace(' ', '', MediaHelper::getFileName($full_name));
                 $file_type      = MediaHelper::getFileExtension($full_name);
                 $path           = $dir . $name . '.' . $file_type;
 
