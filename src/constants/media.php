@@ -3,9 +3,9 @@
 return [
 
     //
-    'THIS_ADMIN_USER_NOT_HAVE_MERCHANT' => [
+    'MEDIA_THIS_ADMIN_USER_NOT_HAVE_MERCHANT' => [
         'code'      => 500,
-        'message'   => 'THIS_ADMIN_USER_NOT_HAVE_MERCHANT'
+        'message'   => 'Media this admin user not have merchant'
     ],
     // Upload
     'MEDIA_UPLOAD_SUCCESS' => [
