@@ -66,6 +66,6 @@ return [
         'text'          => ['txt', 'json', 'csv']
     ],
 
-    'dddream-merchant-mode' => 1
+    'dddream-merchant-mode' => 0
 
 ];
