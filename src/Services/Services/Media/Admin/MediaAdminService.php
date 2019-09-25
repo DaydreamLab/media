@@ -123,7 +123,7 @@ class MediaAdminService extends MediaService
 
     public function getFolders(Collection $input)
     {
-        $directories = $this->media_storage->directories($this->media_path);
+        $directories = $this->media_storage->directories($input->dir);
         $directories = MediaHelper::filterDirectories($directories);
 
         $data = MediaHelper::appendMeta($directories, 'folder', $input->dir, $this->media_storage);
