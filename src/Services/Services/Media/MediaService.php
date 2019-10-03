@@ -34,7 +34,7 @@ class MediaService extends BaseService
 
     public function __construct(MediaRepository $repo)
     {
-        if( config('media.dddream-merchant-mode') ){
+        if( config('daydreamlab.media.dddream-merchant-mode') ){
             $this->media_storage_type = 'media-public-merchant';
             $this->thumb_storage_type = 'media-thumb-merchant';
             $this->media_link_base .= '/merchant';
@@ -56,7 +56,7 @@ class MediaService extends BaseService
         $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix();
         $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix();
 
-        if( config('media.dddream-merchant-mode') ){
+        if( config('daydreamlab.media.dddream-merchant-mode') ){
             //Helper::show(Auth::guard('api')->user()->merchants->first()->id);
             if( !$this->media_storage->exists($this->userMerchantID) &&
                 !$this->thumb_storage->exists($this->userMerchantID) ){

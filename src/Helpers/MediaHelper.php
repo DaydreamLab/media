@@ -114,7 +114,7 @@ class MediaHelper
     {
         $thumb_path = env('APP_URL') . Storage::url('media/thumbs/');
 
-        if (in_array($mime, config('media.mime.image')))
+        if (in_array($mime, config('daydreamlab.media.mime.image')))
         {
             if(mb_strpos($dir, '/', 0, 'UTF8') == 0){
                 $dir = substr($dir, 1);
@@ -124,11 +124,11 @@ class MediaHelper
 
             return $thumb_path . $dir . '/' . $name;
         }
-        elseif (in_array($mime, config('media.mime.application')))
+        elseif (in_array($mime, config('daydreamlab.media.mime.application')))
         {
             return $thumb_path . 'icons/' . $extension . '-icon.png';
         }
-        elseif (in_array($mime, config('media.mime.text')))
+        elseif (in_array($mime, config('daydreamlab.media.mime.text')))
         {
             return $thumb_path . 'icons/' . 'file-icon.png';
         }
@@ -146,7 +146,7 @@ class MediaHelper
 
     public static function isImage($name)
     {
-        return in_array( self::getFileExtension($name), config('media.extension.image')) ? true : false;
+        return in_array( self::getFileExtension($name), config('daydreamlab.media.extension.image')) ? true : false;
     }
 
 }

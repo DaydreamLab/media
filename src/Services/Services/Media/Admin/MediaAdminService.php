@@ -324,7 +324,7 @@ class MediaAdminService extends MediaService
 
                 $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type).$path;
 
-                if (in_array($extension, config('media.extension.image')))
+                if (in_array($extension, config('daydreamlab.media.extension.image')))
                 {
                     $result = Image::make($file)->fit(200)->save($thumb_path);
                 }

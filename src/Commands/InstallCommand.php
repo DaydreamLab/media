@@ -77,7 +77,7 @@ class InstallCommand extends Command
         $constants_path     = 'config/constants/';
         foreach ($this->constants as $constant) {
             File::delete($constants_path . $constant . '.php');
-            File::delete(config_path() . '/'. $constant . '.php');
+            File::delete(config_path('daydreamlab') . '/'. $constant . '.php');
         }
     }
 }
