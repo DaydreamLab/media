@@ -39,15 +39,15 @@ class MediaService extends BaseService
             $this->thumb_storage_type = 'media-thumb-merchant';
             $this->media_link_base .= '/merchant';
 
-            $userMerchant = Auth::guard('api')->user()->merchants->first();
-            if( $userMerchant ){
-                $this->userMerchantID = $userMerchant->id;
+            $user = Auth::guard('api')->user();
+            if(!$user) {
+                $this->throwResponse('UserUnauthorized');
+            }
+
+            if( $merchant = $user->merchants()->first() ){
+                $this->userMerchantID = $merchant->id;
             }else{
-                throw new HttpResponseException(
-                    ResponseHelper::genResponse(
-                        Str::upper(Str::snake('MediaThisAdminUserNotHaveMerchant'))
-                    )
-                );
+                $this->throwResponse('MediaThisAdminUserNotHaveMerchant');
             }
         }
 
