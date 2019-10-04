@@ -202,13 +202,11 @@ class MediaAdminService extends MediaService
     {
         foreach ($input->paths as $path)
         {
-            $path = substr($path, 1);
-            $comebinePath = $path;
-
             if( $this->userMerchantID != null ){
                 $comebinePath = $this->userMerchantID.'/'.$path;
+            } else {
+                $comebinePath = substr($path, 1);
             }
-
 
             if (is_dir($this->media_path.$path))
             {
@@ -303,7 +301,7 @@ class MediaAdminService extends MediaService
         $complete = true;
 
         $link_path = $this->media_link_base . $input->dir;
-        foreach ($input->files as $file)
+        foreach ($input->get('files') as $file)
         {
             if (!$file->getError())
             {
