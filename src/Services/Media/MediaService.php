@@ -47,7 +47,10 @@ class MediaService extends BaseService
             if( $merchant = $user->merchants()->first() ){
                 $this->userMerchantID = $merchant->id;
             }else{
-                $this->throwResponse('MediaThisAdminUserNotHaveMerchant');
+                if (!$user->isSuperUser())
+                {
+                    $this->throwResponse('MediaThisAdminUserNotHaveMerchant');
+                }
             }
         }
 
