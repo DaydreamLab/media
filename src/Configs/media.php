@@ -66,6 +66,7 @@ return [
         'text'          => ['txt', 'json', 'csv']
     ],
 
-    'dddream-merchant-mode' => 0
+    'dddream-merchant-mode' => 0,
 
+    'media_upload_limit' => env('MEDIA_UPLOAD_LIMIT', 10240) // in kBs
 ];

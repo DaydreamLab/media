@@ -30,11 +30,7 @@ class MediaServiceProvider extends ServiceProvider
         include __DIR__. '/routes/api.php';
 
         // set media disks to filesystems disks
-        if (file_exists(config_path('media.php'))) {
-            $media = require config_path('media.php');
-        } else {
-            $media = require __DIR__. '/Configs/media.php';
-        }
+        $media = MediaHelper::getMediaConfig();
 
         $filesystems = $this->app['config']->get('filesystems', []);
 

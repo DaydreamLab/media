@@ -149,4 +149,16 @@ class MediaHelper
         return in_array( self::getFileExtension($name), config('media.extension.image')) ? true : false;
     }
 
+
+    public static function getMediaConfig()
+    {
+        if (file_exists(config_path('media.php'))) {
+            $media = require config_path('media.php');
+        } else {
+            $media = require __DIR__. '/../Configs/media.php';
+        }
+
+        return $media;
+    }
+
 }
