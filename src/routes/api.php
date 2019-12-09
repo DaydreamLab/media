@@ -11,19 +11,18 @@
 |
 */
 
-Route::group(['middleware' => ['api'], 'prefix' => 'api'], function () {
+Route::post('api/admin/media/upload', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@upload')
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/media/move', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@move')
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/media/folder/items', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getFolderItems')
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/media/folder/create', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@createFolder')
+    ->middleware(['expired', 'admin']);
+Route::get('api/admin/media/folder/all', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getAllFolders')
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/media/remove', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@remove')
+    ->middleware(['expired', 'admin']);
+Route::post('api/admin/media/rename', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@rename')
+    ->middleware(['expired', 'admin']);
 
-    Route::group(['middleware' => ['auth:api', 'expired', 'admin'], 'prefix' => 'admin'], function (){
-
-        Route::group(['prefix' => 'media'], function (){
-
-            Route::post('upload', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@upload');
-            Route::post('move', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@move');
-            Route::post('folder/items', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getFolderItems');
-            Route::post('folder/create', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@createFolder');
-            Route::get('folder/all', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getAllFolders');
-            Route::post('remove', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@remove');
-            Route::post('rename', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@rename');
-        });
-    });
-});
