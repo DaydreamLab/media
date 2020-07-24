@@ -297,7 +297,7 @@ class MediaAdminService extends MediaService
 
     public function upload(Collection $input)
     {
-        $input->dir = $this->userMerchantID ? '/' . $this->userMerchantID.$input->dir : $input->dir ;
+        $input->dir = $this->userMerchantID ? '/' . $this->userMerchantID.$input->dir : $input->dir;
         $complete = true;
 
         $link_path = $this->media_link_base . $input->dir;
@@ -316,7 +316,9 @@ class MediaAdminService extends MediaService
                 $final_name = $name;
                 while ($this->media_storage->exists($path))
                 {
-                    $final_name = $name . '(' . ++$counter . ')';
+                    // 2020-07-24 Alex final_name 修改，避開中文檔名
+                    // $final_name = $name . '(' . ++$counter . ')';
+                    $final_name = random_bytes(10);
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
 
