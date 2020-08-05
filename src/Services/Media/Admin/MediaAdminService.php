@@ -318,8 +318,6 @@ class MediaAdminService extends MediaService
                     : $name;
                 while ($this->media_storage->exists($path))
                 {
-                    // 2020-07-24 Alex final_name 修改，避開中文檔名
-                    // $final_name = $name . '(' . ++$counter . ')';
                     if ( config('daydreamlab.media.rename_upload')) {
                         $final_name = Str::random(10);
                     } else {
