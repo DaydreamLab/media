@@ -37,7 +37,7 @@ class MediaHelper
                 $temp['type']   = 'Folder';
                 $temp['size']   = null;
                 $temp['url']    = null;
-                $temp['thumb']  = env('APP_URL') . Storage::url('media/thumbs/') . 'icons/folder.png';
+                $temp['thumb']  = config('app.url') . Storage::url('media/thumbs/') . 'icons/folder.png';
 
             }
             else
@@ -112,7 +112,7 @@ class MediaHelper
 
     public static function getThumbPath($dir, $name, $extension, $mime)
     {
-        $thumb_path = env('APP_URL') . Storage::url('media/thumbs/');
+        $thumb_path = config('app.url') . Storage::url('media/thumbs/');
 
         if (in_array($mime, config('daydreamlab.media.mime.image')))
         {

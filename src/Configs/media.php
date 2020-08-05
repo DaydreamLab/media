@@ -7,35 +7,35 @@ return [
         'media-public'  => [
             'driver'    => 'local',
             'root'      => storage_path('app/public/media'),
-            'url'       => env('APP_URL').'/storage/media',
+            'url'       => config('app.url').'/storage/media',
             'visibility'=> 'public',
         ],
 
         'media-public-merchant'  => [
             'driver'    => 'local',
             'root'      => storage_path('app/public/media/merchant'),
-            'url'       => env('APP_URL').'/storage/media/merchant',
+            'url'       => config('app.url').'/storage/media/merchant',
             'visibility'=> 'public',
         ],
 
         'media-thumb'   => [
             'driver'    => 'local',
             'root'      => storage_path('app/public/media/thumbs'),
-            'url'       => env('APP_URL').'/storage/media/thumbs',
+            'url'       => config('app.url').'/storage/media/thumbs',
             'visibility'=> 'public',
         ],
 
         'media-thumb-merchant'   => [
             'driver'    => 'local',
             'root'      => storage_path('app/public/media/thumbs/merchant'),
-            'url'       => env('APP_URL').'/storage/media/thumbs/merchant',
+            'url'       => config('app.url').'/storage/media/thumbs/merchant',
             'visibility'=> 'public',
         ],
 
         'media-private' => [
             'driver'    => 'local',
             'root'      => storage_path('app/private/media'),
-            'url'       => env('APP_URL').'/admin/media',
+            'url'       => config('app.url').'/admin/media',
             'visibility'=> 'private',
         ],
     ],
@@ -66,6 +66,8 @@ return [
         'text'          => ['txt', 'json', 'csv']
     ],
 
-    'dddream-merchant-mode' => 0
+    'dddream-merchant-mode' => 0,
+
+    'rename_upload' => 0
 
 ];

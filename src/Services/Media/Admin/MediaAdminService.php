@@ -313,12 +313,18 @@ class MediaAdminService extends MediaService
                 $path           = $dir . $name . '.' . $file_type;
 
                 $counter = 0;
-                $final_name = $name;
+                $final_name =  config('daydreamlab.media.rename_upload')
+                    ? Str::random(10)
+                    : $name;
                 while ($this->media_storage->exists($path))
                 {
                     // 2020-07-24 Alex final_name 修改，避開中文檔名
                     // $final_name = $name . '(' . ++$counter . ')';
-                    $final_name = random_bytes(10);
+                    if ( config('daydreamlab.media.rename_upload')) {
+                        $final_name = Str::random(10);
+                    } else {
+                        $final_name = $name . '(' . ++$counter . ')';
+                    }
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
 
