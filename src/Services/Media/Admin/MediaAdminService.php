@@ -314,12 +314,12 @@ class MediaAdminService extends MediaService
 
                 $counter = 0;
                 $final_name =  config('daydreamlab.media.rename_upload')
-                    ? Str::random(10)
+                    ? Str::random(36)
                     : $name;
                 while ($this->media_storage->exists($path))
                 {
                     if ( config('daydreamlab.media.rename_upload')) {
-                        $final_name = Str::random(10);
+                        $final_name = Str::random(36);
                     } else {
                         $final_name = $name . '(' . ++$counter . ')';
                     }
