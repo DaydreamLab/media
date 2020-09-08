@@ -232,7 +232,6 @@ class MediaAdminService extends MediaService
 
                 $delete_media = $this->media_storage->delete($comebinePath);
             }
-
         }
 
         if ($delete_thumb && $delete_media)
@@ -310,12 +309,12 @@ class MediaAdminService extends MediaService
                 $dir            = MediaHelper::getDirPath($input->dir);
                 $name           = str_replace(' ', '', MediaHelper::getFileName($full_name));
                 $file_type      = MediaHelper::getFileExtension($full_name);
-                $path           = $dir . $name . '.' . $file_type;
-
                 $counter = 0;
                 $final_name =  config('daydreamlab.media.rename_upload')
                     ? Str::random(36)
                     : $name;
+                $path           = $dir . $final_name . '.' . $file_type;
+
                 while ($this->media_storage->exists($path))
                 {
                     if ( config('daydreamlab.media.rename_upload')) {
