@@ -8,6 +8,8 @@ use DaydreamLab\Media\Helpers\MediaHelper;
 use DaydreamLab\Media\Repositories\Media\Admin\MediaAdminRepository;
 use DaydreamLab\Media\Services\Media\MediaService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Config;
@@ -296,9 +298,11 @@ class MediaAdminService extends MediaService
 
     public function upload(Collection $input)
     {
-        $input->dir = $this->userMerchantID ? '/' . $this->userMerchantID.$input->dir : $input->dir;
-        $complete = true;
+        $input->dir = $this->userMerchantID
+            ? "/{$this->userMerchantID}$input->dir"
+            : $input->dir;
 
+        $complete = true;
         $link_path = $this->media_link_base . $input->dir;
         foreach ($input->get('files') as $file)
         {
@@ -313,10 +317,9 @@ class MediaAdminService extends MediaService
                 $final_name =  config('daydreamlab.media.rename_upload')
                     ? Str::random(36)
                     : $name;
-                $path           = $dir . $final_name . '.' . $file_type;
 
-                while ($this->media_storage->exists($path))
-                {
+                $path = $dir . $final_name . '.' . $file_type;
+                while ($this->media_storage->exists($path)) {
                     if ( config('daydreamlab.media.rename_upload')) {
                         $final_name = Str::random(36);
                     } else {
@@ -325,14 +328,16 @@ class MediaAdminService extends MediaService
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
 
-                $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type).$path;
+                if (!$this->thumb_storage->exists($dir)) {
+                    $this->thumb_storage->makeDirectory($dir, intval( '0755', 8 ));
+                }
 
-                if (in_array($extension, config('daydreamlab.media.extension.image')))
-                {
+                $thumb_path = MediaHelper::getDiskPath($this->thumb_storage_type).$path;
+                if (in_array($extension, config('daydreamlab.media.extension.image'))) {
                     $result = Image::make($file)->fit(200)->save($thumb_path);
                 }
 
-                $link_path .= $final_name . '.' . $file_type;
+                $link_path .= '/'.$final_name . '.' . $file_type;
                 if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, $this->media_storage_type))
                 {
                     $complete = false;
@@ -341,13 +346,10 @@ class MediaAdminService extends MediaService
             }
         }
 
-        if ($complete)
-        {
+        if ($complete) {
             $this->status   = Str::upper(Str::snake($this->type.'UploadSuccess'));
             $this->response = $link_path;
-        }
-        else
-        {
+        } else {
             $this->status   = Str::upper(Str::snake($this->type.'UploadFail'));
             $this->response = null;
         }
