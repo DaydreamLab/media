@@ -323,7 +323,7 @@ class MediaAdminService extends MediaService
                     if ( config('daydreamlab.media.rename_upload')) {
                         $final_name = Str::random(36);
                     } else {
-                        $final_name = $name . '(' . ++$counter . ')';
+                        $final_name = $name . '_' . ++$counter;
                     }
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
