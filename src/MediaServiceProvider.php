@@ -5,6 +5,7 @@ namespace DaydreamLab\Media;
 use DaydreamLab\JJAJ\Exceptions\BaseExceptionHandler;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Helpers\MediaHelper;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Debug\ExceptionHandler;
 
@@ -31,7 +32,8 @@ class MediaServiceProvider extends ServiceProvider
 
         // set media disks to filesystems disks
         $filesystems = $this->app['config']->get('filesystems', []);
-        if (config_path('daydreamlab/media.php')) {
+       
+        if (File::exists(config_path('/daydreamlab/media.php'))) {
             $media = require config_path('daydreamlab/media.php');
         } else {
             $media = require __DIR__. '/Configs/media.php';
