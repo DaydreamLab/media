@@ -31,7 +31,12 @@ class MediaServiceProvider extends ServiceProvider
 
         // set media disks to filesystems disks
         $filesystems = $this->app['config']->get('filesystems', []);
-        $media = require config_path('daydreamlab/media.php');
+        if (config_path('daydreamlab/media.php')) {
+            $media = require config_path('daydreamlab/media.php');
+        } else {
+            $media = require __DIR__. '/Configs/media.php';
+        }
+       
         foreach ($media['disks'] as $key => $disk)
         {
             $filesystems['disks'][$key] = $disk;
