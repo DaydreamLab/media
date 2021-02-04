@@ -25,7 +25,7 @@ class MediaServiceProvider extends ServiceProvider
     {
         $this->publishes([__DIR__. '/constants' => config_path('constants')], 'media-configs');
         $this->publishes([__DIR__. '/Configs/' => config_path('daydreamlab')], 'media-configs');
-
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'media');
 
 //        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         include __DIR__. '/routes/api.php';
@@ -33,11 +33,7 @@ class MediaServiceProvider extends ServiceProvider
         // set media disks to filesystems disks
         $filesystems = $this->app['config']->get('filesystems', []);
        
-        if (File::exists(config_path('/daydreamlab/media.php'))) {
-            $media = require config_path('daydreamlab/media.php');
-        } else {
-            $media = require __DIR__. '/Configs/media.php';
-        }
+        $media = MediaHelper::getMediaConfig();
        
         foreach ($media['disks'] as $key => $disk)
         {

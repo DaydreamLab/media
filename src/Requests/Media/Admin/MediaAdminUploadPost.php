@@ -6,6 +6,10 @@ use DaydreamLab\Media\Requests\Media\MediaUploadPost;
 
 class MediaAdminUploadPost extends MediaUploadPost
 {
+    protected $modelName = 'Media';
+
+    protected $apiMethod = 'uploadMedia';
+
     /**
      * Determine if the user is authorized to make this request.
      *

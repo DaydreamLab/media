@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Str;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\JJAJ\Traits\LoggedIn;
 
 class MediaService extends BaseService
 {
+    use LoggedIn;
+
     protected $type = 'Media';
 
     protected $media_storage = null;
@@ -31,6 +34,10 @@ class MediaService extends BaseService
     protected $thumb_path = null;
 
     protected $userMerchantID = null;
+
+    protected $modelName = 'Media';
+
+    protected $modelType = 'Base';
 
     public function __construct(MediaRepository $repo)
     {
@@ -86,7 +93,6 @@ class MediaService extends BaseService
         return $this->media_storage->move($old, $new) &&
         $this->thumb_storage->move($old, $new) ?: false;
     }
-
 
 
     public function moveStorage($old, $new)

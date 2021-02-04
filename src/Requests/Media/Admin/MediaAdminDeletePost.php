@@ -6,6 +6,10 @@ use DaydreamLab\Media\Requests\Media\MediaDeletePost;
 
 class MediaAdminDeletePost extends MediaDeletePost
 {
+    protected $modelName = 'Media';
+
+    protected $apiMethod = 'deleteMedia';
+
     /**
      * Determine if the user is authorized to make this request.
      *

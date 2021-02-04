@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminCreateFolderPost;
+use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFoldersPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminDeletePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFolderItemsPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminMovePost;
@@ -16,6 +17,13 @@ use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
 
 class MediaAdminController extends BaseController
 {
+    protected $package = 'Media';
+
+    protected $modelName = 'Media';
+
+    protected $modelType = 'Admin';
+
+
     public function __construct(MediaAdminService $service)
     {
         parent::__construct($service);
@@ -25,63 +33,63 @@ class MediaAdminController extends BaseController
 
     public function createFolder(MediaAdminCreateFolderPost $request)
     {
-        $this->service->canAction('createFolder');
-        $this->service->createFolder($request->rulesInput());
+        $this->service->setUser($request->user());
+        $this->service->createFolder($request->validated());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
-    public function getAllFolders()
+    public function getAllFolders(MediaAdminGetFoldersPost $request)
     {
-        $this->service->canAction('getAllFolder');
+        $this->service->setUser($request->user());
         $this->service->getAllFolders();
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
     public function getFolderItems(MediaAdminGetFolderItemsPost $request)
     {
-        $this->service->canAction('getFolderItems');
-        $this->service->getFolderItems($request->rulesInput());
+        $this->service->setUser($request->user());
+        $this->service->getFolderItems($request->validated());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
     public function move(MediaAdminMovePost $request)
     {
-        $this->service->canAction('move');
-        $this->service->move($request->rulesInput());
+        $this->service->setUser($request->user());
+        $this->service->move($request->validated());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
     public function remove(MediaAdminDeletePost $request)
     {
-        $this->service->canAction('delete');
-        $this->service->remove($request->rulesInput());
+        $this->service->setUser($request->user());
+        $this->service->remove($request->validated());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
     public function rename(MediaAdminRenamePost $request)
     {
-        $this->service->canAction('rename');
-        $this->service->rename($request->rulesInput());
+        $this->service->setUser($request->user());
+        $this->service->rename($request->validated());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
     public function upload(MediaAdminUploadPost $request)
     {
-        $this->service->canAction('add');
-        $this->service->upload($request->rulesInput());
+        $this->service->setUser($request->user());
+        $this->service->upload($request->validated());
 
-        return ResponseHelper::response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response);
     }
 }

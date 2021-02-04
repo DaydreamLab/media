@@ -1,5 +1,6 @@
 <?php
 
+use DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -11,18 +12,18 @@
 |
 */
 
-Route::post('api/admin/media/upload', 'DaydreamLab\Media\aControllers\Media\Admin\MediaAdminController@upload')
+Route::post('api/admin/media/upload', [MediaAdminController::class, 'upload'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/media/move', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@move')
+Route::post('api/admin/media/move', [MediaAdminController::class, 'move'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/media/folder/items', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getFolderItems')
+Route::post('api/admin/media/folder/items', [MediaAdminController::class, 'getFolderItems'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/media/folder/create', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@createFolder')
+Route::post('api/admin/media/folder/create', [MediaAdminController::class, 'createFolder'])
     ->middleware(['expired', 'admin']);
-Route::get('api/admin/media/folder/all', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@getAllFolders')
+Route::get('api/admin/media/folder/all', [MediaAdminController::class, 'getAllFolders'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/media/remove', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@remove')
+Route::post('api/admin/media/remove', [MediaAdminController::class, 'remove'])
     ->middleware(['expired', 'admin']);
-Route::post('api/admin/media/rename', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@rename')
+Route::post('api/admin/media/rename', [MediaAdminController::class, 'rename'])
     ->middleware(['expired', 'admin']);
 

@@ -6,6 +6,10 @@ use DaydreamLab\Media\Requests\Media\MediaCreateFolderPost;
 
 class MediaAdminCreateFolderPost extends MediaCreateFolderPost
 {
+    protected $modelName = 'Media';
+
+    protected $apiMethod = 'createMediaFolder';
+
     /**
      * Determine if the user is authorized to make this request.
      *

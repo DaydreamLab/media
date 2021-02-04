@@ -6,6 +6,9 @@ use DaydreamLab\Media\Requests\Media\MediaGetFolderItemsPost;
 
 class MediaAdminGetFolderItemsPost extends MediaGetFolderItemsPost
 {
+    protected $modelName = 'Media';
+
+    protected $apiMethod = 'getMediaAllItems';
     /**
      * Determine if the user is authorized to make this request.
      *

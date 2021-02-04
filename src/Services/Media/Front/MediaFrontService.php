@@ -9,6 +9,8 @@ class MediaFrontService extends MediaService
 {
     protected $type = 'MediaFront';
 
+    protected $modelType = 'Front';
+
     public function __construct(MediaFrontRepository $repo)
     {
         parent::__construct($repo);

@@ -2,13 +2,13 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaRenamePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class MediaAdminRenamePost extends MediaRenamePost
+class MediaAdminGetFoldersPost extends AdminRequest
 {
     protected $modelName = 'Media';
 
-    protected $apiMethod = 'renameMedia';
+    protected $apiMethod = 'getMediaAllFolder';
     /**
      * Determine if the user is authorized to make this request.
      *

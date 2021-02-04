@@ -3,6 +3,7 @@
 namespace DaydreamLab\Media\Requests\Media;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Helpers\MediaHelper;
 
 class MediaUploadPost extends AdminRequest
 {
@@ -23,9 +24,10 @@ class MediaUploadPost extends AdminRequest
      */
     public function rules()
     {
+        $media_config = MediaHelper::getMediaConfig();
         return [
             'files'     => 'required|array',
-            'files.*'   => 'nullable|max:10240',
+            'files.*'   => 'nullable|max:'.$media_config['upload_limit'],
             'dir'       => 'required|string',
         ];
     }

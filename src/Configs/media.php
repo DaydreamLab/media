@@ -68,6 +68,7 @@ return [
 
     'dddream-merchant-mode' => 0,
 
-    'rename_upload' => 0
+    'rename_upload' => 0,
 
+    'upload_limit' => env('MEDIA_UPLOAD_LIMIT', 10240) // kBs
 ];

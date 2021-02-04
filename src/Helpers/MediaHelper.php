@@ -5,6 +5,7 @@ namespace DaydreamLab\Media\Helpers;
 use Carbon\Carbon;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -149,4 +150,14 @@ class MediaHelper
         return in_array( self::getFileExtension($name), config('daydreamlab.media.extension.image')) ? true : false;
     }
 
+
+    public static function getMediaConfig()
+    {
+        if (File::exists(config_path('/daydreamlab/media.php'))) {
+            $media = require config_path('daydreamlab/media.php');
+        } else {
+            $media = require __DIR__. '/../Configs/media.php';
+        }
+        return $media;
+    }
 }

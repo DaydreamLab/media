@@ -6,6 +6,10 @@ use DaydreamLab\Media\Requests\Media\MediaMovePost;
 
 class MediaAdminMovePost extends MediaMovePost
 {
+    protected $modelName = 'Media';
+
+    protected $apiMethod = 'moveMedia';
+
     /**
      * Determine if the user is authorized to make this request.
      *
