@@ -70,5 +70,17 @@ return [
 
     'rename_upload' => 0,
 
-    'upload_limit' => env('MEDIA_UPLOAD_LIMIT', 10240) // kBs
+    // kBs
+    'upload_limit' => env('MEDIA_UPLOAD_LIMIT', 10240),
+
+    'file'  => [
+        'provider' => env('MEDIA_FILE_PROVIDER', 'local'),
+        'azure' => [
+            'accountkey'   => env('MEDIA_FILE_AZURE_ACCOUNTKEY'),
+            'accountname'   => env('MEDIA_FILE_AZURE_ACCOUNTNAME'),
+            'container' => env('MEDIA_FILE_AZURE_CONTAINER')
+        ],
+        'aws'    => [
+        ]
+    ]
 ];

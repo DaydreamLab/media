@@ -1,6 +1,7 @@
 <?php
 
 use DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController;
+use DaydreamLab\Media\Controllers\File\Admin\FileAdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,3 +28,7 @@ Route::post('api/admin/media/remove', [MediaAdminController::class, 'remove'])
 Route::post('api/admin/media/rename', [MediaAdminController::class, 'rename'])
     ->middleware(['expired', 'admin']);
 
+Route::post('api/admin/file/store', [FileAdminController::class, 'store'])
+    ->middleware(['expired', 'admin']);
+
+Route::get('api/file/download', [FileAdminController::class, 'download']);
