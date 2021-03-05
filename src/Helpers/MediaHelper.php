@@ -94,8 +94,7 @@ class MediaHelper
 
     public static function getFileExtension($name)
     {
-        //$dot_pos = strpos($name,'.');
-        $dot_pos = mb_strrpos($name, '.', 'UTF8');
+        $dot_pos = mb_strrpos($name, '.', 0, 'UTF8');
 
         return Str::substr($name,  $dot_pos+1);
     }
@@ -103,8 +102,7 @@ class MediaHelper
 
     public static function getFileName($name)
     {
-        //$dot_pos = strrpos($name,'.');
-        $dot_pos = mb_strrpos($name, '.', 'UTF8');
+        $dot_pos = mb_strrpos($name, '.', 0, 'UTF8');
 
         return Str::substr($name, 0, $dot_pos);
     }

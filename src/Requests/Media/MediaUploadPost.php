@@ -25,7 +25,7 @@ class MediaUploadPost extends AdminRequest
     {
         return [
             'files'     => 'required|array',
-            'files.*'   => 'nullable|max:10240',
+            'files.*'   => 'file|max:10240',
             'dir'       => 'required|string',
         ];
     }

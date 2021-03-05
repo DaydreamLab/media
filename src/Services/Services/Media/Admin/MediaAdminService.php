@@ -10,8 +10,6 @@ use DaydreamLab\Media\Services\Media\MediaService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Auth;
 
 class MediaAdminService extends MediaService
 {
@@ -299,16 +297,19 @@ class MediaAdminService extends MediaService
 
     public function upload(Collection $input)
     {
-        $input->dir = $this->userMerchantID ? '/' . $this->userMerchantID.$input->dir : $input->dir ;
-        $complete = true;
+        $input->dir = $this->userMerchantID
+            ? '/' . $this->userMerchantID.$input->dir
+            : $input->dir ;
 
+        $complete = true;
         $link_path = $this->media_link_base . $input->dir;
+
         foreach ($input->files as $file)
         {
-            if (!$file->getError())
+            if ($file->isValid())
             {
                 $extension      = $file->extension();
-                $full_name      = $file->getClientOriginalName(); // a.jpg
+                $full_name      = $file->getClientOriginalName();
                 $dir            = MediaHelper::getDirPath($input->dir);
                 $name           = str_replace(' ', '', MediaHelper::getFileName($full_name));
                 $file_type      = MediaHelper::getFileExtension($full_name);
@@ -316,6 +317,7 @@ class MediaAdminService extends MediaService
 
                 $counter = 0;
                 $final_name = $name;
+
                 while ($this->media_storage->exists($path))
                 {
                     $final_name = $name . '(' . ++$counter . ')';
@@ -330,6 +332,7 @@ class MediaAdminService extends MediaService
                 }
 
                 $link_path .= $final_name . '.' . $file_type;
+
                 if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, $this->media_storage_type))
                 {
                     $complete = false;
