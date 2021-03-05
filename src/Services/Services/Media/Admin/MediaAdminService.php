@@ -332,7 +332,7 @@ class MediaAdminService extends MediaService
                 }
 
                 $link_path .= $final_name . '.' . $file_type;
-
+                $return[] = $link_path;
                 if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, $this->media_storage_type))
                 {
                     $complete = false;
@@ -344,7 +344,7 @@ class MediaAdminService extends MediaService
         if ($complete)
         {
             $this->status   = Str::upper(Str::snake($this->type.'UploadSuccess'));
-            $this->response = $link_path;
+            $this->response = $return;
         }
         else
         {
