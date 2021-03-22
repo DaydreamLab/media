@@ -323,7 +323,7 @@ class MediaAdminService extends MediaService
                     $final_name = $name . '(' . ++$counter . ')';
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
-
+                // 避免拼接路徑時出現 path//name/ 的情況
                 $thumb_path     = str_replace('//', '/',MediaHelper::getDiskPath($this->thumb_storage_type) . $path);
 
                 if (in_array($extension, config('media.extension.image')))
