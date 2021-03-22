@@ -208,7 +208,6 @@ class MediaAdminService extends MediaService
                 $comebinePath = $this->userMerchantID.'/'.$path;
             }
 
-
             if (is_dir($this->media_path.$path))
             {
                 try{
@@ -222,7 +221,7 @@ class MediaAdminService extends MediaService
             else
             {
                 $temp = explode('/', $path);
-                if ( MediaHelper::isImage(end($temp)))
+                if ( MediaHelper::isImage(end($temp)) && $this->thumb_storage->exists($path))
                 {
                     $delete_thumb = $this->thumb_storage->delete($comebinePath);
                 }
@@ -330,7 +329,7 @@ class MediaAdminService extends MediaService
                 if (in_array($extension, config('media.extension.image')))
                 {
                     // file is not upload to root dir and dir not exists
-                    if ($dir != '' && !Storage::disk($this->thumb_storage_type)->exists($dir)) {
+                    if ($dir != '/' && !Storage::disk($this->thumb_storage_type)->exists($dir)) {
                         Storage::disk($this->thumb_storage_type)->makeDirectory($dir);
                     }
                     $result = Image::make($file)->fit(200)->save($thumb_path);
