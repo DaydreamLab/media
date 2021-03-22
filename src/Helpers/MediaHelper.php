@@ -147,4 +147,6 @@ class MediaHelper
         return in_array( self::getFileExtension($name), config('media.extension.image')) ? true : false;
     }
 
+
+
 }

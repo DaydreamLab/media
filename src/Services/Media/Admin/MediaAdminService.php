@@ -8,6 +8,7 @@ use DaydreamLab\Media\Helpers\MediaHelper;
 use DaydreamLab\Media\Repositories\Media\Admin\MediaAdminRepository;
 use DaydreamLab\Media\Services\Media\MediaService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -323,11 +324,15 @@ class MediaAdminService extends MediaService
                     $final_name = $name . '(' . ++$counter . ')';
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
-                // 避免拼接路徑時出現 path//name/ 的情況
-                $thumb_path     = str_replace('//', '/',MediaHelper::getDiskPath($this->thumb_storage_type) . $path);
+
+                $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type) . $path;
 
                 if (in_array($extension, config('media.extension.image')))
                 {
+                    // file is not upload to root dir and dir not exists
+                    if ($dir != '' && !Storage::disk($this->thumb_storage_type)->exists($dir)) {
+                        Storage::disk($this->thumb_storage_type)->makeDirectory($dir);
+                    }
                     $result = Image::make($file)->fit(200)->save($thumb_path);
                 }
 
