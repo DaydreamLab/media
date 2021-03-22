@@ -324,7 +324,7 @@ class MediaAdminService extends MediaService
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
 
-                $thumb_path     = MediaHelper::getDiskPath($this->thumb_storage_type).$path;
+                $thumb_path     = str_replace('//', '/',MediaHelper::getDiskPath($this->thumb_storage_type) . $path);
 
                 if (in_array($extension, config('media.extension.image')))
                 {
