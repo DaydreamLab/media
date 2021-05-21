@@ -23,7 +23,9 @@ class CreateFilesTable extends Migration
             $table->string('extension');
             $table->string('size');
             $table->string('url');
+            $table->text('introtext')->nullable();
             $table->text('description')->nullable();
+            $table->string('password')->nullable();
             $table->unsignedBigInteger('access')->nullable();
             $table->unsignedBigInteger('ordering')->nullable();
             $table->unsignedInteger('created_by');

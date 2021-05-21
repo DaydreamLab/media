@@ -27,7 +27,7 @@ class MediaServiceProvider extends ServiceProvider
         $this->publishes([__DIR__. '/Configs/' => config_path('daydreamlab')], 'media-configs');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'media');
 
-//        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         include __DIR__. '/routes/api.php';
 
         // set media disks to filesystems disks

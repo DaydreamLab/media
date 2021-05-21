@@ -54,8 +54,6 @@ class FileAdminController extends BaseController
 
     public function store(FileAdminStorePost $request)
     {
-        Helper::show($request->file);
-        exit();
         $this->service->setUser($request->user('api'));
         $this->service->store($request->validated());
 

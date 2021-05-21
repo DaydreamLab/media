@@ -2,15 +2,22 @@
 
 namespace DaydreamLab\Media\Services\File;
 
+use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Repositories\MediaRepository;
 use DaydreamLab\Media\Services\MediaService;
+use DaydreamLab\Media\Traits\Service\AzureBlob;
 use Illuminate\Support\Collection;
 
 class FileService extends MediaService
 {
+    use AzureBlob;
+
     protected $modelName = 'File';
 
     protected $modelType = 'Base';
+
+    protected $provider;
+
 
     public function __construct(MediaRepository $repo)
     {
@@ -36,6 +43,16 @@ class FileService extends MediaService
         //event(new Checkout($this->model_name, $result, $input, $this->user));
 
         return $result;
+    }
+
+
+    public function getProvider()
+    {
+        if (!$this->provider) {
+            $this->provider = config('daydreamlab.media.file.provider');
+        }
+
+        return $this->provider;
     }
 
 

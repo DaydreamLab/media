@@ -5,6 +5,7 @@ namespace DaydreamLab\Media\Models\File;
 use DaydreamLab\Cms\Traits\Model\UserInfo;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\Media\Models\MediaModel;
+use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 
@@ -21,9 +22,6 @@ class File extends MediaModel
     protected $table = 'files';
 
 
-    protected $name = 'File';
-
-
     /**
      * The attributes that are mass assignable.
      *
@@ -37,7 +35,9 @@ class File extends MediaModel
         'extension',
         'size',
         'url',
+        'introtext',
         'description',
+        'password',
         'access',
         'ordering',
         'created_by',
@@ -51,6 +51,7 @@ class File extends MediaModel
      * @var array
      */
     protected $hidden = [
+        'password'
     ];
 
 
@@ -70,5 +71,17 @@ class File extends MediaModel
         static::creating(function ($model) {
             $model->uuid = Str::uuid()->toString();
         });
+    }
+
+
+    public function getBlobNameAttribute()
+    {
+        return $this->name . '.' . $this->extension;
+    }
+
+
+    public function groups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'files_users_groups_maps', 'file_id', 'group_id');
     }
 }
