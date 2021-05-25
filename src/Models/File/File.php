@@ -37,6 +37,7 @@ class File extends MediaModel
         'url',
         'introtext',
         'description',
+        'encrypted',
         'password',
         'access',
         'ordering',

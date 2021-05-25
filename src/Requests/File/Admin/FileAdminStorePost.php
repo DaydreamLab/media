@@ -32,7 +32,7 @@ class FileAdminStorePost extends AdminRequest
         return [
             'id'            => 'nullable|integer',
             'name'          => 'required|string',
-            'category_id'   => 'nullable|integer',
+            'categoryId'    => 'nullable|integer',
             'state'         => [
                 'nullable',
                 'integer',
@@ -40,12 +40,15 @@ class FileAdminStorePost extends AdminRequest
             ],
             'introtext'     => 'nullable|string',
             'description'   => 'nullable|string',
-            'access'        => 'nullable|integer',
-            'ordering'      => 'nullable|integer',
             'file'          => 'nullable|max:'.$media_config['upload_limit'],
-            'password'      => 'nullable|max:16|min:8',
+            'encrypted'     => ['required', Rule::in([0, 1])],
+            'password'      => 'required_with:encrypted|max:16|min:8',
+            'notifyEmails'  => 'nullable|array',
+            'notifyEmails.*'=> 'nullable|email',
             'groupIds'      => 'nullable|array',
             'groupIds.*'    => 'nullable|integer',
+            'access'        => 'nullable|integer',
+            'ordering'      => 'nullable|integer',
         ];
     }
 
@@ -58,10 +61,6 @@ class FileAdminStorePost extends AdminRequest
         $validated->put('contentType', $this->file->getMimeType());
         $validated->put('extension', $this->file->extension());
         $validated->put('size', ceil((double) ($this->file->getSize() / 1024)));
-        if (InputHelper::null($validated, 'password')) {
-            $validated->put('password', bcrypt($validated->get('password')));
-        }
-
         $validated->forget('categoryId');
 
         return $validated;

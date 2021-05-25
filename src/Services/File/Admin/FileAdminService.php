@@ -32,11 +32,23 @@ class FileAdminService extends FileService
 
     public function add(Collection $input)
     {
-        Helper::show($this->getAccessIds());
-        exit();
-        if ($this->getProvider() == 'azure') {
-            return $this->addAzure($input);
+        if ($password = $input->get('password')) {
+            $input->put('password', bcrypt($password));
         }
+
+        $provider = $this->getProvider();
+        if ($provider == 'azure') {
+            $result = $this->addAzure($input);
+            if (count($notifyEmails = $input->get('notifyEmails'))) {
+                #todo: 寄送 email 訊息
+            }
+        } elseif ($provider == 'aws') {
+
+        } else {
+
+        }
+
+        return $result;
     }
 
 
@@ -67,6 +79,12 @@ class FileAdminService extends FileService
         $item = parent::add($input);
 
         return $item;
+    }
+
+
+    public function addAws(Collection $input)
+    {
+
     }
 
 
