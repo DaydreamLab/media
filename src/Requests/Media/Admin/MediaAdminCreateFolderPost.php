@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaCreateFolderPost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class MediaAdminCreateFolderPost extends MediaCreateFolderPost
+class MediaAdminCreateFolderPost extends AdminRequest
 {
     protected $modelName = 'Media';
 
@@ -28,8 +28,9 @@ class MediaAdminCreateFolderPost extends MediaCreateFolderPost
     public function rules()
     {
         $rules = [
-            //
+            'dir'   =>  'required|string',
+            'name'  =>  'required|string',
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

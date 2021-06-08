@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaDeletePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class MediaAdminDeletePost extends MediaDeletePost
+class MediaAdminDeletePost extends AdminRequest
 {
     protected $modelName = 'Media';
 
@@ -28,8 +28,9 @@ class MediaAdminDeletePost extends MediaDeletePost
     public function rules()
     {
         $rules = [
-            //
+            'paths'      => 'required|array',
+            'paths.*'    => 'required|string',
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

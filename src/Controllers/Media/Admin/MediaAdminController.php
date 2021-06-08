@@ -5,6 +5,7 @@ namespace DaydreamLab\Media\Controllers\Media\Admin;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\JJAJ\Helpers\ResponseHelper;
+use DaydreamLab\Media\Controllers\MediaController;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminCreateFolderPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFoldersPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminDeletePost;
@@ -16,13 +17,9 @@ use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
 use Illuminate\Http\Request;
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 
-class MediaAdminController extends BaseController
+class MediaAdminController extends MediaController
 {
-    protected $package = 'Media';
-
     protected $modelName = 'Media';
-
-    protected $modelType = 'Admin';
 
 
     public function __construct(MediaAdminService $service)

@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaMovePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 
-class MediaAdminMovePost extends MediaMovePost
+class MediaAdminMovePost extends AdminRequest
 {
     protected $modelName = 'Media';
 
@@ -28,7 +28,9 @@ class MediaAdminMovePost extends MediaMovePost
     public function rules()
     {
         $rules = [
-            //
+            'dir'       => 'required|string',
+            'name'      => 'required|string',
+            'target'    => 'required|string',
         ];
         return array_merge($rules, parent::rules());
     }

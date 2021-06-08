@@ -2,9 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaUploadPost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Helpers\MediaHelper;
 
-class MediaAdminUploadPost extends MediaUploadPost
+class MediaAdminUploadPost extends AdminRequest
 {
     protected $modelName = 'Media';
 
@@ -27,9 +28,12 @@ class MediaAdminUploadPost extends MediaUploadPost
      */
     public function rules()
     {
+        $media_config = MediaHelper::getMediaConfig();
         $rules = [
-            //
+            'files'     => 'required|array',
+            'files.*'   => 'nullable|max:'.$media_config['upload_limit'],
+            'dir'       => 'required|string',
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

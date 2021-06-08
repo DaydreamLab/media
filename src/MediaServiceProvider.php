@@ -32,9 +32,9 @@ class MediaServiceProvider extends ServiceProvider
 
         // set media disks to filesystems disks
         $filesystems = $this->app['config']->get('filesystems', []);
-       
+
         $media = MediaHelper::getMediaConfig();
-       
+
         foreach ($media['disks'] as $key => $disk)
         {
             $filesystems['disks'][$key] = $disk;
@@ -43,7 +43,7 @@ class MediaServiceProvider extends ServiceProvider
 
         $media_public_path = MediaHelper::getDiskPath('media-public');
 
-        $this->publishes([__DIR__.'/resources' => $media_public_path], 'media-configs');
+        $this->publishes([__DIR__ . '/../resources/' => $media_public_path.'/thumbs'], 'media-configs');
 
         $this->app->bind(
             ExceptionHandler::class,

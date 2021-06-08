@@ -88,7 +88,7 @@ class FileAdminService extends FileService
     }
 
 
-    public function beforeRemove($item)
+    public function beforeRemove(Collection $input, $item)
     {
         if ($this->getProvider() == 'azure') {
             $error = false;

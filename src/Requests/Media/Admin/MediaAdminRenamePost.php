@@ -3,6 +3,7 @@
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
 use DaydreamLab\Media\Requests\Media\MediaRenamePost;
+use Illuminate\Validation\Rule;
 
 class MediaAdminRenamePost extends MediaRenamePost
 {
@@ -27,8 +28,14 @@ class MediaAdminRenamePost extends MediaRenamePost
     public function rules()
     {
         $rules = [
-            //
+            'dir'       => 'required|string',
+            'name'      => 'required|string',
+            'rename'    => 'required|string',
+            'type'      => [
+                'required',
+                Rule::in(['file', 'folder'])
+            ]
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }

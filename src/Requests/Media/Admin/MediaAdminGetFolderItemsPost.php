@@ -2,9 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaGetFolderItemsPost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
+use Illuminate\Validation\Rule;
 
-class MediaAdminGetFolderItemsPost extends MediaGetFolderItemsPost
+class MediaAdminGetFolderItemsPost extends AdminRequest
 {
     protected $modelName = 'Media';
 
@@ -27,8 +28,16 @@ class MediaAdminGetFolderItemsPost extends MediaGetFolderItemsPost
     public function rules()
     {
         $rules = [
-            //
+            'dir'       => 'required|string',
+            'order_by'  => [
+                'nullable',
+                Rule::in(['name', 'modified'])
+            ],
+            'order'     => [
+                'nullable',
+                Rule::in(['asc', 'desc'])
+            ]
         ];
-        return array_merge($rules, parent::rules());
+        return array_merge(parent::rules(), $rules);
     }
 }
