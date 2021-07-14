@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFilesTable extends Migration
+class CreateFileCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,12 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('file_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('uuid');
-            $table->string('name');
-            $table->unsignedInteger('category_id')->nullable();
+            $table->string('title');
             $table->tinyInteger('state')->default(1);
-            $table->string('contentType');
-            $table->string('extension');
-            $table->string('size');
-            $table->string('url');
-            $table->text('introtext')->nullable();
             $table->text('description')->nullable();
-            $table->unsignedTinyInteger('encrypted')->default(0);
-            $table->string('password')->nullable();
-            $table->unsignedBigInteger('access')->nullable();
+            $table->unsignedBigInteger('access');
             $table->unsignedBigInteger('ordering')->nullable();
             $table->unsignedInteger('locked_by')->nullable();
             $table->unsignedInteger('created_by');
@@ -44,6 +35,6 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('file_categories');
     }
 }

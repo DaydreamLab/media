@@ -4,6 +4,7 @@ namespace DaydreamLab\Media\Models\File;
 
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
+use DaydreamLab\Media\Models\FileCategory\FileCategory;
 use DaydreamLab\Media\Models\MediaModel;
 use DaydreamLab\User\Models\User\UserGroup;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,8 +42,10 @@ class File extends MediaModel
         'password',
         'access',
         'ordering',
+        'locked_by',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'locked_at',
     ];
 
 
@@ -72,6 +75,17 @@ class File extends MediaModel
         static::creating(function ($model) {
             $model->uuid = Str::uuid()->toString();
         });
+    }
+
+
+//    public function category()
+//    {
+//        return $this->belongsTo(FileCategory::class, 'category_id', 'id');
+//    }
+
+    public function category()
+    {
+        return $this->belongsTo(FileCategory::class, 'category_id', 'id');
     }
 
 

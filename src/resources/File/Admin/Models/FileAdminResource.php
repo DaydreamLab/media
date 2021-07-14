@@ -24,6 +24,7 @@ class FileAdminResource extends JsonResource
             'uuid'          => $this->uuid,
             'name'          => $this->name,
             'categoryId'    => $this->category_id,
+            'categoryTitle' => $this->category ? $this->category->title : null,
             'state'         => $this->state,
             'contentType'   => $this->contentType,
             'extension'     => $this->extension,
@@ -32,10 +33,12 @@ class FileAdminResource extends JsonResource
             'description'   => $this->description,
             'access'        => $this->access,
             'ordering'      => $this->ordering,
+            'lockedAt'      => $this->getDateTimeString($this->locked_at, $user->timezone),
             'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
             'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),
-            'creator'       => $this->creator,
-            'updater'       => $this->updater
+            'lockerName'   => $this->lockerName,
+            'creatorName'   => $this->creatorName,
+            'updaterName'   => $this->updaterName,
         ];
     }
 

@@ -10,6 +10,9 @@ use Illuminate\Validation\Rule;
 
 class FileAdminStorePost extends AdminRequest
 {
+    protected $modelName = 'File';
+
+    protected $apiMethod = 'storeFile';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,11 +35,11 @@ class FileAdminStorePost extends AdminRequest
         return [
             'id'            => 'nullable|integer',
             'name'          => 'required|string',
-            'categoryId'    => 'nullable|integer',
+            'categoryId'    => 'required|integer',
             'state'         => [
                 'nullable',
                 'integer',
-                Rule::in([0,1,-2])
+                Rule::in([0,1,-1,-2])
             ],
             'introtext'     => 'nullable|string',
             'description'   => 'nullable|string',

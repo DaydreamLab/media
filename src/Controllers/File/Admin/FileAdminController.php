@@ -8,8 +8,11 @@ use DaydreamLab\Media\Requests\File\Admin\FileAdminRemovePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchPost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStatePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStorePost;
+use DaydreamLab\Media\Requests\File\Admin\FileAdminRestoreRequest;
+use DaydreamLab\Media\Resources\File\Admin\Collections\FileAdminListResourceCollection;
 use DaydreamLab\Media\Resources\File\Admin\Models\FileAdminResource;
 use DaydreamLab\Media\Services\File\Admin\FileAdminService;
+
 use Throwable;
 
 class FileAdminController extends BaseController
@@ -51,6 +54,32 @@ class FileAdminController extends BaseController
     }
 
 
+    public function restore(FileAdminRestoreRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->restore($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
+    }
+
+
+    public function search(FileAdminSearchPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], FileAdminListResourceCollection::class);
+    }
+
+
     public function state(FileAdminStatePost $request)
     {
         $this->service->setUser($request->user('api'));
@@ -74,18 +103,5 @@ class FileAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], FileAdminResource::class);
-    }
-
-
-    public function search(FileAdminSearchPost $request)
-    {
-        $this->service->setUser($request->user('api'));
-        try {
-            $this->service->search($request->validated());
-        } catch (Throwable $t) {
-            $this->handleException($t);
-        }
-
-        return $this->response($this->service->status, $this->service->response);
     }
 }

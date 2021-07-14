@@ -2,31 +2,26 @@
 
 namespace DaydreamLab\Media\Services\File\Admin;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\Media\Repositories\File\Admin\FileAdminRepository;
+use DaydreamLab\Media\Repositories\FileCategory\Admin\FileCategoryAdminRepository;
 use DaydreamLab\Media\Services\File\FileService;
-use DaydreamLab\User\Services\User\Admin\UserGroupAdminService;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
 
 class FileAdminService extends FileService
 {
     use LoggedIn;
 
-    protected $modelType = 'Admin';
+    protected $fileCategoryAdminRepository;
 
-    protected $search_keys = ['name'];
-
-    protected $userGroupAdminService;
-
-    public function __construct(FileAdminRepository $repo, UserGroupAdminService $userGroupAdminService)
+    public function __construct(FileAdminRepository $repo, FileCategoryAdminRepository $fileCategoryAdminRepository)
     {
         parent::__construct($repo);
         $this->repo = $repo;
-        $this->userGroupAdminService = $userGroupAdminService;
+        $this->fileCategoryAdminRepository = $fileCategoryAdminRepository;
     }
 
 
@@ -105,8 +100,22 @@ class FileAdminService extends FileService
                 $errorMessage = count($errorResponse)
                     ? $errorResponse[1]
                     : 'BlobError';
-                $this->throwResponse($errorMessage);
+
+                throw new ForbiddenException($errorMessage);
             }
         }
+    }
+
+
+    public function store(Collection $input)
+    {
+        $category = $this->fileCategoryAdminRepository->find($input->get('category_id'));
+        if (!$category) {
+            throw new NotFoundException('ItemNotExist', [
+                'categoryId' => (int)$input->get('category_id')
+            ], null, 'FileCategory');
+        }
+
+        return parent::store($input);
     }
 }

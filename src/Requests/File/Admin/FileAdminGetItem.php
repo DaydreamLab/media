@@ -2,12 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Requests\MediaGetItemRequest;
 
-class FileAdminGetItem extends AdminRequest
+class FileAdminGetItem extends MediaGetItemRequest
 {
-    protected $package = 'Media';
-
     protected $modelName = 'File';
 
     protected $apiMethod = 'getFile';

@@ -7,6 +7,9 @@ use Illuminate\Validation\Rule;
 
 class FileAdminStatePost extends AdminRequest
 {
+    protected $modelName = 'File';
+
+    protected $apiMethod = 'stateFile';
     /**
      * Determine if the user is authorized to make this request.
      *

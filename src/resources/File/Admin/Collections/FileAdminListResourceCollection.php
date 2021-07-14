@@ -1,6 +1,6 @@
 <?php
 
-namespace DaydreamLab\User\Resources\User\Admin\Collections;
+namespace DaydreamLab\Media\Resources\File\Admin\Collections;
 
 use DaydreamLab\JJAJ\Resources\BaseResourceCollection;
 use DaydreamLab\Media\Resources\File\Admin\Models\FileAdminResource;

@@ -2,15 +2,13 @@
 
 namespace DaydreamLab\Media\Services\File\Front;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
+use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\Media\Repositories\File\Front\FileFrontRepository;
 use DaydreamLab\Media\Services\File\FileService;
 use Illuminate\Support\Collection;
 
 class FileFrontService extends FileService
 {
-    protected $modelType = 'Front';
-
     public function __construct(FileFrontRepository $repo)
     {
         parent::__construct($repo);
@@ -22,7 +20,7 @@ class FileFrontService extends FileService
     {
         $item = $this->findBy('uuid', '=', $input->get('uuid'))->first();
         if (!$item) {
-            $this->throwResponse('ItemNotExist');
+            throw new NotFoundException('ItemNotExist', ['uuid' =>  $input->get('uuid')], null, $this->modelName);
         }
 
         // todo: 判斷權限
@@ -31,6 +29,7 @@ class FileFrontService extends FileService
         if ($this->getProvider() == 'azure') {
             $client = $this->getAzureClient();
             $blob =  $client->getBlob($this->azureContainer, $item->blobName);
+
             return $blob;
         }
     }

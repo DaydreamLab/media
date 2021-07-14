@@ -7,6 +7,9 @@ use Illuminate\Validation\Rule;
 
 class FileAdminSearchPost extends ListRequest
 {
+    protected $modelName = 'File';
+
+    protected $apiMethod = 'searchFile';
 
     public function authorize()
     {

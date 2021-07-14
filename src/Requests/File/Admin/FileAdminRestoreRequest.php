@@ -2,13 +2,13 @@
 
 namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Requests\MediaRestoreRequest;
 
-class FileAdminRemovePost extends AdminRequest
+class FileAdminRestoreRequest extends MediaRestoreRequest
 {
     protected $modelName = 'File';
 
-    protected $apiMethod = 'deleteFile';
+    protected $apiMethod = 'restoreFile';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,9 +26,18 @@ class FileAdminRemovePost extends AdminRequest
      */
     public function rules()
     {
-        return [
-            'ids'       => 'required|array',
-            'ids.*'     => 'required|integer'
+        $rules = [
+            //
         ];
+
+        return array_merge(parent::rules(), $rules);
+    }
+
+
+    public function validated()
+    {
+        $validated = parent::validated();
+
+        return $validated;
     }
 }
