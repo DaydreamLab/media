@@ -17,7 +17,11 @@
     "minimum-stability": "dev",
     "require": {
         "daydreamlab/user": "dev-base/v2",
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "microsoft/azure-storage-blob": "*",
+        "microsoft/azure-storage-table": "*",
+        "microsoft/azure-storage-queue": "*",
+        "microsoft/azure-storage-file": "*"
     },
     "extra": {
         "laravel": {

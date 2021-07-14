@@ -3,7 +3,6 @@
 namespace DaydreamLab\Media\Controllers\File\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminGetItem;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminRemovePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchPost;
@@ -11,6 +10,7 @@ use DaydreamLab\Media\Requests\File\Admin\FileAdminStatePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStorePost;
 use DaydreamLab\Media\Resources\File\Admin\Models\FileAdminResource;
 use DaydreamLab\Media\Services\File\Admin\FileAdminService;
+use Throwable;
 
 class FileAdminController extends BaseController
 {
@@ -28,16 +28,24 @@ class FileAdminController extends BaseController
     public function getItem(FileAdminGetItem $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->getItem(collect(['id' => $request->route('id')]));
+        try {
+            $this->service->getItem(collect(['id' => $request->route('id')]));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status, new FileAdminResource($this->service->response));
+        return $this->response($this->service->status, $this->service->response, [], FileAdminResource::class);
     }
 
 
     public function remove(FileAdminRemovePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->remove($request->validated());
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -46,7 +54,11 @@ class FileAdminController extends BaseController
     public function state(FileAdminStatePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->state($request->validated());
+        try {
+            $this->service->state($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -55,20 +67,24 @@ class FileAdminController extends BaseController
     public function store(FileAdminStorePost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->store($request->validated());
+        try {
+            $this->service->store($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
-        return $this->response($this->service->status,
-            gettype($this->service->response) == 'object'
-            ? new FileAdminResource($this->service->response)
-            : $this->service->response
-        );
+        return $this->response($this->service->status, $this->service->response, [], FileAdminResource::class);
     }
 
 
     public function search(FileAdminSearchPost $request)
     {
         $this->service->setUser($request->user('api'));
-        $this->service->search($request->validated());
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
