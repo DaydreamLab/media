@@ -31,7 +31,7 @@ Route::post('api/admin/media/rename', [MediaAdminController::class, 'rename'])
 
 Route::post('api/admin/file/store', [FileAdminController::class, 'store'])
     ->middleware(['expired', 'admin']);
-Route::get('api/admin/file/remove', [FileAdminController::class, 'remove'])
+Route::post('api/admin/file/remove', [FileAdminController::class, 'remove'])
     ->middleware(['expired', 'admin']);
 
 

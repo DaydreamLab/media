@@ -2,7 +2,7 @@
 
 namespace DaydreamLab\Media\Models\File;
 
-use DaydreamLab\Cms\Traits\Model\UserInfo;
+use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\Media\Models\MediaModel;
 use DaydreamLab\User\Models\User\UserGroup;

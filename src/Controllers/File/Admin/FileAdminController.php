@@ -14,9 +14,9 @@ use DaydreamLab\Media\Services\File\Admin\FileAdminService;
 
 class FileAdminController extends BaseController
 {
-    protected $modelName = 'File';
+    protected $package = 'Media';
 
-    protected $modelType = 'Admin';
+    protected $modelName = 'File';
 
     public function __construct(FileAdminService $service)
     {

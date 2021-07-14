@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class FileFrontController extends BaseController
 {
-    protected $modelName = 'File';
+    protected $package = 'Media';
 
-    protected $modelType = 'Front';
+    protected $modelName = 'File';
 
     public function __construct(FileFrontService $service)
     {
@@ -31,8 +31,12 @@ class FileFrontController extends BaseController
 
         if ($this->service->getProvider() == 'azure') {
             $item = $this->service->response;
-            header("Content-type: {$item->contentType}");
-            header("Content-Disposition: attachment; filename={$item->blobName}");
+            $filename = urlencode($item->blobName);
+            //header("Response-Type: arraybuffer");
+            //header("Accept-Charset: utf-8");
+            header("Content-Type: {$item->contentType}");
+            header("Content-Length: {$data->getProperties()->getContentLength()}");
+            header("Content-Disposition: attachment; filename={$filename}");
             fpassthru($data->getContentStream());
         }
     }
