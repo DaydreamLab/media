@@ -19,15 +19,15 @@ class MediaAdminListResource extends BaseJsonResource
     {
         $user = $request->user('api');
         return [
-            'children'      => $this->children,
-            'modified'      => $this->modified,
-            'name'          => $this->name,
-            'path'          => $this->path,
-            'size'          => $this->size,
-            'thumb'         => $this->thumb,
-            'type'          => $this->type,
-            'url'           => $this->url,
-            'extension'     => ($this->extension) ? : ''
+            'children'      => $this['children'],
+            'modified'      => $this['modified'],
+            'name'          => $this['name'],
+            'path'          => $this['path'],
+            'size'          => $this['size'],
+            'thumb'         => $this['thumb'],
+            'type'          => $this['type'],
+            'url'           => $this['url'],
+            'extension'     => isset($this['extension']) ? $this['extension'] : ''
         ];
     }
 
