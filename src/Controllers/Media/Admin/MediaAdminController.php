@@ -13,6 +13,7 @@ use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFolderItemsPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminMovePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminRenamePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminUploadPost;
+use DaydreamLab\Media\Resources\Media\Admin\Collections\MediaAdminListResourceCollection;
 use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
 use Illuminate\Http\Request;
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -52,7 +53,7 @@ class MediaAdminController extends MediaController
         $this->service->setUser($request->user());
         $this->service->getFolderItems($request->validated());
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, [], MediaAdminListResourceCollection::class);
     }
 
 
