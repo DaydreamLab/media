@@ -50,7 +50,9 @@ class FileAdminStorePost extends AdminRequest
             'groupIds.*'    => 'nullable|integer',
             'access'        => 'nullable|integer',
             'ordering'      => 'nullable|integer',
-            'params'        => 'nullable|string'
+            'params'        => 'nullable|string',
+            'tagIds'        => 'nullable|array',
+            'tagIds.*'      => 'required|integer',
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\Media\Models\File;
 
+use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
 use DaydreamLab\Media\Models\FileCategory\FileCategory;
@@ -103,5 +104,11 @@ class File extends MediaModel
     public function groups()
     {
         return $this->belongsToMany(UserGroup::class, 'files_users_groups_maps', 'file_id', 'group_id');
+    }
+
+
+    public function tags()
+    {
+        return $this->belongsTo(Tag::class, 'files_tags_maps', 'file_id', 'tag_id');
     }
 }

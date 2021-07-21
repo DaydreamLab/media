@@ -47,6 +47,14 @@ class FileAdminService extends FileService
     }
 
 
+    public function addMapping($item, $input)
+    {
+        if (count($tagIds = $input->get('tagIds') ?:[])) {
+            $item->tags()->attach($tagIds);
+        }
+    }
+
+
     public function addAzure(Collection $input)
     {
         $blobName = $input->get('name') ;
@@ -103,6 +111,14 @@ class FileAdminService extends FileService
 
                 throw new ForbiddenException($errorMessage);
             }
+        }
+    }
+
+
+    public function modifyMapping($item, $input)
+    {
+        if (count($tagIds = $input->get('tagIds') ?:[])) {
+            $item->tags()->sync($tagIds);
         }
     }
 
