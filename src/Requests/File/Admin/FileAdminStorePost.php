@@ -2,8 +2,6 @@
 
 namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\JJAJ\Helpers\InputHelper;
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\Media\Helpers\MediaHelper;
 use Illuminate\Validation\Rule;
@@ -52,6 +50,7 @@ class FileAdminStorePost extends AdminRequest
             'groupIds.*'    => 'nullable|integer',
             'access'        => 'nullable|integer',
             'ordering'      => 'nullable|integer',
+            'params'        => 'nullable|string'
         ];
     }
 

@@ -24,6 +24,8 @@ class FileCategoryAdminResource extends JsonResource
             'title'         => $this->title,
             'state'         => $this->state,
             'description'   => $this->description,
+            'contentType'   => $this->contentType,
+            'params'        => $this->params,
             'lockedAt'      => $this->getDateTimeString($this->locked_at, $user->timezone),
             'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
             'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),

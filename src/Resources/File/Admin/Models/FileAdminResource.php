@@ -33,6 +33,7 @@ class FileAdminResource extends JsonResource
             'description'   => $this->description,
             'access'        => $this->access,
             'ordering'      => $this->ordering,
+            'params'        => $this->params,
             'lockedAt'      => $this->getDateTimeString($this->locked_at, $user->timezone),
             'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
             'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),

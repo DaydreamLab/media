@@ -28,7 +28,7 @@ class FileFrontService extends FileService
 
         if ($this->getProvider() == 'azure') {
             $client = $this->getAzureClient();
-            $blob =  $client->getBlob($this->azureContainer, $item->blobName);
+            $blob = $client->getBlob($this->azureContainer, $item->blobName);
 
             return $blob;
         }

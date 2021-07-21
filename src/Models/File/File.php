@@ -42,6 +42,7 @@ class File extends MediaModel
         'password',
         'access',
         'ordering',
+        'params',
         'locked_by',
         'created_by',
         'updated_by',
@@ -65,6 +66,10 @@ class File extends MediaModel
      * @var array
      */
     protected $appends = [
+    ];
+
+    protected $casts = [
+      'params' => 'array'
     ];
 
 

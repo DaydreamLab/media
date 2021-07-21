@@ -28,15 +28,18 @@ class FileCategory extends MediaModel
      * @var array
      */
     protected $fillable = [
-        'title',
-        'state',
-        'description',
-        'access',
-        'ordering',
-        'locked_by',
-        'created_by',
-        'updated_by',
-        'locked_at',
+      'title',
+      'state',
+      'contentType',
+      'extension',
+      'description',
+      'access',
+      'ordering',
+      'params',
+      'locked_by',
+      'created_by',
+      'updated_by',
+      'locked_at',
     ];
 
 
@@ -55,6 +58,11 @@ class FileCategory extends MediaModel
      * @var array
      */
     protected $appends = [
+    ];
+
+
+    protected $casts = [
+        'params' => 'array'
     ];
 
 

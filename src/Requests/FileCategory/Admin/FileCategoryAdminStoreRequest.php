@@ -31,7 +31,9 @@ class FileCategoryAdminStoreRequest extends MediaStoreRequest
             'id'            => 'nullable|integer',
             'title'         => 'required|string',
             'state'         => ['required', Rule::in([0, 1, -1, -2])],
-            'description'   => 'nullable|string'
+            'contentType'   => 'nullable|string',
+            'description'   => 'nullable|string',
+            'params'        => 'nullable|string',
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -41,6 +43,10 @@ class FileCategoryAdminStoreRequest extends MediaStoreRequest
     public function validated()
     {
         $validated = parent::validated();
+
+        if (!$validated->get('contentType')) {
+          $validated->put('contentType', 'file');
+        }
 
         return $validated;
     }

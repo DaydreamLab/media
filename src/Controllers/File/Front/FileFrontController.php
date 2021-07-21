@@ -32,9 +32,9 @@ class FileFrontController extends BaseController
         if ($this->service->getProvider() == 'azure') {
             $item = $this->service->response;
             $filename = urlencode($item->blobName);
-            header("Content-Type: {$item->contentType}");
-            header("Content-Length: {$data->getProperties()->getContentLength()}");
-            header("Content-Disposition: attachment; filename={$filename}");
+//            header("Content-Type: {$item->contentType}");
+//            header("Content-Length: {$data->getProperties()->getContentLength()}");
+            header("Content-Disposition:attachment; filename={$filename}");
             fpassthru($data->getContentStream());
         }
     }

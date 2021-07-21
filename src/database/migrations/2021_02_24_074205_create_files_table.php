@@ -29,6 +29,7 @@ class CreateFilesTable extends Migration
             $table->string('password')->nullable();
             $table->unsignedBigInteger('access')->nullable();
             $table->unsignedBigInteger('ordering')->nullable();
+            $table->text('params')->nullable();
             $table->unsignedInteger('locked_by')->nullable();
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
