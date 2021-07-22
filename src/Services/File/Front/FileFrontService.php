@@ -2,10 +2,13 @@
 
 namespace DaydreamLab\Media\Services\File\Front;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\Media\Repositories\File\Front\FileFrontRepository;
 use DaydreamLab\Media\Services\File\FileService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class FileFrontService extends FileService
 {
@@ -23,12 +26,27 @@ class FileFrontService extends FileService
             throw new NotFoundException('ItemNotExist', ['uuid' =>  $input->get('uuid')], null, $this->modelName);
         }
 
+        if ($item->password) {
+            if(!Hash::check($input->get('password'), $item->password)) {
+                throw new ForbiddenException('PasswordIncorrect');
+            }
+        }
+
+
         // todo: 判斷權限
         $this->response = $item;
 
         if ($this->getProvider() == 'azure') {
             $client = $this->getAzureClient();
-            $blob = $client->getBlob($this->azureContainer, $item->blobName);
+            try {
+                $blob = $client->getBlob($this->azureContainer, $item->blobName);
+            } catch (\Throwable $t) {
+                if ($t->getCode() == 404) {
+                    throw new NotFoundException('BlobNotFound', 404);
+                } else {
+                    throw new InternalServerErrorException('BlobError', 500);
+                }
+            }
 
             return $blob;
         }
