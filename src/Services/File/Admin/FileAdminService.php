@@ -49,8 +49,20 @@ class FileAdminService extends FileService
 
     public function addMapping($item, $input)
     {
-        if (count($tagIds = $input->get('tagIds') ?:[])) {
+        $tags = $input->get('tags') ? $input->get('tags') : [];
+        $tagIds = array_map(function($tag) {
+            return $tag['id'];
+        }, $tags);
+        if (count($tagIds)) {
             $item->tags()->attach($tagIds);
+        }
+
+        $brands = $input->get('brands') ? $input->get('brands') : [];
+        $brand_ids = array_map(function($brand) {
+            return $brand['id'];
+        }, $brands);
+        if (count($brand_ids)) {
+            $item->brands()->attach($brand_ids);
         }
     }
 
@@ -117,8 +129,18 @@ class FileAdminService extends FileService
 
     public function modifyMapping($item, $input)
     {
-        if (count($tagIds = $input->get('tagIds') ?:[])) {
+        if ( $input->get('tags') !== null ) {
+            $tagIds = array_map(function($tag) {
+                return $tag['id'];
+            }, $input->get('tags'));
             $item->tags()->sync($tagIds);
+        }
+
+        if ( $input->get('brands') !== null ) {
+            $brand_ids = array_map(function($brand) {
+                return $brand['id'];
+            }, $input->get('brands'));
+            $item->brands()->sync($brand_ids);
         }
     }
 

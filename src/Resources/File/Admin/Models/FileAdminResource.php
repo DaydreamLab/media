@@ -34,12 +34,17 @@ class FileAdminResource extends JsonResource
             'access'        => $this->access,
             'ordering'      => $this->ordering,
             'params'        => $this->params,
+            'tags'          => $this->tags,
+            'brands'        => $this->brands->map(function ($b) {
+                return $b->only(['id', 'title']);
+            }),
             'lockedAt'      => $this->getDateTimeString($this->locked_at, $user->timezone),
             'createdAt'     => $this->getDateTimeString($this->created_at, $user->timezone),
             'updatedAt'     => $this->getDateTimeString($this->updated_at, $user->timezone),
             'lockerName'    => $this->lockerName,
             'creatorName'   => $this->creatorName,
             'updaterName'   => $this->updaterName,
+            'locker'        => ($this->locker) ? $this->locker->only(['id', 'uuid', 'name']) : []
         ];
     }
 
