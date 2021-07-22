@@ -2,6 +2,7 @@
 
 namespace DaydreamLab\Media\Models\File;
 
+use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\Cms\Models\Tag\Tag;
 use DaydreamLab\JJAJ\Traits\UserInfo;
 use DaydreamLab\JJAJ\Traits\RecordChanger;
@@ -84,11 +85,6 @@ class File extends MediaModel
     }
 
 
-//    public function category()
-//    {
-//        return $this->belongsTo(FileCategory::class, 'category_id', 'id');
-//    }
-
     public function category()
     {
         return $this->belongsTo(FileCategory::class, 'category_id', 'id');
@@ -104,6 +100,13 @@ class File extends MediaModel
     public function groups()
     {
         return $this->belongsToMany(UserGroup::class, 'files_users_groups_maps', 'file_id', 'group_id');
+    }
+
+
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'brands_files_maps', 'file_id', 'brand_id')
+            ->withTimestamps();
     }
 
 
