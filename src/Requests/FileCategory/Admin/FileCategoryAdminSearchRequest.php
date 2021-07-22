@@ -27,7 +27,7 @@ class FileCategoryAdminSearchRequest extends MediaSearchRequest
     public function rules()
     {
         $rules =[
-            //
+            'contentType'   => 'nullable|string'
         ];
 
         return array_merge(parent::rules(), $rules);
