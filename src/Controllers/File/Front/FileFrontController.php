@@ -5,6 +5,7 @@ namespace DaydreamLab\Media\Controllers\File\Front;
 use DaydreamLab\JJAJ\Controllers\BaseController;
 use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
+use DaydreamLab\Media\Requests\File\Front\FileFrontDownloadRequest;
 use DaydreamLab\Media\Services\File\Front\FileFrontService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,7 @@ class FileFrontController extends BaseController
     }
 
 
-    public function download(Request $request)
+    public function download(FileFrontDownloadRequest $request)
     {
         $user = Auth::guard('api')->user();
         try {
