@@ -3,6 +3,7 @@
 namespace DaydreamLab\Media\Requests\FileCategory\Admin;
 
 use DaydreamLab\Media\Requests\MediaSearchRequest;
+use Illuminate\Validation\Rule;
 
 class FileCategoryAdminSearchRequest extends MediaSearchRequest
 {
@@ -26,7 +27,12 @@ class FileCategoryAdminSearchRequest extends MediaSearchRequest
      */
     public function rules()
     {
-        $rules =[
+        $rules = [
+            'state'         => [
+                'nullable',
+                'integer',
+                Rule::in([0,1,-1,-2])
+            ],
             'contentType'   => 'nullable|string'
         ];
 
@@ -37,6 +43,11 @@ class FileCategoryAdminSearchRequest extends MediaSearchRequest
     public function validated()
     {
         $validated = parent::validated();
+
+        if ( $validated->get('state') == '' ) {
+            $validated->forget('state');
+            $validated['q'] = $this->q->whereIn('state', [0, 1]);
+        }
 
         return $validated;
     }

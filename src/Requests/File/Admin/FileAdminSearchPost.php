@@ -58,6 +58,11 @@ class FileAdminSearchPost extends ListRequest
 
         $validated->put('q', $q);
 
+        if ( $validated->get('state') == '' ) {
+            $validated->forget('state');
+            $validated['q'] = $this->q->whereIn('state', [0, 1]);
+        }
+
         return $validated;
     }
 }
