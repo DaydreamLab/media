@@ -43,7 +43,7 @@ class FileAdminStorePost extends AdminRequest
             'description'   => 'nullable|string',
             'file'          => 'nullable|max:'.$media_config['upload_limit'],
             'encrypted'     => ['required', Rule::in([0, 1])],
-            'password'      => 'required_if:encrypted,1|max:16|min:8',
+            'password'      => 'required_if:encrypted,1|nullable|max:16|min:8',
             'notifyEmails'  => 'nullable|array',
             'notifyEmails.*'=> 'nullable|email',
             'groupIds'      => 'nullable|array',
