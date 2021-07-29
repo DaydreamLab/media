@@ -33,7 +33,7 @@ class FileCategoryAdminStoreRequest extends MediaStoreRequest
             'state'         => ['required', Rule::in([0, 1, -1, -2])],
             'contentType'   => 'nullable|string',
             'description'   => 'nullable|string',
-            'params'        => 'nullable|string',
+            'params'        => 'nullable|array',
         ];
 
         return array_merge(parent::rules(), $rules);

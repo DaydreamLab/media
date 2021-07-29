@@ -32,6 +32,7 @@ class FileCategoryAdminResource extends JsonResource
             'lockerName'    => $this->lockerName,
             'creatorName'   => $this->creatorName,
             'updaterName'   => $this->updaterName,
+            'locker'        => ($this->locker) ? $this->locker->only(['id', 'uuid', 'name']) : []
         ];
     }
 }
