@@ -68,9 +68,9 @@ class FileAdminStorePost extends AdminRequest
         $validated = parent::validated();
 
         $validated->put('category_id', $validated->get('categoryId'));
-        $validated->put('contentType', $this->file->getMimeType());
-        $validated->put('extension', $this->file->extension());
-        $validated->put('size', ceil((double) ($this->file->getSize() / 1024)));
+        //$validated->put('contentType', $this->file->getMimeType());
+        //$validated->put('extension', $this->file->extension());
+        //$validated->put('size', ceil((double) ($this->file->getSize() / 1024)));
         $validated->forget('categoryId');
 
         return $validated;

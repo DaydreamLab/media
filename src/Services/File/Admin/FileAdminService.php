@@ -9,6 +9,7 @@ use DaydreamLab\Media\Repositories\File\Admin\FileAdminRepository;
 use DaydreamLab\Media\Repositories\FileCategory\Admin\FileCategoryAdminRepository;
 use DaydreamLab\Media\Services\File\FileService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
 
 class FileAdminService extends FileService
@@ -152,6 +153,24 @@ class FileAdminService extends FileService
             throw new NotFoundException('ItemNotExist', [
                 'categoryId' => (int)$input->get('category_id')
             ], null, 'FileCategory');
+        }
+
+        # 如果 file 是 url 形式，先取得 file 再處理一些參數
+        $file = $input->get('file');
+        if (is_string($file)) {
+            if (strpos($file, 'storage/media') !== false) {
+                $input->put('file', public_path($file));
+                $input->put('contentType', mime_content_type(public_path($file)));
+                $input->put('extension', pathinfo(public_path($file), PATHINFO_EXTENSION));
+                $input->put('size', ceil((double) (filesize(public_path($file)) / 1024)));
+            } else {
+
+            }
+
+        } else {
+            $input->put('contentType', $file->getMimeType());
+            $input->put('extension', $file->extension());
+            $input->put('size', ceil((double) ($file->getSize() / 1024)));
         }
 
         return parent::store($input);
