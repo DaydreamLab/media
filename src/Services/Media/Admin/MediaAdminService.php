@@ -8,12 +8,8 @@ use DaydreamLab\Media\Helpers\MediaHelper;
 use DaydreamLab\Media\Repositories\Media\Admin\MediaAdminRepository;
 use DaydreamLab\Media\Services\Media\MediaService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Auth;
 
 class MediaAdminService extends MediaService
 {
@@ -32,7 +28,7 @@ class MediaAdminService extends MediaService
 
     public function createFolder(Collection $input)
     {
-        $directories = $this->userMerchantID.$input->get('dir');
+        $directories = $input->get('dir');
         $folder_name = str_replace(' ', '', $input->get('name'));
         $path = $directories . '/' . $folder_name;
 
@@ -110,8 +106,8 @@ class MediaAdminService extends MediaService
 
     public function getAllFolders()
     {
-        $dir = '/'.$this->userMerchantID;
-        $all = $this->media_storage->allDirectories($this->userMerchantID);
+        $dir = '/';
+        $all = $this->media_storage->allDirectories();
         $all = MediaHelper::filterDirectories($all);
         $all = MediaHelper::appendMeta($all, 'folder', $dir, $this->media_storage);
 
@@ -143,7 +139,7 @@ class MediaAdminService extends MediaService
 
     public function getFiles(Collection $input)
     {
-        $directories = $this->userMerchantID.$input->get('dir');
+        $directories = $input->get('dir');
         $files = $this->media_storage->files($directories);
 
         $data = MediaHelper::appendMeta($files, 'files', $directories, $this->media_storage);
@@ -172,8 +168,8 @@ class MediaAdminService extends MediaService
 
     public function move(Collection $input)
     {
-        $directories = $this->userMerchantID.$input->get('dir');
-        $target = $this->userMerchantID.$input->get('target');
+        $directories = $input->get('dir');
+        $target = $input->get('target');
         $name = $input->get('name');
 
         $result = $this->media_storage->move($directories . '/' . $name, $target . '/' . $name);
@@ -206,11 +202,7 @@ class MediaAdminService extends MediaService
     {
         foreach ($input->get('paths') as $path)
         {
-            if( $this->userMerchantID != null ){
-                $comebinePath = $this->userMerchantID.'/'.$path;
-            } else {
-                $comebinePath = substr($path, 1);
-            }
+            $comebinePath = substr($path, 1);
 
             if (is_dir($this->media_path.$path))
             {
@@ -253,7 +245,7 @@ class MediaAdminService extends MediaService
 
     public function rename(Collection $input)
     {
-        $directories = $this->userMerchantID.$input->get('dir');
+        $directories = $input->get('dir');
         if ($input->get('type') == 'folder')
         {
             $old = $directories;
@@ -295,9 +287,7 @@ class MediaAdminService extends MediaService
 
     public function upload(Collection $input)
     {
-        $directories = $this->userMerchantID
-            ? "/{$this->userMerchantID}".$input->get('dir')
-            : $input->get('dir');
+        $directories = $input->get('dir');
 
         $complete = true;
         $link_path = $this->media_link_base . $directories;

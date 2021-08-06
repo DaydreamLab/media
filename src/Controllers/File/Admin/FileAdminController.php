@@ -9,7 +9,7 @@ use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchPost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStatePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStorePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminRestoreRequest;
-use DaydreamLab\Media\Resources\File\Admin\Collections\FileAdminListResourceCollection;
+use DaydreamLab\Media\Resources\File\Admin\Collections\FileAdminSearchResourceCollection;
 use DaydreamLab\Media\Resources\File\Admin\Models\FileAdminResource;
 use DaydreamLab\Media\Services\File\Admin\FileAdminService;
 
@@ -76,7 +76,7 @@ class FileAdminController extends BaseController
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response, [], FileAdminListResourceCollection::class);
+        return $this->response($this->service->status, $this->service->response, [], FileAdminSearchResourceCollection::class);
     }
 
 

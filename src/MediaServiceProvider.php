@@ -2,12 +2,8 @@
 
 namespace DaydreamLab\Media;
 
-use DaydreamLab\JJAJ\Exceptions\BaseExceptionHandler;
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Helpers\MediaHelper;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Debug\ExceptionHandler;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -44,11 +40,6 @@ class MediaServiceProvider extends ServiceProvider
         $media_public_path = MediaHelper::getDiskPath('media-public');
 
         $this->publishes([__DIR__ . '/../resources/' => $media_public_path.'/thumbs'], 'media-configs');
-
-        $this->app->bind(
-            ExceptionHandler::class,
-            BaseExceptionHandler::class
-        );
     }
 
     /**
