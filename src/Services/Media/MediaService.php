@@ -2,15 +2,10 @@
 
 namespace DaydreamLab\Media\Services\Media;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Repositories\Media\MediaRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Str;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 
 class MediaService extends BaseService
@@ -41,43 +36,12 @@ class MediaService extends BaseService
 
     public function __construct(MediaRepository $repo)
     {
-        if( config('daydreamlab.media.dddream-merchant-mode') ){
-            $this->media_storage_type = 'media-public-merchant';
-            $this->thumb_storage_type = 'media-thumb-merchant';
-            $this->media_link_base .= '/merchant';
-
-            $user = Auth::guard('api')->user();
-            if(!$user) {
-                $this->throwResponse('UserUnauthorized');
-            }
-
-            if( $merchant = $user->merchants()->first() ){
-                $this->userMerchantID = $merchant->id;
-            }else{
-                if (!$user->isSuperUser())
-                {
-                    $this->throwResponse('MediaThisAdminUserNotHaveMerchant');
-                }
-            }
-        }
+        parent::__construct($repo);
 
         $this->media_storage = Storage::disk($this->media_storage_type);
         $this->thumb_storage = Storage::disk($this->thumb_storage_type);
         $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix();
         $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix();
-
-        if( config('daydreamlab.media.dddream-merchant-mode') ){
-            //Helper::show(Auth::guard('api')->user()->merchants->first()->id);
-            if( !$this->media_storage->exists($this->userMerchantID) &&
-                !$this->thumb_storage->exists($this->userMerchantID) ){
-                //利用merchantID建構Dir
-                $result_media   = $this->media_storage->makeDirectory($this->userMerchantID, intval( '0755', 8 ));
-                $result_thumb   = $this->thumb_storage->makeDirectory($this->userMerchantID, intval( '0755', 8 ));
-            }
-            $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix().$this->userMerchantID.'/';
-            $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix().$this->userMerchantID.'/';
-        }
-        parent::__construct($repo);
     }
 
 
@@ -100,5 +64,4 @@ class MediaService extends BaseService
         return $this->media_storage->move($old, $new) &&
                 $this->thumb_storage->move($old, $new) ?: false;
     }
-
 }

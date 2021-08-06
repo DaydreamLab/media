@@ -17,6 +17,7 @@ use DaydreamLab\Media\Resources\Media\Admin\Collections\MediaAdminListResourceCo
 use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
 use Illuminate\Http\Request;
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use Throwable;
 
 class MediaAdminController extends MediaController
 {

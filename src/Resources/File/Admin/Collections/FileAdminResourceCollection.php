@@ -4,9 +4,8 @@ namespace DaydreamLab\Media\Resources\File\Admin\Collections;
 
 use DaydreamLab\JJAJ\Resources\BaseResourceCollection;
 use DaydreamLab\Media\Resources\File\Admin\Models\FileAdminResource;
-use DaydreamLab\User\Resources\User\Admin\Models\UserAdminListResource;
 
-class FileAdminListResourceCollection extends BaseResourceCollection
+class FileAdminResourceCollection extends BaseResourceCollection
 {
     public $collects = FileAdminResource::class;
 

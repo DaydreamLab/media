@@ -8,12 +8,8 @@ use DaydreamLab\Media\Helpers\MediaHelper;
 use DaydreamLab\Media\Repositories\Media\Admin\MediaAdminRepository;
 use DaydreamLab\Media\Services\Media\MediaService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Auth;
 
 class MediaAdminService extends MediaService
 {
@@ -32,7 +28,7 @@ class MediaAdminService extends MediaService
 
     public function createFolder(Collection $input)
     {
-        $directories = $this->userMerchantID.$input->get('dir');
+        $directories = $input->get('dir');
         $folder_name = str_replace(' ', '', $input->get('name'));
         $path = $directories . '/' . $folder_name;
 
