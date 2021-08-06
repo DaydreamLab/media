@@ -31,4 +31,6 @@ return [
     'MOVE_SUCCESS'                      => '{$ModelName} move success',
     'MOVE_FAIL'                         => '{$ModelName} move fail',
 
+    # Logic Error
+    'LOGIC_ERROR'                       => '{$ModelName} logic error, reason: :reason'
 ];

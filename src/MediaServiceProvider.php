@@ -38,6 +38,8 @@ class MediaServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__. '/constants' => config_path('constants/media')], 'media-configs');
         $this->publishes([__DIR__. '/Configs/' => config_path('daydreamlab')], 'media-configs');
+
+        //$this->app->bind(Logic);
     }
 
     /**
