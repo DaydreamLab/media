@@ -11,24 +11,10 @@ return [
             'visibility'=> 'public',
         ],
 
-        'media-public-merchant'  => [
-            'driver'    => 'local',
-            'root'      => storage_path('app/public/media/merchant'),
-            'url'       => config('app.url').'/storage/media/merchant',
-            'visibility'=> 'public',
-        ],
-
         'media-thumb'   => [
             'driver'    => 'local',
             'root'      => storage_path('app/public/media/thumbs'),
             'url'       => config('app.url').'/storage/media/thumbs',
-            'visibility'=> 'public',
-        ],
-
-        'media-thumb-merchant'   => [
-            'driver'    => 'local',
-            'root'      => storage_path('app/public/media/thumbs/merchant'),
-            'url'       => config('app.url').'/storage/media/thumbs/merchant',
             'visibility'=> 'public',
         ],
 
