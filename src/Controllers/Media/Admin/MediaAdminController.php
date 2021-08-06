@@ -2,9 +2,6 @@
 
 namespace DaydreamLab\Media\Controllers\Media\Admin;
 
-use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Helpers\Helper;
-use DaydreamLab\JJAJ\Helpers\ResponseHelper;
 use DaydreamLab\Media\Controllers\MediaController;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminCreateFolderPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFoldersPost;
@@ -15,14 +12,11 @@ use DaydreamLab\Media\Requests\Media\Admin\MediaAdminRenamePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminUploadPost;
 use DaydreamLab\Media\Resources\Media\Admin\Collections\MediaAdminListResourceCollection;
 use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
-use Illuminate\Http\Request;
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use Throwable;
 
 class MediaAdminController extends MediaController
 {
     protected $modelName = 'Media';
-
 
     public function __construct(MediaAdminService $service)
     {
@@ -34,7 +28,11 @@ class MediaAdminController extends MediaController
     public function createFolder(MediaAdminCreateFolderPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->createFolder($request->validated());
+        try {
+            $this->service->createFolder($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -43,7 +41,11 @@ class MediaAdminController extends MediaController
     public function getAllFolders(MediaAdminGetFoldersPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->getAllFolders();
+        try {
+            $this->service->getAllFolders();
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -52,7 +54,11 @@ class MediaAdminController extends MediaController
     public function getFolderItems(MediaAdminGetFolderItemsPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->getFolderItems($request->validated());
+        try {
+            $this->service->getFolderItems($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response, [], MediaAdminListResourceCollection::class);
     }
@@ -61,7 +67,11 @@ class MediaAdminController extends MediaController
     public function move(MediaAdminMovePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->move($request->validated());
+        try {
+            $this->service->move($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -70,7 +80,11 @@ class MediaAdminController extends MediaController
     public function remove(MediaAdminDeletePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->remove($request->validated());
+        try {
+            $this->service->remove($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -79,7 +93,11 @@ class MediaAdminController extends MediaController
     public function rename(MediaAdminRenamePost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->rename($request->validated());
+        try {
+            $this->service->rename($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
@@ -88,7 +106,11 @@ class MediaAdminController extends MediaController
     public function upload(MediaAdminUploadPost $request)
     {
         $this->service->setUser($request->user());
-        $this->service->upload($request->validated());
+        try {
+            $this->service->upload($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
 
         return $this->response($this->service->status, $this->service->response);
     }
