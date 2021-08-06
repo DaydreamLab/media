@@ -206,18 +206,13 @@ class MediaAdminService extends MediaService
 
             if (is_dir($this->media_path.$path))
             {
-                try{
-                    $delete_media = $this->media_storage->deleteDirectory($comebinePath);
-                    $delete_thumb = $this->thumb_storage->deleteDirectory($comebinePath);
-                }catch (\Exception $e) {
-                    Helper::show($e->getMessage());
-                }
-
+                $delete_media = $this->media_storage->deleteDirectory($comebinePath);
+                $delete_thumb = $this->thumb_storage->deleteDirectory($comebinePath);
             }
             else
             {
                 $temp = explode('/', $path);
-                if ( MediaHelper::isImage(end($temp)))
+                if (MediaHelper::isImage(end($temp)))
                 {
                     $delete_thumb = $this->thumb_storage->delete($comebinePath);
                 }

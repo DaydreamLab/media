@@ -3,9 +3,11 @@
 namespace DaydreamLab\Media\Resources\File\Admin\Models;
 
 use DaydreamLab\JJAJ\Resources\BaseJsonResource;
+use DaydreamLab\JJAJ\Traits\FormatFileSize;
 
 class FileAdminSearchResource extends BaseJsonResource
 {
+    use FormatFileSize;
     /**
      * Transform the resource into an array.
      *
@@ -21,7 +23,7 @@ class FileAdminSearchResource extends BaseJsonResource
             'name'          => $this->name,
             'categoryTitle' => $this->category ? $this->category->title : null,
             'state'         => $this->state,
-            'size'          => $this->formatSize($this->size),
+            'size'          => $this->formatFileSize($this->size),
             'access'        => $this->access,
             'ordering'      => $this->ordering,
             'lockedAt'      => $this->getDateTimeString($this->locked_at, $user->timezone),
@@ -31,17 +33,5 @@ class FileAdminSearchResource extends BaseJsonResource
             'creatorName'   => $this->creatorName,
             'updaterName'   => $this->updaterName,
         ];
-    }
-
-
-    public function formatSize($size)
-    {
-        if ($size < 1024) {
-            return $size.'KB';
-        } elseif ($size > 1024 && $size < pow(1024, 2)) {
-            return $size / 1024 . '.' . ceil($size % 1024) . 'MB';
-        } else {
-            return $size / pow(1024, 2) . '.' . ceil($size % pow(1023,2)) . 'GB';
-        }
     }
 }

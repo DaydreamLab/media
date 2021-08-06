@@ -30,5 +30,7 @@ return [
     //MOVE
     'MOVE_SUCCESS'                      => 200,
     'MOVE_FAIL'                         => 500,
-    
+
+    // Logic Error
+    'LOGIC_ERROR'                       => 403
 ];

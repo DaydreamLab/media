@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\Media\Controllers\Media\Admin;
 
+use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
+use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\Media\Controllers\MediaController;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminCreateFolderPost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminGetFoldersPost;
@@ -12,6 +14,7 @@ use DaydreamLab\Media\Requests\Media\Admin\MediaAdminRenamePost;
 use DaydreamLab\Media\Requests\Media\Admin\MediaAdminUploadPost;
 use DaydreamLab\Media\Resources\Media\Admin\Collections\MediaAdminListResourceCollection;
 use DaydreamLab\Media\Services\Media\Admin\MediaAdminService;
+use Symfony\Component\Cache\Exception\LogicException;
 use Throwable;
 
 class MediaAdminController extends MediaController
@@ -83,10 +86,16 @@ class MediaAdminController extends MediaController
         try {
             $this->service->remove($request->validated());
         } catch (Throwable $t) {
+            $this->service->transParams = [
+                'reason'    => $t->getMessage()
+            ];
+            if ($t instanceof \LogicException) {
+                $t = new ForbiddenException('LogicError', null, null, $this->modelName);
+            }
             $this->handleException($t);
         }
 
-        return $this->response($this->service->status, $this->service->response);
+        return $this->response($this->service->status, $this->service->response, $this->service->transParams);
     }
 
 

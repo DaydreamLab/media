@@ -1,34 +1,34 @@
 <?php
 
 return [
-
-    'THIS_ADMIN_USER_NOT_HAVE_MERCHANT' => '{$ModelName} this admin user does not have merchant',
     // Upload
-    'UPLOAD_SUCCESS'                    => '{$ModelName} upload success',
-    'UPLOAD_FAIL'                       => '{$ModelName} upload fail',
+    'UPLOAD_SUCCESS'                    => '上傳成功',
+    'UPLOAD_FAIL'                       => '上傳失敗',
 
     // Delete
-    'DELETE_SUCCESS'                    => '{$ModelName} delete success',
-    'DELETE_FAIL'                       => '{$ModelName} delete fail',
+    'DELETE_SUCCESS'                    => '刪除成功',
+    'DELETE_FAIL'                       => '刪除失敗',
 
     // Get Directory Content
-    'GET_FOLDER_ITEMS_SUCCESS'          => '{$ModelName} get folder items success',
-    'GET_FOLDER_ITEMS_FAIL'             => '{$ModelName} get folder items fail',
+    'GET_FOLDER_ITEMS_SUCCESS'          => '取得資料夾內容成功',
+    'GET_FOLDER_ITEMS_FAIL'             => '取得資料夾內容失敗',
 
     // Create Folder
-    'CREATE_FOLDER_SUCCESS'             => '{$ModelName} create folder success',
-    'CREATE_FOLDER_FAIL'                => '{$ModelName} create folder fail',
-    'FOLDER_ALREADY_EXIST'              => '{$ModelName} folder already exist',
+    'CREATE_FOLDER_SUCCESS'             => '新增資料夾成功',
+    'CREATE_FOLDER_FAIL'                => '新增資料夾失敗',
+    'FOLDER_ALREADY_EXIST'              => '資料夾已存在',
 
     // Get All Folders
-    'GET_ALL_FOLDERS_SUCCESS'           => '{$ModelName} get all folders success',
+    'GET_ALL_FOLDERS_SUCCESS'           => '取得所有資料夾目錄成功',
 
     // Rename
-    'RENAME_SUCCESS'                    => '{$ModelName} rename success',
-    'RENAME_FAIL'                       => '{$ModelName} rename fail',
+    'RENAME_SUCCESS'                    => '資料夾重新命名成功',
+    'RENAME_FAIL'                       => '資料夾重新命名失敗',
 
     //MOVE
-    'MOVE_SUCCESS'                      => '{$ModelName} move success',
-    'MOVE_FAIL'                         => '{$ModelName} move fail',
+    'MOVE_SUCCESS'                      => '移動媒體成功',
+    'MOVE_FAIL'                         => '移動媒體失敗',
 
+    # Logic Error
+    'LOGIC_ERROR'                       => '媒體邏輯錯誤，原因: :reason'
 ];

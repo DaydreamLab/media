@@ -3,11 +3,12 @@
 namespace DaydreamLab\Media\Resources\File\Admin\Models;
 
 use DaydreamLab\JJAJ\Traits\FormatDateTime;
+use DaydreamLab\JJAJ\Traits\FormatFileSize;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileAdminResource extends JsonResource
 {
-    use FormatDateTime;
+    use FormatDateTime, FormatFileSize;
     /**
      * Transform the resource into an array.
      *
@@ -27,7 +28,7 @@ class FileAdminResource extends JsonResource
             'state'         => $this->state,
             'contentType'   => $this->contentType,
             'extension'     => $this->extension,
-            'size'          => $this->formatSize($this->size),
+            'size'          => $this->formatFileSize($this->size),
             'url'           => $this->url,
             'description'   => $this->description,
             'access'        => $this->access,
@@ -45,17 +46,5 @@ class FileAdminResource extends JsonResource
             'updaterName'   => $this->updaterName,
             'locker'        => ($this->locker) ? $this->locker->only(['id', 'uuid', 'name']) : []
         ];
-    }
-
-
-    public function formatSize($size)
-    {
-        if ($size < 1024) {
-            return $size.'KB';
-        } elseif ($size > 1024 && $size < pow(1024, 2)) {
-            return $size / 1024 . '.' . ceil($size % 1024) . 'MB';
-        } else {
-            return $size / pow(1024, 2) . '.' . ceil($size % pow(1023,2)) . 'GB';
-        }
     }
 }
