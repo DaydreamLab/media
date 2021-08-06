@@ -7,8 +7,6 @@ use Illuminate\Support\ServiceProvider;
 
 class MediaServiceProvider extends ServiceProvider
 {
-
-
     protected $commands = [
         'DaydreamLab\Media\Commands\InstallCommand',
     ];
@@ -19,8 +17,6 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__. '/constants' => config_path('constants')], 'media-configs');
-        $this->publishes([__DIR__. '/Configs/' => config_path('daydreamlab')], 'media-configs');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'media');
 
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
@@ -38,8 +34,10 @@ class MediaServiceProvider extends ServiceProvider
         $this->app['config']->set('filesystems',$filesystems);
 
         $media_public_path = MediaHelper::getDiskPath('media-public');
+        $this->publishes([__DIR__ . '/../resources/thumbs' => $media_public_path.'/thumbs'], 'media-configs');
 
-        $this->publishes([__DIR__ . '/../resources/' => $media_public_path.'/thumbs'], 'media-configs');
+        $this->publishes([__DIR__. '/constants' => config_path('constants/media')], 'media-configs');
+        $this->publishes([__DIR__. '/Configs/' => config_path('daydreamlab')], 'media-configs');
     }
 
     /**

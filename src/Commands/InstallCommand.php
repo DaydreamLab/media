@@ -28,8 +28,6 @@ class InstallCommand extends Command
 
 
     protected $constants = [
-        'media',
-        'file'
     ];
 
 
@@ -55,29 +53,8 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-//        $this->call('jjaj:refresh');
-//        $this->call('user:install');
-//        foreach ($this->seeders as $seeder) {
-//            $this->call('db:seed', [
-//                '--class' => $this->seeder_namespace . $seeder
-//            ]);
-//        }
-//
-        $this->deleteConstants();
-
-
         $this->call('vendor:publish', [
             '--tag' => 'media-configs'
         ]);
-    }
-
-
-    public function deleteConstants()
-    {
-        $constants_path     = 'config/constants/';
-        foreach ($this->constants as $constant) {
-            File::delete($constants_path . $constant . '.php');
-            File::delete(config_path('daydreamlab') . '/'. $constant . '.php');
-        }
     }
 }
