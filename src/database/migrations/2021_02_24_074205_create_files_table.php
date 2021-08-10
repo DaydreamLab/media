@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
             $table->string('name');
             $table->unsignedInteger('category_id')->nullable();
             $table->tinyInteger('state')->default(1);
+            $table->string('blobName')->nullable();
             $table->string('contentType');
             $table->string('extension');
             $table->string('size');

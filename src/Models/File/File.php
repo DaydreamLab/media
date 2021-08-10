@@ -34,6 +34,7 @@ class File extends MediaModel
         'name',
         'category_id',
         'state',
+        'blobName',
         'contentType',
         'extension',
         'size',

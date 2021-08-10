@@ -10,7 +10,9 @@ use DaydreamLab\Media\Repositories\FileCategory\Admin\FileCategoryAdminRepositor
 use DaydreamLab\Media\Services\File\FileService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 
 class FileAdminService extends FileService
 {
@@ -70,32 +72,35 @@ class FileAdminService extends FileService
 
     public function addAzure(Collection $input)
     {
-        $blobName = $input->get('name') ;
-        $duplicate = $this->findBy('name', '=', $input->get('name'))->count();
-        if ($duplicate) {
-            $copy = $this->findBy('name', 'like', "%{$input->get('name')}.%")->count();
-            $blobName .= '.' . ($copy + 2) . '.' . $input->get('extension');
-            $input->put('name', $input->get('name') . '.' . ($copy + 2));
-        } else {
-            $blobName .= '.' . $input->get('extension');
+        $files = collect();
+        foreach ($input->get('files') ?:[] as $inputFile) {
+            # $filename = pathinfo($inputFile->getClientOriginalName(), PATHINFO_FILENAME);
+            # $extension = pathinfo($inputFile->getClientOriginalName(), PATHINFO_EXTENSION);
+            $blobName = Str::random(5) . '.' . $inputFile->getClientOriginalName();
+            $contentType = $inputFile->getClientMimeType();
+            $client = $this->getAzureClient();
+           // $input->put('url', $this->baseUrl . $blobName);
+            $options = new CreateBlockBlobOptions();
+            $options->setContentType($input->get('contentType'));
+
+            $content = fopen(is_string($inputFile) ? $inputFile : $inputFile->getRealPath(), 'r');
+            $client->createBlockBlob($this->azureContainer, $blobName, $content, $options);
+            if (is_resource($content)) {
+                fclose($content);
+            }
+
+            $temp = [
+                'name'      => $inputFile->getClientOriginalName(),
+                'blobName'  => $blobName,
+                'url'       => $this->baseUrl . $blobName
+            ];
+            $files->push($temp);
         }
 
-        $client = $this->getAzureClient();
-        $input->put('url', $this->baseUrl . $blobName);
-        $options = new CreateBlockBlobOptions();
-        $options->setContentType($input->get('contentType'));
-
-        $file = $input->get('file');
-        $content = fopen(is_string($file) ? $file : $file->getRealPath(), 'r');
-        $client->createBlockBlob($this->azureContainer, $blobName, $content, $options);
-        if (is_resource($content)) {
-            fclose($content);
-        }
-
-        $item = parent::add($input);
-
-        return $item;
+        return $files;
     }
+
+
 
 
     public function addAws(Collection $input)
@@ -174,5 +179,19 @@ class FileAdminService extends FileService
         }
 
         return parent::store($input);
+    }
+
+
+
+    public function upload(Collection $input)
+    {
+        $provider = $this->getProvider();
+        if ($provider == 'azure') {
+            $result = $this->addAzure($input);
+            $this->status = 'UploadAzureSuccess';
+            $this->response = $result;
+        }
+
+        return $this->response;
     }
 }

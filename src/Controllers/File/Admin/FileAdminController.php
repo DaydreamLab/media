@@ -9,7 +9,9 @@ use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchPost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStatePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStorePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminRestoreRequest;
+use DaydreamLab\Media\Requests\File\Admin\FileAdminUploadRequest;
 use DaydreamLab\Media\Resources\File\Admin\Collections\FileAdminSearchResourceCollection;
+use DaydreamLab\Media\Resources\File\Admin\Collections\FileAdminUploadResourceCollection;
 use DaydreamLab\Media\Resources\File\Admin\Models\FileAdminResource;
 use DaydreamLab\Media\Services\File\Admin\FileAdminService;
 
@@ -104,4 +106,18 @@ class FileAdminController extends BaseController
 
         return $this->response($this->service->status, $this->service->response, [], FileAdminResource::class);
     }
+
+
+    public function upload(FileAdminUploadRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->upload($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], FileAdminUploadResourceCollection::class);
+    }
+
 }
