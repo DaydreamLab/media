@@ -34,10 +34,16 @@ class FileAdminService extends FileService
             $input->put('password', bcrypt($password));
         }
 
+        if ($input->get('url_only')) {
+            $input->forget('url_only');
+            return parent::add($input);
+        }
+
         $provider = $this->getProvider();
         if ($provider == 'azure') {
             $result = $this->addAzure($input);
-            if (count($notifyEmails = $input->get('notifyEmails'))) {
+            if ( $notifyEmails = $input->get('notifyEmails') ) {
+                $notifyEmails = explode(';', $notifyEmails);
                 #todo: 寄送 email 訊息
             }
         } elseif ($provider == 'aws') {
@@ -163,15 +169,18 @@ class FileAdminService extends FileService
         # 如果 file 是 url 形式，先取得 file 再處理一些參數
         $file = $input->get('file');
         if (is_string($file)) {
-            if (strpos($file, 'storage/media') !== false) {
+            if ( (strpos($file, 'storage/media') !== false) && (strpos($file, 'http') === false) ) {
                 $input->put('file', public_path($file));
                 $input->put('contentType', mime_content_type(public_path($file)));
                 $input->put('extension', pathinfo(public_path($file), PATHINFO_EXTENSION));
                 $input->put('size', ceil((double) (filesize(public_path($file)) / 1024)));
             } else {
-
+                $input->put('contentType', null);
+                $input->put('extension', null);
+                $input->put('size', null);
+                $input->put('url', $file);
+                $input->put('url_only', 1);
             }
-
         } else {
             $input->put('contentType', $file->getMimeType());
             $input->put('extension', $file->extension());
