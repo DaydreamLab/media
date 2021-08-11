@@ -22,6 +22,9 @@ class FileAdminSearchResource extends BaseJsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'categoryTitle' => $this->category ? $this->category->title : null,
+            'brandTitle'    => ($this->brands) ? $this->brands->map(function ($b) {
+                return $b->title;
+            })->toArray() : [],
             'state'         => $this->state,
             'size'          => $this->formatFileSize($this->size),
             'access'        => $this->access,
