@@ -3,11 +3,8 @@
 namespace DaydreamLab\Media\Controllers\File\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
-use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
-use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\Media\Requests\File\Front\FileFrontDownloadRequest;
 use DaydreamLab\Media\Services\File\Front\FileFrontService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
@@ -40,7 +37,7 @@ class FileFrontController extends BaseController
 
         if ($this->service->getProvider() == 'azure') {
             $item = $this->service->response;
-            $filename = urlencode($item->blobName);
+            $filename = urlencode($item->name);
             header("Content-Type: {$item->contentType}");
             header("Content-Length: {$data->getProperties()->getContentLength()}");
             header("Content-Disposition:attachment; filename={$filename}");

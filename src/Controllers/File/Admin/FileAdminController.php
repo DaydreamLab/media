@@ -3,6 +3,7 @@
 namespace DaydreamLab\Media\Controllers\File\Admin;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\Media\Requests\File\Admin\FileAdminDeleteUploadRequest;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminGetItem;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminRemovePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchPost;
@@ -27,6 +28,19 @@ class FileAdminController extends BaseController
     {
         parent::__construct($service);
         $this->service = $service;
+    }
+
+
+    public function deleteUpload(FileAdminDeleteUploadRequest $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->deleteUpload($request->get('blobName'));
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 
 
@@ -119,5 +133,4 @@ class FileAdminController extends BaseController
 
         return $this->response($this->service->status, $this->service->response, [], FileAdminUploadResourceCollection::class);
     }
-
 }

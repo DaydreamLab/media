@@ -31,8 +31,9 @@ class FileCategoryAdminStoreRequest extends MediaStoreRequest
             'id'            => 'nullable|integer',
             'title'         => 'required|string',
             'state'         => ['required', Rule::in([0, 1, -1, -2])],
-            'contentType'   => 'nullable|string',
             'description'   => 'nullable|string',
+            'contentType'   => 'nullable|string',
+            'extension'     => 'nullable|string',
             'params'        => 'nullable|array',
         ];
 

@@ -4,19 +4,18 @@ namespace DaydreamLab\Media\Services\File\Admin;
 
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
+use DaydreamLab\JJAJ\Traits\FormatFileSize;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
 use DaydreamLab\Media\Repositories\File\Admin\FileAdminRepository;
 use DaydreamLab\Media\Repositories\FileCategory\Admin\FileCategoryAdminRepository;
 use DaydreamLab\Media\Services\File\FileService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
-use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 
 class FileAdminService extends FileService
 {
-    use LoggedIn;
+    use LoggedIn, FormatFileSize;
 
     protected $fileCategoryAdminRepository;
 
@@ -34,25 +33,13 @@ class FileAdminService extends FileService
             $input->put('password', bcrypt($password));
         }
 
-        if ($input->get('url_only')) {
-            $input->forget('url_only');
-            return parent::add($input);
+        $file = parent::add($input);
+        if ( $notifyEmails = $input->get('notifyEmails') ) {
+            $notifyEmails = explode(';', $notifyEmails);
+            #todo: 寄送 email 訊息
         }
 
-        $provider = $this->getProvider();
-        if ($provider == 'azure') {
-            $result = $this->addAzure($input);
-            if ( $notifyEmails = $input->get('notifyEmails') ) {
-                $notifyEmails = explode(';', $notifyEmails);
-                #todo: 寄送 email 訊息
-            }
-        } elseif ($provider == 'aws') {
-
-        } else {
-
-        }
-
-        return $result;
+        return $this->response;
     }
 
 
@@ -78,16 +65,27 @@ class FileAdminService extends FileService
 
     public function addAzure(Collection $input)
     {
+        # 上傳時同時新增檔案，先找出檔案分類
+        if ($input->get('createFile')) {
+            $category = $this->fileCategoryAdminRepository->search($input->only('q'))->first();
+            if (!$category) {
+                throw new NotFoundException('ItemNotExist', [
+                    'contentType' => $input->get('contentType'),
+                    'extension'   => $input->get('extension')
+                ], null, 'FileCategory');
+            }
+        }
+
         $files = collect();
         foreach ($input->get('files') ?:[] as $inputFile) {
-            # $filename = pathinfo($inputFile->getClientOriginalName(), PATHINFO_FILENAME);
-            # $extension = pathinfo($inputFile->getClientOriginalName(), PATHINFO_EXTENSION);
+            $filename = pathinfo($inputFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = pathinfo($inputFile->getClientOriginalName(), PATHINFO_EXTENSION);
             $blobName = Str::random(5) . '.' . $inputFile->getClientOriginalName();
             $contentType = $inputFile->getClientMimeType();
             $client = $this->getAzureClient();
-           // $input->put('url', $this->baseUrl . $blobName);
+            $url = $this->baseUrl . $blobName;
             $options = new CreateBlockBlobOptions();
-            $options->setContentType($input->get('contentType'));
+            $options->setContentType($contentType);
 
             $content = fopen(is_string($inputFile) ? $inputFile : $inputFile->getRealPath(), 'r');
             $client->createBlockBlob($this->azureContainer, $blobName, $content, $options);
@@ -95,34 +93,50 @@ class FileAdminService extends FileService
                 fclose($content);
             }
 
-            $temp = [
-                'name'      => $inputFile->getClientOriginalName(),
-                'blobName'  => $blobName,
-                'url'       => $this->baseUrl . $blobName
-            ];
-            $files->push($temp);
+            if ($input->get('createFile')) {
+                $addData = collect([
+                    'name'          => $filename,
+                    'category_id'   => $category->id,
+                    'state'         => 1,
+                    'blobName'      => $blobName,
+                    'contentType'   => $contentType,
+                    'extension'     => $extension,
+                    'size'          => $this->formatFileSize($inputFile->getSize()),
+                    'url'           => $url,
+                    'encrypted'     => 0
+                ]);
+                $file = $this->store($addData);
+            } else {
+                $file = collect([
+                    'name'          => $filename,
+                    'blobName'      => $blobName,
+                    'contentType'   => $contentType,
+                    'extension'     => $extension,
+                    'size'          => $this->formatFileSize($inputFile->getSize()),
+                    'url'           => $url,
+                ]);
+            }
+            $files->push($file);
         }
 
         return $files;
     }
 
 
-
-
-    public function addAws(Collection $input)
+    public function beforeRemove(Collection $input, $item)
     {
-
+        $this->deleteUpload($item->blobName);
     }
 
 
-    public function beforeRemove(Collection $input, $item)
+    public function deleteUpload($blobName)
     {
         if ($this->getProvider() == 'azure') {
             $error = false;
             $errorResponse = null;
             $client = $this->getAzureClient();
             try {
-                $client->deleteBlob($this->azureContainer, $item->blobName);
+                $client->deleteBlob($this->azureContainer, $blobName);
             } catch (\Throwable $throwable) {
                 preg_match('#<Code>(.*?)</Code>#', $throwable->getMessage(), $errorResponse);
                 $error = true;
@@ -135,7 +149,11 @@ class FileAdminService extends FileService
 
                 throw new ForbiddenException($errorMessage);
             }
+
+            $this->status = 'DeleteAzureSuccess';
         }
+
+        return $this->response;
     }
 
 
@@ -164,27 +182,6 @@ class FileAdminService extends FileService
             throw new NotFoundException('ItemNotExist', [
                 'categoryId' => (int)$input->get('category_id')
             ], null, 'FileCategory');
-        }
-
-        # 如果 file 是 url 形式，先取得 file 再處理一些參數
-        $file = $input->get('file');
-        if (is_string($file)) {
-            if ( (strpos($file, 'storage/media') !== false) && (strpos($file, 'http') === false) ) {
-                $input->put('file', public_path($file));
-                $input->put('contentType', mime_content_type(public_path($file)));
-                $input->put('extension', pathinfo(public_path($file), PATHINFO_EXTENSION));
-                $input->put('size', ceil((double) (filesize(public_path($file)) / 1024)));
-            } else {
-                $input->put('contentType', null);
-                $input->put('extension', null);
-                $input->put('size', null);
-                $input->put('url', $file);
-                $input->put('url_only', 1);
-            }
-        } else {
-            $input->put('contentType', $file->getMimeType());
-            $input->put('extension', $file->extension());
-            $input->put('size', ceil((double) ($file->getSize() / 1024)));
         }
 
         return parent::store($input);

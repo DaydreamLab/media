@@ -4,6 +4,7 @@ namespace DaydreamLab\Media\Resources\File\Admin\Models;
 
 use DaydreamLab\JJAJ\Traits\FormatDateTime;
 use DaydreamLab\JJAJ\Traits\FormatFileSize;
+use DaydreamLab\Media\Models\File\File;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileAdminUploadResource extends JsonResource
@@ -17,9 +18,24 @@ class FileAdminUploadResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'name'          => $this['name'],
-            'blobName'      => $this['blobName'],
-        ];
+        if ($this->resource instanceof File) {
+            $data = [
+                'id'            => $this['id'],
+                'name'          => $this['name'],
+                'size'          => $this['size'],
+                'downloadLink'  => $this['downloadLink']
+            ];
+        } else {
+            $data =  [
+                'name'          => $this['name'],
+                'blobName'      => $this['blobName'],
+                'contentType'   => $this['contentType'],
+                'extension'     => $this['extension'],
+                'url'           => $this['url'],
+                'size'          => $this['size'],
+            ];
+        }
+
+        return $data;
     }
 }

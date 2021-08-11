@@ -32,7 +32,6 @@ class FileFrontService extends FileService
             }
         }
 
-
         // todo: 判斷權限
         $this->response = $item;
 

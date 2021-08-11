@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\Media\Services\File;
 
-use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Repositories\MediaRepository;
 use DaydreamLab\Media\Services\MediaService;
 use DaydreamLab\Media\Traits\Service\AzureBlob;
@@ -33,16 +32,6 @@ class FileService extends MediaService
         //event(new Add($item, $this->model_name, $input, $this->user));
 
         return $item;
-    }
-
-
-    public function checkout(Collection $input)
-    {
-        $result = parent::checkout($input);
-
-        //event(new Checkout($this->model_name, $result, $input, $this->user));
-
-        return $result;
     }
 
 

@@ -4,6 +4,7 @@ namespace DaydreamLab\Media\Requests\File\Admin;
 
 use DaydreamLab\JJAJ\Requests\AdminRequest;
 use DaydreamLab\Media\Helpers\MediaHelper;
+use Illuminate\Validation\Rule;
 
 class FileAdminUploadRequest extends AdminRequest
 {
@@ -29,8 +30,11 @@ class FileAdminUploadRequest extends AdminRequest
     {
         $media_config = MediaHelper::getMediaConfig();
         $rules = [
-            'files' => 'nullable|array',
-            'files.*' => 'required|max:'.$media_config['upload_limit'],
+            'createFile'    => ['required', Rule::in([0,1])],
+            'contentType'   => 'nullable|string',
+            'extension'     => 'nullable|string',
+            'files'         => 'nullable|array',
+            'files.*'       => 'required|max:'.$media_config['upload_limit'],
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -40,6 +44,16 @@ class FileAdminUploadRequest extends AdminRequest
     public function validated()
     {
         $validated = parent::validated();
+
+        $q = $validated->get('q');
+
+        $contentType = $validated->get('contentType') ?: 'file';
+        $q->where('contentType', $contentType);
+
+        $extension = $validated->get('extension');
+        if ($extension) {
+            $q->where('extension', $extension);
+        }
 
         return $validated;
     }

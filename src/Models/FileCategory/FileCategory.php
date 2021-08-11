@@ -28,18 +28,18 @@ class FileCategory extends MediaModel
      * @var array
      */
     protected $fillable = [
-      'title',
-      'state',
-      'contentType',
-      'extension',
-      'description',
-      'access',
-      'ordering',
-      'params',
-      'locked_by',
-      'created_by',
-      'updated_by',
-      'locked_at',
+        'title',
+        'state',
+        'description',
+        'contentType',
+        'extension',
+        'access',
+        'ordering',
+        'params',
+        'locked_by',
+        'created_by',
+        'updated_by',
+        'locked_at',
     ];
 
 

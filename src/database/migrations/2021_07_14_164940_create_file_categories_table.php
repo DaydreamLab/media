@@ -19,6 +19,7 @@ class CreateFileCategoriesTable extends Migration
             $table->tinyInteger('state')->default(1);
             $table->text('description')->nullable();
             $table->string('contentType');
+            $table->string('extension')->nullable();
             $table->text('params')->nullable();
             $table->unsignedBigInteger('access');
             $table->unsignedBigInteger('ordering')->nullable();

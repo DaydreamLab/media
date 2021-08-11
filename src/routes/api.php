@@ -35,7 +35,8 @@ Route::post('api/admin/media/rename', [MediaAdminController::class, 'rename'])
 /************** File（檔案） ************/
 # 上傳檔案
 Route::post('api/admin/file/upload', [FileAdminController::class, 'upload'])->middleware(['expired', 'admin']);
-
+# 刪除上傳檔案
+Route::post('api/admin/file/deleteUpload', [FileAdminController::class, 'deleteUpload'])->middleware(['expired', 'admin']);
 # 新增/編輯 檔案
 Route::post('api/admin/file/store', [FileAdminController::class, 'store'])->middleware(['expired', 'admin']);
 # 刪除檔案

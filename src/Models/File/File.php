@@ -92,9 +92,9 @@ class File extends MediaModel
     }
 
 
-    public function getBlobNameAttribute()
+    public function getDownloadLinkAttribute()
     {
-        return $this->name . '.' . $this->extension;
+        return config('app.url').'/api/file/download/'.$this->uuid;
     }
 
 
