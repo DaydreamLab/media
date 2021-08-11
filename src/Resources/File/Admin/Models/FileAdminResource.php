@@ -3,11 +3,12 @@
 namespace DaydreamLab\Media\Resources\File\Admin\Models;
 
 use DaydreamLab\JJAJ\Traits\FormatDateTime;
+use DaydreamLab\JJAJ\Traits\FormatFileSize;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileAdminResource extends JsonResource
 {
-    use FormatDateTime;
+    use FormatDateTime, FormatFileSize;
     /**
      * Transform the resource into an array.
      *
@@ -27,7 +28,7 @@ class FileAdminResource extends JsonResource
             'state'         => $this->state,
             'contentType'   => $this->contentType,
             'extension'     => $this->extension,
-            'size'          => $this->size,
+            'size'          => $this->formatFileSize($this->size),
             'url'           => $this->url,
             'description'   => $this->description,
             'access'        => $this->access,
