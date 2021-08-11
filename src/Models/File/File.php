@@ -69,6 +69,7 @@ class File extends MediaModel
      * @var array
      */
     protected $appends = [
+        'downloadLink'
     ];
 
     protected $casts = [
