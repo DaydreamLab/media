@@ -39,6 +39,7 @@ class File extends MediaModel
         'extension',
         'size',
         'url',
+        'web_url',
         'introtext',
         'description',
         'encrypted',

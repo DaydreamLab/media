@@ -24,6 +24,7 @@ class CreateFilesTable extends Migration
             $table->string('extension')->nullable();
             $table->string('size')->nullable();
             $table->string('url')->nullable();
+            $table->string('web_url')->nullable();
             $table->text('introtext')->nullable();
             $table->text('description')->nullable();
             $table->unsignedTinyInteger('encrypted')->default(0);
