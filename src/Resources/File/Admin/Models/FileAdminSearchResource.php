@@ -20,7 +20,9 @@ class FileAdminSearchResource extends BaseJsonResource
 
         return [
             'id'            => $this->id,
+            'uuid'          => $this->uuid,
             'name'          => $this->name,
+            'introtext'     => $this->introtext,
             'categoryTitle' => $this->category ? $this->category->title : null,
             'brandTitle'    => ($this->brands) ? $this->brands->map(function ($b) {
                 return $b->title;
