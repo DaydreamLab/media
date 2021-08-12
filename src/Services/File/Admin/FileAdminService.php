@@ -103,7 +103,8 @@ class FileAdminService extends FileService
                     'extension'     => $extension,
                     'size'          => $this->formatFileSize($inputFile->getSize()),
                     'url'           => $url,
-                    'encrypted'     => 0
+                    'encrypted'     => 0,
+                    'params'        => ['upload' => 'file']
                 ]);
                 $file = $this->store($addData);
             } else {
