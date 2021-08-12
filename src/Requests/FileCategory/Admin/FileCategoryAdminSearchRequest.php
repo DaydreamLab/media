@@ -49,6 +49,8 @@ class FileCategoryAdminSearchRequest extends MediaSearchRequest
             $validated['q'] = $this->q->whereIn('state', [0, 1]);
         }
 
+        $validated['q'] = $this->q->whereNull('extension');
+
         return $validated;
     }
 }
