@@ -74,7 +74,7 @@ class File extends MediaModel
     ];
 
     protected $casts = [
-      'params' => 'array'
+        'params' => 'array'
     ];
 
 
@@ -83,7 +83,8 @@ class File extends MediaModel
         self::traitBoot();
 
         static::creating(function ($model) {
-            $model->uuid = Str::uuid()->toString();
+            //$model->uuid = Str::uuid()->toString();
+            $model->uuid = 'F'.now(config('app.timezone'))->format('ym').Str::random(3);
         });
     }
 
