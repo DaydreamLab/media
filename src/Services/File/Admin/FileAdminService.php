@@ -176,6 +176,22 @@ class FileAdminService extends FileService
     }
 
 
+    public function search(Collection $input)
+    {
+        $contentType = $input->get('contentType');
+        if ( $contentType ) {
+            $q = $input->get('q');
+            $fcs = $this->fileCategoryAdminRepository->getByContentTypeAndExtension($contentType);
+            $fcIds = $fcs->pluck(['id']);
+            $q = $q->whereIn('category_id', $fcIds);
+            $input->put('q', $q);
+        }
+        $input->forget('contentType');
+
+        return parent::search($input);
+    }
+
+
     public function store(Collection $input)
     {
         $category = $this->fileCategoryAdminRepository->find($input->get('category_id'));

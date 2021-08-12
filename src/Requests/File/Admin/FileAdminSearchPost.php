@@ -31,6 +31,8 @@ class FileAdminSearchPost extends ListRequest
                 Rule::in([0,1,-2])
             ],
             'brand_id'  => 'nullable|integer',
+            'contentType'   => 'nullable|string',
+            'category_id'   => 'nullable|integer'
         ];
 
         return array_merge(parent::rules(), $rules);
