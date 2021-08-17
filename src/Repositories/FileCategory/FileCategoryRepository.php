@@ -14,4 +14,9 @@ class FileCategoryRepository extends MediaRepository
         parent::__construct($model);
         $this->model = $model;
     }
+
+    public function getByContentTypeAndExtension($contentType, $extension = null)
+    {
+        return $this->model->where('contentType', $contentType)->where('extension', $extension)->get();
+    }
 }

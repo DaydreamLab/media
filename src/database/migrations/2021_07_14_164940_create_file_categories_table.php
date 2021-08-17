@@ -15,6 +15,7 @@ class CreateFileCategoriesTable extends Migration
     {
         Schema::create('file_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('alias');
             $table->string('title');
             $table->tinyInteger('state')->default(1);
             $table->text('description')->nullable();

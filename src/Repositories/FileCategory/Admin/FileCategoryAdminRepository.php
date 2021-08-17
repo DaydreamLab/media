@@ -14,8 +14,5 @@ class FileCategoryAdminRepository extends FileCategoryRepository
     }
 
 
-    public function getByContentTypeAndExtension($contentType, $extension = null)
-    {
-        return $this->model->where('contentType', $contentType)->where('extension', $extension)->get();
-    }
+
 }

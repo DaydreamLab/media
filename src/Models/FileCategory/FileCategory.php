@@ -29,6 +29,7 @@ class FileCategory extends MediaModel
      */
     protected $fillable = [
         'title',
+        'alias',
         'state',
         'description',
         'contentType',

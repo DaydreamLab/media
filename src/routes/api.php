@@ -68,3 +68,5 @@ Route::get('api/admin/file/category/{id}', [FileCategoryAdminController::class, 
 
 # 下載檔案
 Route::post('api/file/download/{uuid}', [FileFrontController::class, 'download']);
+# 搜尋檔案
+Route::post('api/file/search', [FileFrontController::class, 'search']);

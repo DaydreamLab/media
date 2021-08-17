@@ -3,7 +3,9 @@
 namespace DaydreamLab\Media\Controllers\File\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\Media\Requests\File\Front\FileFrontSearchPost;
 use DaydreamLab\Media\Requests\File\Front\FileFrontDownloadRequest;
+use DaydreamLab\Media\Resources\File\Front\Collections\FileFrontSearchResourceCollection;
 use DaydreamLab\Media\Services\File\Front\FileFrontService;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -47,5 +49,18 @@ class FileFrontController extends BaseController
         } else {
 
         }
+    }
+
+
+    public function search(FileFrontSearchPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->search($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response, [], FileFrontSearchResourceCollection::class);
     }
 }

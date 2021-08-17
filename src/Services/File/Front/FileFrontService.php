@@ -6,16 +6,20 @@ use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\Media\Repositories\File\Front\FileFrontRepository;
+use DaydreamLab\Media\Repositories\FileCategory\FileCategoryRepository;
 use DaydreamLab\Media\Services\File\FileService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class FileFrontService extends FileService
 {
-    public function __construct(FileFrontRepository $repo)
+    protected $fileCategoryRepository;
+
+    public function __construct(FileFrontRepository $repo, FileCategoryRepository $fileCategoryRepository)
     {
         parent::__construct($repo);
         $this->repo = $repo;
+        $this->fileCategoryRepository = $fileCategoryRepository;
     }
 
 
@@ -49,5 +53,30 @@ class FileFrontService extends FileService
 
             return $blob;
         }
+    }
+
+
+    public function search(Collection $input)
+    {
+        if ( $contentType = $input->get('contentType') ) {
+            $q = $input->get('q');
+            $fcs = $this->fileCategoryRepository->getByContentTypeAndExtension($contentType);
+            $fcIds = $fcs->pluck(['id']);
+            $q = $q->whereIn('category_id', $fcIds);
+            $input->put('q', $q);
+        }
+        $input->forget('contentType');
+
+        if ( $categoryAlias = $input->get('categoryAlias') ) {
+            $category = $this->fileCategoryRepository->findBy('alias', '=', $categoryAlias)->first();
+            if ($category) {
+                $q = $input->get('q');
+                $q = $q->where('category_id', $category->id);
+                $input->put('q', $q);
+            }
+        }
+        $input->forget('categoryAlias');
+
+        return parent::search($input);
     }
 }
