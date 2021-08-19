@@ -56,7 +56,7 @@ class FileFrontService extends FileService
     }
 
 
-    public function search(Collection $input)
+    public function search(Collection $input, $paginate = true)
     {
         if ( $contentType = $input->get('contentType') ) {
             $q = $input->get('q');
@@ -77,6 +77,8 @@ class FileFrontService extends FileService
         }
         $input->forget('categoryAlias');
 
+        $input->put('paginate', $paginate);
+        $input->put('state', 1);
         return parent::search($input);
     }
 }
