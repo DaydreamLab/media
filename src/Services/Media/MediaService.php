@@ -30,7 +30,7 @@ class MediaService extends BaseService
 
     protected $thumb_path = null;
 
-    protected $userMerchantID = null;
+    public $userMerchantID = null;
 
     public function __construct(MediaRepository $repo)
     {
