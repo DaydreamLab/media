@@ -33,7 +33,9 @@ class FileFrontSearchPost extends ListRequest
                 Rule::in([0,1,-2])
             ],
             'contentType'   => 'nullable|string',
-            'categoryAlias' => 'nullable|string'
+            'categoryAlias' => 'nullable|string',
+            'brand_alias'   => 'nullable|string',
+            'search_date'   => 'nullable|string'
         ];
 
         return array_merge(parent::rules(), $rules);

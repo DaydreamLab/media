@@ -2,6 +2,8 @@
 
 namespace DaydreamLab\Media\Services\File\Front;
 
+use Carbon\Carbon;
+use DaydreamLab\Cms\Models\Brand\Brand;
 use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\InternalServerErrorException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
@@ -76,6 +78,31 @@ class FileFrontService extends FileService
             }
         }
         $input->forget('categoryAlias');
+
+        if ( $brand_alias = $input->get('brand_alias') ) {
+            $brand = Brand::where('alias', $brand_alias)->first();
+
+            if ($brand) {
+                $q = $input->get('q');
+                $q = $q->whereHas('brands', function ($query) use ($brand) {
+                    $query->where('brands_files_maps.brand_id', $brand->id);
+                });
+                $input->put('q', $q);
+            }
+        }
+        $input->forget('brand_alias');
+
+        if ( $search_date = $input->get('search_date') ) {
+            $split = explode('/', $search_date, 2);
+            $year = (int)$split[0];
+            $month = (int)$split[1];
+            $search_date_start = Carbon::createFromDate($year, $month)->startOfMonth();
+            $search_date_end = Carbon::createFromDate($year, $month)->endOfMonth();
+            $q = $input->get('q');
+            $q = $q->where('created_at', '>=', $search_date_start)->where('created_at', '<=', $search_date_end);
+            $input->put('q', $q);
+        }
+        $input->forget('search_date');
 
         $input->put('paginate', $paginate);
         $input->put('state', 1);
