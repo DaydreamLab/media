@@ -11,6 +11,8 @@ class FileFrontDownloadRequest extends AdminRequest
     protected $modelName = 'File';
 
     protected $apiMethod = 'getFile';
+
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *
