@@ -31,6 +31,7 @@ class File extends MediaModel
      * @var array
      */
     protected $fillable = [
+        'uuid',
         'name',
         'category_id',
         'state',
@@ -82,12 +83,12 @@ class File extends MediaModel
     {
         self::traitBoot();
 
-        static::creating(function ($model) {
-            //$model->uuid = Str::uuid()->toString();
-            if (!$model->uuid) {
-                $model->uuid = 'F' . now('Asia/Taipei')->format('ym') . Str::random(3);
-            }
-        });
+//        static::creating(function ($model) {
+//            //$model->uuid = Str::uuid()->toString();
+//            if (!$model->uuid) {
+//                $model->uuid = 'F' . now('Asia/Taipei')->format('ym') . Str::random(3);
+//            }
+//        });
     }
 
 

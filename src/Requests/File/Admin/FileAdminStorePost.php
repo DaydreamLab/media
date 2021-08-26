@@ -32,6 +32,7 @@ class FileAdminStorePost extends AdminRequest
 
         return [
             'id'            => 'nullable|integer',
+            'uuid'          => 'nullable|string',
             'name'          => 'required|string',
             'categoryId'    => 'required|integer',
             'state'         => [

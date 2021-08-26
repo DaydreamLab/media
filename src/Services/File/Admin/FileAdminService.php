@@ -200,6 +200,10 @@ class FileAdminService extends FileService
                 'categoryId' => (int)$input->get('category_id')
             ], null, 'FileCategory');
         }
+        
+        if ($input->get('uuid') == '') {
+            $input->put('uuid', 'F' . now('Asia/Taipei')->format('ym') . Str::random(3));
+        }
 
         return parent::store($input);
     }
