@@ -7,6 +7,8 @@ use Illuminate\Validation\Rule;
 
 class FileFrontSearchPost extends ListRequest
 {
+    protected $searchKeys = ['name', 'description'];
+
     protected $modelName = 'File';
 
     protected $needAuth = false;

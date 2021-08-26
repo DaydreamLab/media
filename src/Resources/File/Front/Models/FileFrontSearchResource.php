@@ -20,6 +20,7 @@ class FileFrontSearchResource extends BaseJsonResource
             'uuid'          => $this->uuid,
             'category'      => $this->category->title,
             'name'          => $this->name,
+            'description'   => $this->description,
             'size'          => $this->formatFileSize($this->size),
             'createdAt'     => $this->getDateTimeString($this->created_at),
             'downloadLink'  => $this->downloadLink

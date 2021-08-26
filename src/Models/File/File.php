@@ -84,7 +84,9 @@ class File extends MediaModel
 
         static::creating(function ($model) {
             //$model->uuid = Str::uuid()->toString();
-            $model->uuid = 'F'.now(config('app.timezone'))->format('ym').Str::random(3);
+            if (!$model->uuid) {
+                $model->uuid = 'F' . now(config('app.timezone'))->format('ym') . Str::random(3);
+            }
         });
     }
 
