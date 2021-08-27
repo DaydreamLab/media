@@ -36,6 +36,8 @@ class CreateFilesTable extends Migration
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamp('locked_at')->nullable();
+            $table->timestamp('publish_up')->nullable();
+            $table->timestamp('publish_down')->nullable();
             $table->timestamps();
         });
     }

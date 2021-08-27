@@ -52,6 +52,8 @@ class File extends MediaModel
         'created_by',
         'updated_by',
         'locked_at',
+        'publish_up',
+        'publish_down'
     ];
 
 
@@ -71,10 +73,13 @@ class File extends MediaModel
      * @var array
      */
     protected $appends = [
+        'categoryTitle',
         'downloadLink'
     ];
 
     protected $casts = [
+        'publish_up' => 'datetime:Y-m-d H:i:s',
+        'publish_down' => 'datetime:Y-m-d H:i:s',
         'params' => 'array'
     ];
 
@@ -83,24 +88,17 @@ class File extends MediaModel
     {
         self::traitBoot();
 
-//        static::creating(function ($model) {
-//            //$model->uuid = Str::uuid()->toString();
-//            if (!$model->uuid) {
-//                $model->uuid = 'F' . now('Asia/Taipei')->format('ym') . Str::random(3);
-//            }
-//        });
+        static::creating(function ($item) {
+            if ($item->state && !$item->publish_up) {
+                $item->publish_up = now();
+            }
+        });
     }
 
 
     public function category()
     {
         return $this->belongsTo(FileCategory::class, 'category_id', 'id');
-    }
-
-
-    public function getDownloadLinkAttribute()
-    {
-        return config('app.url').'/api/file/download/'.$this->uuid;
     }
 
 
@@ -120,5 +118,17 @@ class File extends MediaModel
     public function tags()
     {
         return $this->belongsTo(Tag::class, 'files_tags_maps', 'file_id', 'tag_id');
+    }
+
+
+    public function getDownloadLinkAttribute()
+    {
+        return config('app.url').'/api/file/download/'.$this->uuid;
+    }
+
+
+    public function getCategoryTitleAttribute()
+    {
+        return $this->category ? $this->category->title : '';
     }
 }
