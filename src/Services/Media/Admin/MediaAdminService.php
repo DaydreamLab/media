@@ -325,6 +325,7 @@ class MediaAdminService extends MediaService
                     } else {
                         $final_name = $name . '_' . ++$counter;
                     }
+                    $final_name .= now()->setTimezone('UTC')->timestamp;
                     $path       = $dir . $final_name . '.' . $file_type;
                 }
 
