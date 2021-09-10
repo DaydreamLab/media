@@ -317,7 +317,7 @@ class MediaAdminService extends MediaService
                 $final_name =  config('daydreamlab.media.rename_upload')
                     ? Str::random(36)
                     : $name;
-                $final_name .= now()->setTimezone('UTC')->timestamp;
+                $final_name .= '_' . now()->setTimezone('UTC')->timestamp;
                 $path = $dir . $final_name . '.' . $file_type;
                 while ($this->media_storage->exists($path)) {
                     if ( config('daydreamlab.media.rename_upload')) {
