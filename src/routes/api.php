@@ -11,7 +11,7 @@
 |
 */
 
-Route::post('api/admin/media/upload', 'DaydreamLab\Media\aControllers\Media\Admin\MediaAdminController@upload')
+Route::post('api/admin/media/upload', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@upload')
     ->middleware(['expired', 'admin']);
 Route::post('api/admin/media/move', 'DaydreamLab\Media\Controllers\Media\Admin\MediaAdminController@move')
     ->middleware(['expired', 'admin']);
