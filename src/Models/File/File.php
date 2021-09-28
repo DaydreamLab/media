@@ -117,7 +117,7 @@ class File extends MediaModel
 
     public function tags()
     {
-        return $this->belongsTo(Tag::class, 'files_tags_maps', 'file_id', 'tag_id');
+        return $this->belongsToMany(Tag::class, 'files_tags_maps', 'file_id', 'tag_id');
     }
 
 
