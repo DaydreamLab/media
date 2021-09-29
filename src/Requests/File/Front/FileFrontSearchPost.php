@@ -2,10 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\File\Front;
 
-use DaydreamLab\JJAJ\Requests\ListRequest;
+use DaydreamLab\Media\Requests\MediaSearchRequest;
 use Illuminate\Validation\Rule;
 
-class FileFrontSearchPost extends ListRequest
+class FileFrontSearchPost extends MediaSearchRequest
 {
     protected $searchKeys = ['name', 'description'];
 

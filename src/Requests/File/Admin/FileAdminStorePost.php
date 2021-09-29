@@ -3,11 +3,11 @@
 namespace DaydreamLab\Media\Requests\File\Admin;
 
 use Carbon\Carbon;
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Requests\MediaStoreRequest;
 use DaydreamLab\Media\Helpers\MediaHelper;
 use Illuminate\Validation\Rule;
 
-class FileAdminStorePost extends AdminRequest
+class FileAdminStorePost extends MediaStoreRequest
 {
     protected $modelName = 'File';
 

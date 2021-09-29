@@ -2,10 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Requests\MediaStateRequest;
 use Illuminate\Validation\Rule;
 
-class FileAdminStatePost extends AdminRequest
+class FileAdminStatePost extends MediaStateRequest
 {
     protected $modelName = 'File';
 

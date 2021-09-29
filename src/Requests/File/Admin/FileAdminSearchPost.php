@@ -2,10 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Requests\ListRequest;
+use DaydreamLab\Media\Requests\MediaSearchRequest;
 use Illuminate\Validation\Rule;
 
-class FileAdminSearchPost extends ListRequest
+class FileAdminSearchPost extends MediaSearchRequest
 {
     protected $modelName = 'File';
 
@@ -52,7 +52,7 @@ class FileAdminSearchPost extends ListRequest
         $validated->forget('brand_id');
 
         # 過濾可觀看的品牌
-        if (!$this->user()->isSuperUser && $this->user()->isAdmin) {
+        if (!$this->user()->isSuperUser && $this->user()->isAdmin && $validated->get('contentType') != 'contract') {
             $q = $q->whereHas('brands', function ($q) {
                 $q->whereIn('brands_files_maps.brand_id', $this->user()->brands->pluck('id'));
             });

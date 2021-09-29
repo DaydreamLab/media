@@ -2,9 +2,9 @@
 
 namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Requests\AdminRequest;
+use DaydreamLab\Media\Requests\MediaRemoveRequest;
 
-class FileAdminRemovePost extends AdminRequest
+class FileAdminRemovePost extends MediaRemoveRequest
 {
     protected $modelName = 'File';
 

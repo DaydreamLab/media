@@ -205,7 +205,13 @@ class FileAdminService extends FileService
             $input->put('uuid', 'F' . now('Asia/Taipei')->format('ym') . Str::random(3));
         }
 
-        return parent::store($input);
+        $result = parent::store($input);
+        if ($input->has('id')) {
+            $result = $this->find($input->get('id'));
+        }
+        $this->response = $result;
+
+        return $this->response;
     }
 
 
