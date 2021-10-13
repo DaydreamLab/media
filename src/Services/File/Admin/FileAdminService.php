@@ -28,17 +28,17 @@ class FileAdminService extends FileService
 
 
     public function add(Collection $input)
-    {
+    {/*
         if ($password = $input->get('password')) {
             $input->put('password', bcrypt($password));
         }
-
+*/
         $file = parent::add($input);
-        if ( $notifyEmails = $input->get('notifyEmails') ) {
+  /*      if ( $notifyEmails = $input->get('notifyEmails') ) {
             $notifyEmails = explode(';', $notifyEmails);
             #todo: 寄送 email 訊息
         }
-
+*/
         return $this->response;
     }
 
@@ -103,7 +103,8 @@ class FileAdminService extends FileService
                     'extension'     => $extension,
                     'size'          => $this->formatFileSize($inputFile->getSize()),
                     'url'           => $url,
-                    'encrypted'     => 0,
+                    'userGroupId'   => 7,
+                    //'encrypted'     => 0,
                     'params'        => ['upload' => 'file']
                 ]);
                 $file = $this->store($addData);

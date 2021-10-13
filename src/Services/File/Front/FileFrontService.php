@@ -31,14 +31,26 @@ class FileFrontService extends FileService
         if (!$item) {
             throw new NotFoundException('ItemNotExist', ['uuid' =>  $input->get('uuid')], null, $this->modelName);
         }
-
+/*
         if ($item->password) {
             if(!Hash::check($input->get('password'), $item->password)) {
                 throw new ForbiddenException('PasswordIncorrect');
             }
         }
-
+*/
         // todo: 判斷權限
+        if ($item->userGroup->id != 1) { # 不是公開檔案
+            $user = $input->get('user');
+            if (!$user) {
+                throw new ForbiddenException('PermissionDenied');
+            } else {
+                $allowIds = $item->userGroup->descendants->pluck('id');
+                $allowIds[] = $item->userGroup->id;
+                if (count( array_intersect($allowIds, $user->userGroups->pluck('id')) ) == 0) {
+                    throw new ForbiddenException('PermissionDenied');
+                }
+            }
+        }
         $this->response = $item;
 
         if ($this->getProvider() == 'azure') {

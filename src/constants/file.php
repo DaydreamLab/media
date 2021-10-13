@@ -6,4 +6,5 @@ return [
     'DELETE_AZURE_SUCCESS'      => 200,
     'PASSWORD_INCORRECT'        => 403,
     'UPLOAD_AZURE_SUCCESS'      => 200,
+    'PERMISSION_DENIED'         => 403,
 ];

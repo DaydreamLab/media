@@ -34,6 +34,7 @@ class File extends MediaModel
         'uuid',
         'name',
         'category_id',
+        'userGroupId',
         'state',
         'blobName',
         'contentType',
@@ -112,6 +113,12 @@ class File extends MediaModel
     {
         return $this->belongsToMany(Brand::class, 'brands_files_maps', 'file_id', 'brand_id')
             ->withTimestamps();
+    }
+
+
+    public function userGroup()
+    {
+        return $this->belongsTo(UserGroup::class, 'userGroupId', 'id');
     }
 
 

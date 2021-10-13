@@ -18,6 +18,7 @@ class CreateFilesTable extends Migration
             $table->uuid('uuid');
             $table->string('name');
             $table->unsignedInteger('category_id')->nullable();
+            $table->unsignedInteger('userGroupId')->nullable();
             $table->tinyInteger('state')->default(1);
             $table->string('blobName')->nullable();
             $table->string('contentType')->nullable();

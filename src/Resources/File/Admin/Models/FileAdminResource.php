@@ -25,6 +25,8 @@ class FileAdminResource extends JsonResource
             'name'          => $this->name,
             'categoryId'    => $this->category_id,
             'categoryTitle' => $this->category ? $this->category->title : null,
+            'userGroupId'   => $this->userGroupId,
+            'userGroupTitle'=> $this->userGroup ? $this->userGroup->title : '',
             'state'         => $this->state,
             'originFileName'=> ($this->blobName) ? substr($this->blobName, 6) : '',
             'blobName'      => $this->blobName,
