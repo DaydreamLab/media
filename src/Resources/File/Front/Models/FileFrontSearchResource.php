@@ -24,9 +24,9 @@ class FileFrontSearchResource extends BaseJsonResource
                 $canDownload = 0;
             } else {
                 $userGroup = UserGroup::where('id', $this->userGroupId)->first();
-                $allowIds = $userGroup->descendants->pluck('id')->toArray();
-                $allowIds[] = $userGroup->id;
-                if (count( array_intersect($allowIds, $user->groups->pluck('id')->toArray()) ) == 0) {
+                $allowIds = $user->groups->first()->descendants->pluck('id')->toArray();
+                $allowIds[] = $user->groups->first()->id;
+                if (count( array_intersect($allowIds, [$userGroup->id]) ) == 0) {
                     $canDownload = 0;
                 }
             }
