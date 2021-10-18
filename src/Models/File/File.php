@@ -103,6 +103,12 @@ class File extends MediaModel
     }
 
 
+    public function downloadRecords()
+    {
+        return $this->hasMany(FileDownloadRecord::class, 'fileId', 'id');
+    }
+
+
     public function groups()
     {
         return $this->belongsToMany(UserGroup::class, 'files_users_groups_maps', 'file_id', 'group_id');

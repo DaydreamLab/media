@@ -31,13 +31,6 @@ class FileFrontService extends FileService
         if (!$item) {
             throw new NotFoundException('ItemNotExist', ['uuid' =>  $input->get('uuid')], null, $this->modelName);
         }
-/*
-        if ($item->password) {
-            if(!Hash::check($input->get('password'), $item->password)) {
-                throw new ForbiddenException('PasswordIncorrect');
-            }
-        }
-*/
 
         $this->response = $item;
 

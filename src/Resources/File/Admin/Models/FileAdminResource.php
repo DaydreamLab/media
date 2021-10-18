@@ -44,6 +44,7 @@ class FileAdminResource extends JsonResource
             'brands'        => $this->brands->map(function ($b) {
                 return $b->only(['id', 'title']);
             }),
+            'downloadCount' => $this->downloadRecords->count(),
             'locked_at'     => $this->getDateTimeString($this->locked_at, $user->timezone),
             'created_at'    => $this->getDateTimeString($this->created_at, $user->timezone),
             'updated_at'    => $this->getDateTimeString($this->updated_at, $user->timezone),

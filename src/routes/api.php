@@ -41,6 +41,8 @@ Route::post('api/admin/file/deleteUpload', [FileAdminController::class, 'deleteU
 Route::post('api/admin/file/store', [FileAdminController::class, 'store'])->middleware(['expired', 'admin']);
 # 刪除檔案
 Route::post('api/admin/file/remove', [FileAdminController::class, 'remove'])->middleware(['expired', 'admin']);
+# 下載紀錄
+Route::post('api/admin/file/download/search', [FileAdminController::class, 'searchDownload'])->middleware(['expired', 'admin']);
 # 搜尋檔案
 Route::post('api/admin/file/search', [FileAdminController::class, 'search'])->middleware(['expired', 'admin']);
 # 更新檔案狀態
