@@ -197,8 +197,7 @@ class FileAdminService extends FileService
     public function searchDownload(Collection $input)
     {
         $records = FileDownloadRecord::where('fileId', $input->get('fileId'))->orderByDesc('id')->get();
-        $this->status = 'SearchSuccess';
-        $this->response = $records->map(function ($r) {
+        $records = $records->map(function ($r) {
             if ($user = $r->user) {
                 return [
                     'company' => $user->company->name,
@@ -217,6 +216,11 @@ class FileAdminService extends FileService
                 ];
             }
         });
+        $this->status = 'SearchSuccess';
+        $p = $this->repo->paginate($records, $input->get('limit'), $input->get('page'))->toArray();
+        $data = $p['data'];
+        unset($p['data']);
+        $this->response = collect(['items' => $data, 'pagination' => $p]);
 
         return $this->response;
     }

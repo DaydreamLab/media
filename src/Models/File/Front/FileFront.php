@@ -15,6 +15,7 @@ class FileFront extends File
 
     protected $hidden = [
         'id',
+        'userGroupId',
         'category_id',
         'pivot',
         'state',
