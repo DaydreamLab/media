@@ -17,30 +17,32 @@ class FileFrontSearchResource extends BaseJsonResource
      */
     public function toArray($request)
     {
-        $canDownload = 1;
-        if ($this->userGroupId != 1) { # 不是公開檔案
-            $user = $request->user('api');
-            if (!$user) {
-                $canDownload = 0;
-            } else {
-                $userGroup = UserGroup::where('id', $this->userGroupId)->first();
-                $allowIds = $user->groups->first()->descendants->pluck('id')->toArray();
-                $allowIds[] = $user->groups->first()->id;
-                if (count( array_intersect($allowIds, [$userGroup->id]) ) == 0) {
-                    $canDownload = 0;
-                }
-            }
-        }
-        return [
+        $data = [
             'uuid'          => $this->uuid,
+            'userGroupId'   => $this->userGroupId,
             'categoryTitle' => $this->categoryTitle,
             'title'         => $this->name,
             'contentType'   => $this->contentType,
             'description'   => $this->description,
             'size'          => $this->formatFileSize($this->size),
             'publishUp'     => $this->getDateTimeString($this->publish_up),
-            'downloadLink'  => $this->downloadLink,
-            'canDownload'   => $canDownload
+            'downloadLink'  => $this->downloadLink
         ];
+
+        if ($this->userGroupId != 1) { # 不是公開檔案
+            $user = $request->user('api');
+            if (!$user) {
+                $data['downloadLink'] = null;
+            } else {
+                $userGroup = UserGroup::where('id', $this->userGroupId)->first();
+                $allowIds = $user->groups->first()->descendants->pluck('id')->toArray();
+                $allowIds[] = $user->groups->first()->id;
+                if (count( array_intersect($allowIds, [$userGroup->id]) ) == 0) {
+                    $data['downloadLink'] = null;
+                }
+            }
+        }
+
+        return $data;
     }
 }
