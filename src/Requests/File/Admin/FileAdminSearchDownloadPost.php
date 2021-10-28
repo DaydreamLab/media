@@ -9,7 +9,7 @@ class FileAdminSearchDownloadPost extends MediaSearchRequest
 {
     protected $modelName = 'File';
 
-
+    protected $apiMethod = 'searchFile';
     
     protected $needAuth = false;
 
