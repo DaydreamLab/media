@@ -1,18 +1,18 @@
 <?php
 
-namespace DaydreamLab\Media\Requests;
+namespace DaydreamLab\Media\Requests\File\Admin;
 
-use DaydreamLab\JJAJ\Requests\BaseFeaturedOrderingRequest;
+use DaydreamLab\Media\Requests\MediaSearchRequest;
+use Illuminate\Validation\Rule;
 
-abstract class MediaFeaturedOrderingRequest extends BaseFeaturedOrderingRequest
+class FileAdminSearchDownloadPost extends MediaSearchRequest
 {
-    protected $package = 'Media';
+    protected $modelName = 'File';
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+    protected $apiMethod = 'searchFile';
+    
+    protected $needAuth = false;
+
     public function authorize()
     {
         return parent::authorize();
@@ -25,8 +25,9 @@ abstract class MediaFeaturedOrderingRequest extends BaseFeaturedOrderingRequest
      */
     public function rules()
     {
-        $rules =[
-            //
+        $rules = [
+            'fileId' => 'required|integer'
+
         ];
 
         return array_merge(parent::rules(), $rules);

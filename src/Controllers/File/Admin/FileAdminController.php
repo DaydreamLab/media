@@ -7,6 +7,7 @@ use DaydreamLab\Media\Requests\File\Admin\FileAdminDeleteUploadRequest;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminGetItem;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminRemovePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchPost;
+use DaydreamLab\Media\Requests\File\Admin\FileAdminSearchDownloadPost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStatePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminStorePost;
 use DaydreamLab\Media\Requests\File\Admin\FileAdminRestoreRequest;
@@ -93,6 +94,19 @@ class FileAdminController extends BaseController
         }
 
         return $this->response($this->service->status, $this->service->response, [], FileAdminSearchResourceCollection::class);
+    }
+
+
+    public function searchDownload(FileAdminSearchDownloadPost $request)
+    {
+        $this->service->setUser($request->user('api'));
+        try {
+            $this->service->searchDownload($request->validated());
+        } catch (Throwable $t) {
+            $this->handleException($t);
+        }
+
+        return $this->response($this->service->status, $this->service->response);
     }
 
 

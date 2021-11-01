@@ -25,6 +25,8 @@ class FileAdminResource extends JsonResource
             'name'          => $this->name,
             'categoryId'    => $this->category_id,
             'categoryTitle' => $this->category ? $this->category->title : null,
+            'userGroupId'   => $this->userGroupId,
+            'userGroupTitle'=> $this->userGroup ? $this->userGroup->title : '',
             'state'         => $this->state,
             'originFileName'=> ($this->blobName) ? substr($this->blobName, 6) : '',
             'blobName'      => $this->blobName,
@@ -42,6 +44,7 @@ class FileAdminResource extends JsonResource
             'brands'        => $this->brands->map(function ($b) {
                 return $b->only(['id', 'title']);
             }),
+            'downloadCount' => $this->downloadRecords->count(),
             'locked_at'     => $this->getDateTimeString($this->locked_at, $user->timezone),
             'created_at'    => $this->getDateTimeString($this->created_at, $user->timezone),
             'updated_at'    => $this->getDateTimeString($this->updated_at, $user->timezone),

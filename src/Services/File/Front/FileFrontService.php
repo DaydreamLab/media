@@ -32,13 +32,6 @@ class FileFrontService extends FileService
             throw new NotFoundException('ItemNotExist', ['uuid' =>  $input->get('uuid')], null, $this->modelName);
         }
 
-        if ($item->password) {
-            if(!Hash::check($input->get('password'), $item->password)) {
-                throw new ForbiddenException('PasswordIncorrect');
-            }
-        }
-
-        // todo: 判斷權限
         $this->response = $item;
 
         if ($this->getProvider() == 'azure') {

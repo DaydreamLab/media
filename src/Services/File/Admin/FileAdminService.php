@@ -6,6 +6,7 @@ use DaydreamLab\JJAJ\Exceptions\ForbiddenException;
 use DaydreamLab\JJAJ\Exceptions\NotFoundException;
 use DaydreamLab\JJAJ\Traits\FormatFileSize;
 use DaydreamLab\JJAJ\Traits\LoggedIn;
+use DaydreamLab\Media\Models\File\FileDownloadRecord;
 use DaydreamLab\Media\Repositories\File\Admin\FileAdminRepository;
 use DaydreamLab\Media\Repositories\FileCategory\Admin\FileCategoryAdminRepository;
 use DaydreamLab\Media\Services\File\FileService;
@@ -28,17 +29,17 @@ class FileAdminService extends FileService
 
 
     public function add(Collection $input)
-    {
+    {/*
         if ($password = $input->get('password')) {
             $input->put('password', bcrypt($password));
         }
-
+*/
         $file = parent::add($input);
-        if ( $notifyEmails = $input->get('notifyEmails') ) {
+  /*      if ( $notifyEmails = $input->get('notifyEmails') ) {
             $notifyEmails = explode(';', $notifyEmails);
             #todo: 寄送 email 訊息
         }
-
+*/
         return $this->response;
     }
 
@@ -103,7 +104,8 @@ class FileAdminService extends FileService
                     'extension'     => $extension,
                     'size'          => $this->formatFileSize($inputFile->getSize()),
                     'url'           => $url,
-                    'encrypted'     => 0,
+                    'userGroupId'   => 7,
+                    //'encrypted'     => 0,
                     'params'        => ['upload' => 'file']
                 ]);
                 $file = $this->store($addData);
@@ -189,6 +191,38 @@ class FileAdminService extends FileService
         $input->forget('contentType');
 
         return parent::search($input);
+    }
+
+
+    public function searchDownload(Collection $input)
+    {
+        $records = FileDownloadRecord::where('fileId', $input->get('fileId'))->orderByDesc('id')->get();
+        $records = $records->map(function ($r) {
+            if ($user = $r->user) {
+                return [
+                    'company' => $user->company->name,
+                    'name'  => $user->name,
+                    'mobilePhone' => $user->mobilePhone,
+                    'email' => $user->email,
+                    'group' => $user->groups->first()->title
+                ];
+            } else {
+                return [
+                    'company' => '',
+                    'name'  => '',
+                    'mobilePhone' => '',
+                    'email' => '',
+                    'group' => '訪客'
+                ];
+            }
+        });
+        $this->status = 'SearchSuccess';
+        $p = $this->repo->paginate($records, $input->get('limit'), $input->get('page'))->toArray();
+        $data = $p['data'];
+        unset($p['data']);
+        $this->response = collect(['items' => $data, 'pagination' => $p]);
+
+        return $this->response;
     }
 
 

@@ -3,6 +3,7 @@
 namespace DaydreamLab\Media\Controllers\File\Front;
 
 use DaydreamLab\JJAJ\Controllers\BaseController;
+use DaydreamLab\Media\Models\File\FileDownloadRecord;
 use DaydreamLab\Media\Requests\File\Front\FileFrontSearchPost;
 use DaydreamLab\Media\Requests\File\Front\FileFrontDownloadRequest;
 use DaydreamLab\Media\Resources\File\Front\Collections\FileFrontSearchResourceCollection;
@@ -36,6 +37,11 @@ class FileFrontController extends BaseController
             return $this->response($this->service->status, null);
         }
 
+        # 建立下載紀錄
+        FileDownloadRecord::create([
+            'fileId' => $this->service->response->id,
+            'userId' => ($user) ? $user->id : null
+        ]);
 
         if ($this->service->getProvider() == 'azure') {
             $item = $this->service->response;
