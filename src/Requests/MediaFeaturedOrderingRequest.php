@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\Media\Requests;
 
-use DaydreamLab\Cms\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Requests\BaseFeaturedOrderingRequest;
 
 abstract class MediaFeaturedOrderingRequest extends BaseFeaturedOrderingRequest
@@ -16,15 +15,6 @@ abstract class MediaFeaturedOrderingRequest extends BaseFeaturedOrderingRequest
      */
     public function authorize()
     {
-        if (RequestHelper::isBrandAdminPage(
-            $this->get('pageGroupId'),
-            $this->get('pageId'),
-            $this->modelName)) {
-            return RequestHelper::brandAdminPageAuthorize(
-                $this->user()->apis,
-                $this->apiMethod,
-                $this->modelName);
-        }
         return parent::authorize();
     }
 

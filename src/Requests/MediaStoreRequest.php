@@ -2,7 +2,6 @@
 
 namespace DaydreamLab\Media\Requests;
 
-use DaydreamLab\Cms\Helpers\RequestHelper;
 use DaydreamLab\JJAJ\Requests\BaseStoreRequest;
 
 abstract class MediaStoreRequest extends BaseStoreRequest
@@ -16,16 +15,6 @@ abstract class MediaStoreRequest extends BaseStoreRequest
      */
     public function authorize()
     {
-        if (RequestHelper::isBrandAdminPage(
-            $this->get('pageGroupId'),
-            $this->get('pageId'),
-            $this->modelName)) {
-            return RequestHelper::brandAdminPageAuthorize(
-                $this->user()->apis,
-                $this->apiMethod,
-                $this->modelName,
-                $this->post('id'));
-        }
         return parent::authorize();
     }
 
