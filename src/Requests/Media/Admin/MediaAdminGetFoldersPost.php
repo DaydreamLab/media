@@ -8,7 +8,7 @@ class MediaAdminGetFoldersPost extends AdminRequest
 {
     protected $modelName = 'Media';
 
-    protected $apiMethod = 'getMediaAllFolder';
+    protected $apiMethod = 'getMediaAllFolders';
     /**
      * Determine if the user is authorized to make this request.
      *
