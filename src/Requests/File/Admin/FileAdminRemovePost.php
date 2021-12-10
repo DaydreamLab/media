@@ -9,6 +9,8 @@ class FileAdminRemovePost extends MediaRemoveRequest
     protected $modelName = 'File';
 
     protected $apiMethod = 'deleteFile';
+
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *
