@@ -24,7 +24,7 @@ class FileFrontSearchResource extends BaseJsonResource
             'title'         => $this->name,
             'contentType'   => $this->contentType,
             'description'   => $this->description,
-            'size'          => $this->formatFileSize($this->size),
+            'size'          => $this->size,//$this->formatFileSize($this->size),
             'publishUp'     => $this->getDateTimeString($this->publish_up),
             'downloadLink'  => $this->downloadLink,
             'contentType'   => $this->contentType,

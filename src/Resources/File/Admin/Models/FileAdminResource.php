@@ -32,7 +32,7 @@ class FileAdminResource extends JsonResource
             'blobName'      => $this->blobName,
             'contentType'   => $this->contentType,
             'extension'     => $this->extension,
-            'size'          => $this->formatFileSize($this->size),
+            'size'          => $this->size,//$this->formatFileSize($this->size),
             'url'           => $this->url,
             'web_url'       => $this->web_url,
             'introtext'     => $this->introtext,

@@ -29,7 +29,7 @@ class FileAdminSearchResource extends BaseJsonResource
                 return $b->title;
             })->toArray() : [],
             'state'         => $this->state,
-            'size'          => $this->formatFileSize($this->size),
+            'size'          => $this->size,//$this->formatFileSize($this->size),
             'access'        => $this->access,
             'ordering'      => $this->ordering,
             'locked_at'     => $this->getDateTimeString($this->locked_at, $user->timezone),
