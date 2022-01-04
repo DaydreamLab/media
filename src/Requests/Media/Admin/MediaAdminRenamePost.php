@@ -10,6 +10,8 @@ class MediaAdminRenamePost extends AdminRequest
     protected $modelName = 'Media';
 
     protected $apiMethod = 'renameMedia';
+
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *

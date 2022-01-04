@@ -10,6 +10,7 @@ class MediaAdminCreateFolderPost extends AdminRequest
 
     protected $apiMethod = 'createMediaFolder';
 
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *

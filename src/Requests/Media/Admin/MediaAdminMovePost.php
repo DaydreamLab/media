@@ -10,6 +10,7 @@ class MediaAdminMovePost extends AdminRequest
 
     protected $apiMethod = 'moveMedia';
 
+    protected $needAuth = false;
     /**
      * Determine if the user is authorized to make this request.
      *
