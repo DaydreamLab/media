@@ -27,7 +27,7 @@ class FileFrontSearchResource extends BaseJsonResource
             'size'          => $this->size,//$this->formatFileSize($this->size),
             'publishUp'     => $this->getDateTimeString($this->publish_up),
             'downloadLink'  => $this->downloadLink,
-            'contentType'   => $this->contentType,
+            'linkType'      => $this->params['upload']
         ];
 
         if ($this->userGroupId != 1) { # 不是公開檔案
