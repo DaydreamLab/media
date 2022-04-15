@@ -81,7 +81,12 @@ class FileAdminService extends FileService
         foreach ($input->get('files') ?:[] as $inputFile) {
             $filename = pathinfo($inputFile->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = pathinfo($inputFile->getClientOriginalName(), PATHINFO_EXTENSION);
-            $blobName = Str::random(5) . '.' . $inputFile->getClientOriginalName();
+            if ($input->get('isBackUp')) {
+                $blobName = $input->get('dir') . '/' . $inputFile->getClientOriginalName();
+            } else {
+                $blobName = Str::random(5) . '.' . $inputFile->getClientOriginalName();
+            }
+
             $contentType = $inputFile->getClientMimeType();
             $client = $this->getAzureClient();
             $url = $this->baseUrl . $blobName;
@@ -234,7 +239,7 @@ class FileAdminService extends FileService
                 'categoryId' => (int)$input->get('category_id')
             ], null, 'FileCategory');
         }
-        
+
         if ($input->get('uuid') == '') {
             $input->put('uuid', 'F' . now('Asia/Taipei')->format('ym') . Str::random(3));
         }
