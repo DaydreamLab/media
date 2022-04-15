@@ -14,12 +14,7 @@ class Backup
     {
         $fileName = basename($filePath);
         $arr = explode('_', $fileName);
-        if ($type == 'sql') {
-            $dir = "backup/{$arr[0]}/sql/{$arr[1]}_{$arr[2]}_{$arr[3]}_{$arr[4]}_{$arr[5]}_{$arr[6]}";
-        } else {
-            $dir = "backup/{$arr[0]}/site/{$arr[1]}_{$arr[2]}_{$arr[3]}_{$arr[4]}_{$arr[5]}_{$arr[6]}";
-        }
-
+        $dir = "backup/{$arr[0]}/$type/{$arr[1]}_{$arr[2]}_{$arr[3]}_{$arr[4]}_{$arr[5]}_{$arr[6]}";
 
         $input = collect([
             'createFile' => 0,
