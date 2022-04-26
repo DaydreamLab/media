@@ -126,6 +126,13 @@ class FileAdminService extends FileService
     }
 
 
+    public function addS3(Collection $input)
+    {
+
+
+    }
+
+
     public function beforeRemove(Collection $input, $item)
     {
         $this->deleteUpload($item->blobName);
@@ -255,6 +262,10 @@ class FileAdminService extends FileService
         $provider = $this->getProvider();
         if ($provider == 'azure') {
             $result = $this->addAzure($input);
+            $this->status = 'UploadAzureSuccess';
+            $this->response = $result;
+        } elseif ($provider == 's3') {
+            $result = $this->addS3($input);
             $this->status = 'UploadAzureSuccess';
             $this->response = $result;
         }

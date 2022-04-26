@@ -13,6 +13,8 @@ class FileFront extends File
      */
     protected $table = 'files';
 
+    protected $order = 'desc';
+
     protected $hidden = [
         'id',
         'userGroupId',
