@@ -304,6 +304,8 @@ class MediaAdminService extends MediaService
 
         $complete = true;
         $link_path = $this->media_link_base . $input->dir;
+        $filesCount = count($input->get('files'));
+        $filesPaths = [];
         foreach ($input->get('files') as $file)
         {
             if (!$file->getError())
@@ -336,8 +338,12 @@ class MediaAdminService extends MediaService
                 if (in_array($extension, config('daydreamlab.media.extension.image'))) {
                     $result = Image::make($file)->fit(200)->save($thumb_path);
                 }
+                if ($filesCount == 1) {
+                    $link_path .= '/'.$final_name . '.' . $file_type;
+                } else {
+                    $filesPaths[] =  $link_path . '/'.$final_name . '.' . $file_type;
+                }
 
-                $link_path .= '/'.$final_name . '.' . $file_type;
                 if (!$file->storeAs($input->dir, $final_name . '.' . $file_type, $this->media_storage_type))
                 {
                     $complete = false;
@@ -348,7 +354,12 @@ class MediaAdminService extends MediaService
 
         if ($complete) {
             $this->status   = Str::upper(Str::snake($this->type.'UploadSuccess'));
-            $this->response = $link_path;
+            if ($filesCount == 1) {
+                $this->response = $link_path;
+            } else {
+                $this->response = $filesPaths;
+            }
+
         } else {
             $this->status   = Str::upper(Str::snake($this->type.'UploadFail'));
             $this->response = null;
