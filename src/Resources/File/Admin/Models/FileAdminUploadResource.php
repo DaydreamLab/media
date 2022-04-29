@@ -21,7 +21,9 @@ class FileAdminUploadResource extends JsonResource
         if ($this->resource instanceof File) {
             $data = [
                 'id'            => $this['id'],
+                'uuid'          => $this['uuid'],
                 'name'          => $this['name'],
+                'contentType'   => $this['contentType'],
                 'size'          => $this['size'],
                 'downloadLink'  => $this['downloadLink']
             ];
