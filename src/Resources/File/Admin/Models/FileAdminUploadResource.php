@@ -23,6 +23,7 @@ class FileAdminUploadResource extends JsonResource
                 'id'            => $this['id'],
                 'uuid'          => $this['uuid'],
                 'name'          => $this['name'],
+                'blobName'      => $this['blobName'],
                 'contentType'   => $this['contentType'],
                 'size'          => $this['size'],
                 'downloadLink'  => $this['downloadLink']
