@@ -138,7 +138,7 @@ class FileAdminService extends FileService
     }
 
 
-    public function beforeRemove(Collection $input, $item)
+    public function beforeRemove(Collection &$input, $item)
     {
         $this->deleteUpload($item->blobName);
     }
