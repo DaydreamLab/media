@@ -60,14 +60,19 @@ class MediaAdminService extends MediaService
     }
 
 
-    public function makeTreeDirectories($all)
+    public function makeTreeDirectories($all, $dir)
     {
-        $data = [['name'=> '/', 'path'=> '/', 'children' => []]];
-        $format_data = [['name'=> '/', 'path'=> '/', 'children' => []]];
+        $data = [['name'=> '/', 'path'=> $dir, 'children' => []]];
+        $format_data = [['name'=> '/', 'path'=> $dir, 'children' => []]];
+
+        $delete = trim($dir, '/');
+        if ($delete) {
+            $delete = $delete . '/';
+        }
 
         foreach ($all as $directory)
         {
-            $data = self::buildTree($data, $directory, '');
+            $data = self::buildTree($data, $directory, $delete);
         }
 
         unset($data[0]);
@@ -109,12 +114,12 @@ class MediaAdminService extends MediaService
 
     public function getAllFolders()
     {
-        $dir = '/'.$this->userMerchantID;
-        $all    = $this->media_storage->allDirectories($this->userMerchantID);
+        $dir = '/' . $this->userMerchantID;
+        $all    = $this->media_storage->allDirectories($dir);
         $all    = MediaHelper::filterDirectories($all);
         $all    = MediaHelper::appendMeta($all, 'folder', $dir, $this->media_storage);
 
-        $data   = $this->makeTreeDirectories($all);
+        $data   = $this->makeTreeDirectories($all, $dir);
 
         $this->status =  Str::upper(Str::snake($this->type.'GetAllFoldersSuccess'));
         $this->response = $data;
