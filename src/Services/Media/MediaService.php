@@ -59,14 +59,26 @@ class MediaService extends BaseService
         $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix();
         $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix();
 
-        if( config('daydreamlab.media.dddream-merchant-mode') ){
+        if (config('daydreamlab.media.dddream-merchant-mode')) {
             //Helper::show(Auth::guard('api')->user()->merchants->first()->id);
-            if( !$this->media_storage->exists($this->userMerchantID) &&
-                !$this->thumb_storage->exists($this->userMerchantID) ){
+            if (
+                !$this->media_storage->exists($this->userMerchantID)
+                && !$this->thumb_storage->exists($this->userMerchantID)
+            ) {
                 //利用merchantID建構Dir
-                $result_media   = $this->media_storage->makeDirectory($this->userMerchantID, intval( '0755', 8 ));
-                $result_thumb   = $this->thumb_storage->makeDirectory($this->userMerchantID, intval( '0755', 8 ));
+                $result_media   = $this->media_storage->makeDirectory($this->userMerchantID, intval('0755', 8));
+                $result_thumb   = $this->thumb_storage->makeDirectory($this->userMerchantID, intval('0755', 8));
             }
+
+            if (
+                !$this->media_storage->exists($this->userMerchantID . '/manage')
+                && !$this->thumb_storage->exists($this->userMerchantID . '/manage')
+            ) {
+                //利用merchantID建構Dir
+                $result_media   = $this->media_storage->makeDirectory($this->userMerchantID . '/manage', intval('0755', 8));
+                $result_thumb   = $this->thumb_storage->makeDirectory($this->userMerchantID . '/manage', intval('0755', 8));
+            }
+
             $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix().$this->userMerchantID.'/';
             $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix().$this->userMerchantID.'/';
         }
