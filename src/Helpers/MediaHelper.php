@@ -24,7 +24,7 @@ class MediaHelper
             {
                 $temp['path'] = '';
                 //if config merchant mode = 1
-                if( mb_strlen( $folders[0], "utf-8") == 20 ){
+                if(Str::isUuid($folders[0])){
                     unset($folders[0]);
                     foreach ($folders as $itemPath){
                         $temp['path'].= '/'.$itemPath;
