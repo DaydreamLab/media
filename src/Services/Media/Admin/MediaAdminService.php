@@ -228,6 +228,11 @@ class MediaAdminService extends MediaService
             else
             {
                 $temp = explode('/', $path);
+                // 商家模式下
+                if ($this->userMerchantID) {
+                    $comebinePath = $path;
+                }
+
                 if ( MediaHelper::isImage(end($temp)))
                 {
                     $delete_thumb = $this->thumb_storage->delete($comebinePath);
@@ -265,11 +270,8 @@ class MediaAdminService extends MediaService
                 $old = $input->dir;
                 $newPath = explode('/', $input->dir);
                 unset($newPath[count($newPath) - 1]);
-                $new = '';
-                foreach ( $newPath as $path ){
-                    $new.= $path;
-                }
-                $new = $new . '/' . $input->rename;
+                $newPath[] = $input->rename;
+                $new = implode('/', $newPath);
             }
             else
             {
@@ -297,8 +299,6 @@ class MediaAdminService extends MediaService
                 $this->response = null;
                 return false;
             }
-
-
     }
 
     public function upload(Collection $input)

@@ -27,7 +27,7 @@ class MediaRenamePost extends AdminRequest
     {
         return [
             'dir'       => 'required|string',
-            'name'      => 'required|string',
+            'name'      => 'required_if:type,file|string',
             'rename'    => 'required|string',
             'type'      => [
                 'required',
