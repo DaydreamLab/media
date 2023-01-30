@@ -114,7 +114,7 @@ class MediaAdminService extends MediaService
 
     public function getAllFolders()
     {
-        $dir = '/' . $this->userMerchantID . '/manage';
+        $dir = '/manage';
         $all    = $this->media_storage->allDirectories($dir);
         $all    = MediaHelper::filterDirectories($all);
         $all    = MediaHelper::appendMeta($all, 'folder', $dir, $this->media_storage);
@@ -147,6 +147,7 @@ class MediaAdminService extends MediaService
 
     public function getFiles(Collection $input)
     {
+        $input->dir = $this->userMerchantID.$input->dir;
         $files = $this->media_storage->files($input->dir);
 
         $data = MediaHelper::appendMeta($files, 'files', $input->dir, $this->media_storage);
