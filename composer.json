@@ -16,7 +16,6 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "daydreamlab/user": "dev-base/v2",
         "intervention/image": "^2.4"
     },
     "extra": {
