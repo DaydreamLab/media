@@ -16,7 +16,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "daydreamlab/user": "dev-develop-tusa",
+        "daydreamlab/user": "dev-tusa/main",
         "intervention/image": "^2.4"
     },
     "extra": {
