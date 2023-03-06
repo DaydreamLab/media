@@ -310,6 +310,10 @@ class MediaAdminService extends MediaService
                 $dir            = MediaHelper::getDirPath($directories);
                 $name           = str_replace(' ', '', MediaHelper::getFileName($full_name));
                 $file_type      = MediaHelper::getFileExtension($full_name);
+                if ($file_type == 'php') {
+                    continue;
+                }
+
                 $counter = 0;
                 $final_name =  config('daydreamlab.media.rename_upload')
                     ? Str::random(36)
