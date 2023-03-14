@@ -310,7 +310,7 @@ class MediaAdminService extends MediaService
                 $dir            = MediaHelper::getDirPath($directories);
                 $name           = str_replace(' ', '', MediaHelper::getFileName($full_name));
                 $file_type      = MediaHelper::getFileExtension($full_name);
-                if ($file_type == 'php') {
+                if (strtolower($file_type) == 'php') {
                     continue;
                 }
 
