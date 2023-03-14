@@ -2,10 +2,10 @@
 
 namespace DaydreamLab\Media\Requests\Media\Admin;
 
-use DaydreamLab\Media\Requests\Media\MediaRenamePost;
+use DaydreamLab\JJAJ\Requests\AdminRequest;
 use Illuminate\Validation\Rule;
 
-class MediaAdminRenamePost extends MediaRenamePost
+class MediaAdminRenamePost extends AdminRequest
 {
     protected $modelName = 'Media';
 
