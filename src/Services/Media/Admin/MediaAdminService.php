@@ -310,7 +310,10 @@ class MediaAdminService extends MediaService
                 $dir            = MediaHelper::getDirPath($directories);
                 $name           = str_replace(' ', '', MediaHelper::getFileName($full_name));
                 $file_type      = MediaHelper::getFileExtension($full_name);
-                if (strtolower($file_type) == 'php') {
+                if (
+                    config('daydreamlab.media.enabledWhiteList')
+                    && ! in_array(strtolower($file_type), config('daydreamlab.media.whiteList'))
+                ) {
                     continue;
                 }
 

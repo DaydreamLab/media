@@ -82,5 +82,7 @@ return [
         ],
         'aws'    => [
         ]
-    ]
+    ],
+    'enabledWhiteList' => false,
+    'whiteList' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp']
 ];
