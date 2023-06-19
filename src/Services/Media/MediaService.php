@@ -5,6 +5,7 @@ namespace DaydreamLab\Media\Services\Media;
 use DaydreamLab\JJAJ\Helpers\Helper;
 use DaydreamLab\Media\Repositories\Media\MediaRepository;
 use DaydreamLab\JJAJ\Services\BaseService;
+use DaydreamLab\User\Models\User\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -44,13 +45,10 @@ class MediaService extends BaseService
                 $this->throwResponse('UserUnauthorized');
             }
 
-            if( $merchant = $user->merchants()->first() ){
-                $this->userMerchantID = $merchant->id;
-            }else{
-                if (!$user->isSuperUser())
-                {
-                    $this->throwResponse('MediaThisAdminUserNotHaveMerchant');
-                }
+            if ($merchantId = $user->token()->merchant_id) {
+                $this->userMerchantID = $merchantId;
+            } elseif ($user instanceof User && !$user->isSuperUser() ) {
+                $this->throwResponse('MediaThisAdminUserNotHaveMerchant');
             }
         }
 

@@ -228,10 +228,6 @@ class MediaAdminService extends MediaService
             else
             {
                 $temp = explode('/', $path);
-                // 商家模式下
-                if ($this->userMerchantID) {
-                    $comebinePath = $path;
-                }
 
                 if ( MediaHelper::isImage(end($temp)))
                 {
