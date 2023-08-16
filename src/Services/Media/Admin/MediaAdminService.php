@@ -302,10 +302,10 @@ class MediaAdminService extends MediaService
             : $input->dir ;
 
         $complete = true;
-        $link_path = $this->media_link_base . $input->dir;
-
+        
         foreach ($input->files as $file)
         {
+            $link_path = $this->media_link_base . $input->dir;
             if ($file->isValid())
             {
                 $extension      = $file->extension();
