@@ -42,9 +42,9 @@ class FileFrontSearchPost extends MediaSearchRequest
     }
 
 
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        $validated = parent::validated();
+        $validated = parent::validated($key, $default);
 
 //        $q = $validated->get('q');
 //        # 過濾可觀看的品牌

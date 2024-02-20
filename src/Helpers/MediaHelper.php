@@ -141,7 +141,7 @@ class MediaHelper
 
     public static function getDiskPath($disk)
     {
-        return Storage::disk($disk)->getAdapter()->getPathPrefix();
+        return Storage::disk($disk)->path('');
     }
 
 
