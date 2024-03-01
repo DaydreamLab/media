@@ -48,20 +48,20 @@ class MediaService extends BaseService
     public function exist(Collection $input)
     {
         return $this->media_storage->exists($input->dir . '/' . $input->name) &&
-            $this->thumb_storage->exists($input->dir . '/' . $input->name) ?: false;
+            $this->thumb_storage->exists($input->dir . '/' . $input->name) || false;
     }
 
 
     public function deleteStorage($old, $new)
     {
         return $this->media_storage->move($old, $new) &&
-        $this->thumb_storage->move($old, $new) ?: false;
+            $this->thumb_storage->move($old, $new) || false;
     }
 
 
     public function moveStorage($old, $new)
     {
         return $this->media_storage->move($old, $new) &&
-                $this->thumb_storage->move($old, $new) ?: false;
+            $this->thumb_storage->move($old, $new) || false;
     }
 }
