@@ -40,8 +40,8 @@ class MediaService extends BaseService
 
         $this->media_storage = Storage::disk($this->media_storage_type);
         $this->thumb_storage = Storage::disk($this->thumb_storage_type);
-        $this->media_path    = $this->media_storage->getDriver()->getAdapter()->getPathPrefix();
-        $this->thumb_path    = $this->thumb_storage->getDriver()->getAdapter()->getPathPrefix();
+        $this->media_path    = $this->media_storage->path('');
+        $this->thumb_path    = $this->thumb_storage->path('');
     }
 
 
